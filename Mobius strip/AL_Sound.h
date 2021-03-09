@@ -9,9 +9,12 @@
 #include <mutex>
 #include <assert.h>
 #include <intsafe.h>
+#include <memory>
 
 bool alc_open_device();
 void alc_close_device();
+bool checkFileExistence(const std::string& str);
+
 
 class sound_effect
 {
@@ -320,5 +323,23 @@ private:
 	std::unique_ptr<std::thread> streaming_thread;
 	std::mutex streaming_mutex;
 };
+
+template<class T>
+inline T ErrerAL(const char* text = nullptr)
+{
+#ifdef _DEBUG
+	if (text != nullptr)
+	{
+		OutputDebugStringA(text);
+		OutputDebugStringA("\n");
+	}
+#endif
+	return nullptr;
+}
+
+using AL_SoundBuffet = std::unique_ptr<sound_buffer>;
+#define LoadALSound(x)		checkFileExistence(x)?std::make_unique<sound_buffer>(x):ErrerAL<AL_SoundBuffet>("File does not exist")
+#define LoadALSound_s(x)	PathFindExtensionA(x)==std::string(".ogg")?LoadALSound(x):ErrerAL<AL_SoundBuffet>("This extension cannot be used")
+
 
 #endif // !INCLUDE_AL_SOUND

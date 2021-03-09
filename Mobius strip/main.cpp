@@ -7,7 +7,7 @@
 /*							プロトタイプ宣言						*/
 /********************************************************************/
 #include "StageEditor.h"
-//#define TEST_OPENAL
+#define TEST_OPENAL
 #ifdef TEST_OPENAL
 #include "AL_Sound.h"
 #endif // TEST_OPENAL
@@ -20,12 +20,12 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 
 #ifdef TEST_OPENAL
 	alc_open_device();
-	std::unique_ptr<sound_buffer> sound_buffers;
+	AL_SoundBuffet sound_buffers=nullptr;
 	volume_effect d;
-	sound_buffers = std::make_unique<sound_buffer>("009.ogg");
-	sound_buffers->volume(0.5);
-	sound_buffers->loop();
-	sound_buffers->play(&d);
+	sound_buffers = LoadALSound_s("009.ogg");
+	//sound_buffers->volume(0.5);
+	//sound_buffers->loop();
+	//sound_buffers->play(&d);
 #endif
 
 	while (Function::GameLoop())
