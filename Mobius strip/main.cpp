@@ -28,8 +28,6 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	testBGM->play();
 #endif
 
-	bool f = false;
-
 	while (Function::GameLoop())
 	{
 		//StageEditor::Run();
