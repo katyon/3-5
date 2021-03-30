@@ -191,6 +191,9 @@
     <ClCompile Include="AL_Sound.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="transition_y.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -365,6 +368,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="AL_Sound.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="transition_y.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

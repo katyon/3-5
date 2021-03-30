@@ -224,6 +224,7 @@
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StageEditor.cpp" />
+    <ClCompile Include="transition_y.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AliceLib\AddOn.h" />
@@ -284,6 +285,7 @@
     <ClInclude Include="AL_Sound.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="StageEditor.h" />
+    <ClInclude Include="transition_y.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="AliceLib\hlsls\gaussian_blur_convolution_ps.hlsl">
