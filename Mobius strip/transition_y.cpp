@@ -63,8 +63,7 @@ void Transition_y::Render()
 	//時計の針の中心
 	static const FLOAT2 ClockCentral = ScreenSize / 2.0f;
 	
-	if constexpr (Transition_y::file_pass
-		&& std::wifstream(Transition_y::file_pass).is_open())
+	if (isFileExist)
 	{
 		//表示スケール
 		static const FLOAT2 Scales = ArithmeticLib::ScalarToFloat2(1.0f);
