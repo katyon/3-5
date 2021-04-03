@@ -224,6 +224,7 @@
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StageEditor.cpp" />
+    <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="transition_y.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -284,7 +285,9 @@
     <ClInclude Include="AliceLib\Util.h" />
     <ClInclude Include="AL_Sound.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="StageData.h" />
     <ClInclude Include="StageEditor.h" />
+    <ClInclude Include="StageManager.h" />
     <ClInclude Include="transition_y.h" />
   </ItemGroup>
   <ItemGroup>

@@ -25,66 +25,6 @@ bool getFileNames(std::string folderPath, std::vector<std::string> &file_names)
 	return true;
 }
 
-bool checkFileExistence(const std::string& str)
-{
-	std::ifstream ifs(str);
-	return ifs.is_open();
-}
-
-template<size_t arr_size>
-void load_stage_from_file(const std::string& file_pass,
-	StageObject (&objects)[arr_size], std::map<std::string, SE_Model>* manager)
-{
-	//ファイルがないならロードしない
-	if (!checkFileExistence(file_pass))
-	{
-		return;
-	}
-	FILE* fp = fopen(file_pass.c_str(), "r");
-	static	FLOAT4 q;
-	if (fp)
-	{
-		int   isbody, isshow;
-		for (StageObject& object : objects)
-		{
-			char filename[256] = {};
-			//使用しているかのフラグ
-			fscanf(fp, "%d,", &isbody);
-			//表示しているかのフラグ
-			fscanf(fp, "%d,", &isshow);
-			//座標データ
-			fscanf(fp, "%f,", &object.position.x);
-			fscanf(fp, "%f,", &object.position.y);
-			fscanf(fp, "%f,", &object.position.z);
-			//スケール値のデータ
-			fscanf(fp, "%f,", &object.scales.x);
-			fscanf(fp, "%f,", &object.scales.y);
-			fscanf(fp, "%f,", &object.scales.z);
-			//クオータニオンの成分データ
-			fscanf(fp, "%f,", &q.x);
-			fscanf(fp, "%f,", &q.y);
-			fscanf(fp, "%f,", &q.z);
-			fscanf(fp, "%f,", &q.w);
-			//ID
-			fscanf(fp, "%s", filename);
-			fprintf(fp, "\n");
-			object.posture.SetQuaternion(q);
-			if (isbody == 1)
-			{
-				object.isShow = (isshow != 0);
-				auto it = manager->find(filename);
-				if (it != manager->end())
-				{
-					object.ID = filename;
-					object.body.SetModel(&it->second.m);
-				}
-			}
-		}
-		fclose(fp);
-	}
-}
-
-
 void StageEditor::load_object()
 {
 #if false

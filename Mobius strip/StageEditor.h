@@ -1,52 +1,9 @@
 #pragma once
 #include <map>
 #include "AliceLib/AliceLib.h"
+#include "StageData.h"
 
 
-
-
-struct StageObject
-{
-	std::string		ID;
-	FLOAT3			position;
-	FLOAT3			scales;
-	Quaternion		posture;
-	bool			isShow = true;
-	ModelReplica	body;
-
-	void	Load(Model*		body_data,const StageObject&	data)
-	{
-		ID = data.ID;
-		position = data.position;
-		scales = data.scales;
-		posture = data.posture;
-		isShow = data.isShow;
-		body.SetModel(body_data);
-	}
-	
-	void	Render() { isShow ? ModelRender(body, position, scales, posture) : 0; }
-
-
-	void	Clear()
-	{
-		ID = "";
-		position = {};
-		scales = { 1.0f,1.0f,1.0f };
-		posture.reset();
-		body.ReSet();
-	}
-};
-
-
-struct SE_Model
-{
-	Model m;
-	SE_Model(std::string file_pass)
-	{
-		//ëSÇƒÇÃÉÇÉfÉãÇÕMayaÇ≈çÏÇÁÇÍÇƒÇ¢ÇÈÇƒÇ¢Ç≈ê›íË
-		ModelLoad(m, file_pass.c_str(),MAYA);
-	}
-};
 
 class StageEditor
 {

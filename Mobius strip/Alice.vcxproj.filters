@@ -194,6 +194,9 @@
     <ClCompile Include="transition_y.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -371,6 +374,12 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="transition_y.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="StageData.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
