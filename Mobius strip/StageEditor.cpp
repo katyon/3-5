@@ -296,7 +296,7 @@ void StageEditor::Render()
 	if (showV)
 	{
 		Geometric::Vector(camera, {}, {100.0f,0.0f,0.0f}, {0.3f}, { 0,0,0,1.0f }, { DCOLOR_RED });
-		Geometric::Vector(camera, {}, {0.0f,0.0f,100.0f}, { 0.3f }, { 0,0,0,1.0f }, { DCOLOR_BLUE });
+		Geometric::Vector(camera, {}, {0.0f,0.0f,100.0f}, {0.3f }, { 0,0,0,1.0f }, { DCOLOR_BLUE });
 		Geometric::Vector(camera, {}, {0.0f,100.f,0.0f} , {0.3f}, { 0,0,0,1.0f }, { DCOLOR_GREEN });
 	}
 	Geometric::Board(camera, {}, ScalarToFloat3(200.0f), {}, { 0,0,0,1.0f }, { 1.0f, 1.0f, 1.0f, 0.3f });

@@ -6,24 +6,31 @@ class StageManager
 {
 private:
 	std::map<std::string, cStageModel>  model_manager;
-	std::vector<StageData>			    stages;
-public:
-
+	std::vector<StageData>				stages;
+	UINT								now_stage = 0;
+	
 	//モデルをロード
 	void LoadModels();
+public:
+
 
 	template<size_t size>
-	void LoadStages(std::string file_names[size])
+	void LoadStages(std::string (&file_names)[size])
 	{
-		//念のためのモデルのロードをしておく
+		if (!stages.empty())return;
 		LoadModels();
-		//必要なデータだけ渡してそれ以外は
-		//ステージデータ構造体のコンストラクタに丸投げ
-		for (auto file_name : file_names)
+		stages.resize(size);
+		for (int i = 0; i < size; i++)
 		{
-			stages.push_back(file_name,&model_manager);
+			stages[i].Load(file_names[i],&model_manager);
 		}
 	}
+
+	void Render();
+
+	bool Switching(UINT next);
+
+	const UINT& getStageNum()const { return now_stage; }
 
 
 

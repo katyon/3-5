@@ -27,3 +27,15 @@ void StageManager::LoadModels()
 		}
 	}
 }
+
+void StageManager::Render()
+{
+	stages[now_stage].Render();
+}
+
+bool StageManager::Switching(UINT next)
+{
+	if (next >= stages.size())return false;
+	now_stage = next;
+	return true;
+}

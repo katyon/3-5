@@ -133,16 +133,30 @@ inline void load_stage_from_file(const std::string& file_pass,
 */
 class StageData
 {
+public:
+	static constexpr UINT MaxObjects = 128u;
 protected:
 	//ステージ内に設置するオブジェクト
-	StageObject objects[128u];
+	StageObject objects[StageData::MaxObjects];
 public:
-	StageData(std::string file_name, std::map<std::string, cStageModel>* manager)
+	StageData() {}
+	StageData(const StageData&) {}
+	void Load(std::string file_name, std::map<std::string, cStageModel>* manager)
 	{
 		load_stage_from_file(file_name, objects, manager);
 	}
-	const StageObject* getObdects()const
+	StageObject* getObdects()
 	{
 		return objects;
+	}
+
+	void Render()
+	{
+		ModelRenderBegin();
+		for (auto& object : objects)
+		{
+			object.Render();
+		}
+		ModelRenderEnd();
 	}
 };
