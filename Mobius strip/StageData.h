@@ -22,6 +22,9 @@ struct StageObject
 	bool			isShow = true;
 	//モデルの複製品
 	ModelReplica	body;
+	//オプション　アイテムで使う
+	//デフォルト値 -1
+	int				option = -1;
 
 	void	Load(Model* body_data, const StageObject& data)
 	{
@@ -31,6 +34,7 @@ struct StageObject
 		posture = data.posture;
 		isShow = data.isShow;
 		body.SetModel(body_data);
+		option = data.option;
 	}
 
 	void	Render() { isShow ? ModelRender(body, position, scales, posture) : 0; }
@@ -87,7 +91,7 @@ inline void load_stage_from_file(const std::string& file_pass,
 	static	FLOAT4 q;
 	if (fp)
 	{
-		int   isbody, isshow;
+		int   isbody, isshow,option;
 		for (StageObject& object : objects)
 		{
 			char filename[256] = {};
@@ -108,6 +112,8 @@ inline void load_stage_from_file(const std::string& file_pass,
 			fscanf(fp, "%f,", &q.y);
 			fscanf(fp, "%f,", &q.z);
 			fscanf(fp, "%f,", &q.w);
+			//オプション
+			fscanf(fp, "%d,", &option);
 			//ID
 			fscanf(fp, "%s", filename);
 			fprintf(fp, "\n");

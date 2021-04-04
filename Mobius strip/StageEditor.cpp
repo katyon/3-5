@@ -74,6 +74,7 @@ void StageEditor::load_stage()
 		return;
 	}
 	load_object();
+	clear_stage();
 	load_stage_from_file(pass, objects,&manager);
 	MessageBoxW(nullptr, L"ロードが完了しました", L"Load", MB_OK);
 }
@@ -108,24 +109,26 @@ void StageEditor::save()
 		{
 			if (!object.body)continue;
 			q = object.posture.GetQuaternion();
-			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s \n",
+			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%d,%s \n",
 				object.body ? 1 : 0,
 				object.isShow ? 1 : 0,
-				object.position.x,object.position.y,object.position.z,
+				object.position.x, object.position.y, object.position.z,
 				object.scales.x, object.scales.y, object.scales.z,
 				q.x, q.y, q.z, q.w,
+				object.option,
 				object.ID.c_str());
 		}
 		for (auto& object : objects)
 		{
 			if (object.body)continue;
-			
-			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s \n",
+
+			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%d,%s \n",
 				0,
 				1,
 				0.0f, 0.0f, 0.0f,
 				1.0f, 1.0f, 1.0f,
 				0.0f, 0.0f, 0.0f, 1.0f,
+				-1,
 				"empty");
 		}
 		fclose(fp);
@@ -173,6 +176,7 @@ void StageEditor::Update()
 					data.scales = { 1.0f,1.0f,1.0f };
 					data.posture.reset();
 					data.isShow = true;
+					data.option = -1;
 					object.Load(&m.second.m,data);
 					break;
 				}
@@ -200,6 +204,9 @@ void StageEditor::Update()
 			{
 				object.Clear();
 			}
+
+			ImGui::InputInt("Option", &object.option, 1, -1);
+
 			//オブジェクトが表示されている場合のみ編集可能
 			if (object.isShow)
 			{
@@ -323,7 +330,7 @@ StageEditor::StageEditor()
 		{
 			//念のためオブジェクトをロードしなおす
 			load_object();
-			int   isbody, isshow;
+			int   isbody, isshow,option;
 			for (auto& object : objects)
 			{
 				char filename[256] = {};
@@ -344,6 +351,8 @@ StageEditor::StageEditor()
 				fscanf(fp, "%f,", &q.y);
 				fscanf(fp, "%f,", &q.z);
 				fscanf(fp, "%f,", &q.w);
+
+				fscanf(fp, "%d,", &option);
 				//ID
 				fscanf(fp, "%s", filename);
 				fprintf(fp, "\n");
@@ -377,24 +386,26 @@ StageEditor::~StageEditor()
 		{
 			if (!object.body)continue;
 			q = object.posture.GetQuaternion();
-			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s \n",
+			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%d,%s \n",
 				object.body ? 1 : 0,
 				object.isShow ? 1 : 0,
 				object.position.x, object.position.y, object.position.z,
 				object.scales.x, object.scales.y, object.scales.z,
 				q.x, q.y, q.z, q.w,
+				object.option,
 				object.ID.c_str());
 		}
 		for (auto& object : objects)
 		{
 			if (object.body)continue;
 
-			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s \n",
+			fprintf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%d,%s \n",
 				0,
 				1,
 				0.0f, 0.0f, 0.0f,
 				1.0f, 1.0f, 1.0f,
 				0.0f, 0.0f, 0.0f, 1.0f,
+				-1,
 				"empty");
 		}
 		fclose(fp);
