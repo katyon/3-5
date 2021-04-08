@@ -206,6 +206,9 @@
     <ClCompile Include="Balance.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ScreenRecord.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -400,6 +403,9 @@
     <ClInclude Include="Balance.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="ScreenRecord.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="AliceLib\hlsls\model_vs.hlsl">
@@ -465,6 +471,7 @@
     <FxCompile Include="AliceLib\hlsls\shadertoy.hlsl">
       <Filter>AliceLib\Shader\common</Filter>
     </FxCompile>
+    <FxCompile Include="mask_ps.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AliceLib\hlsls\model.hlsli">

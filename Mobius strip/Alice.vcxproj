@@ -225,6 +225,7 @@
     <ClCompile Include="Balance.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="orbital_camera.cpp" />
+    <ClCompile Include="ScreenRecord.cpp" />
     <ClCompile Include="StageEditor.cpp" />
     <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="tps_camera.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="Balance.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="orbital_camera.h" />
+    <ClInclude Include="ScreenRecord.h" />
     <ClInclude Include="StageData.h" />
     <ClInclude Include="StageEditor.h" />
     <ClInclude Include="StageManager.h" />
@@ -492,6 +494,16 @@
     <FxCompile Include="AliceLib\hlsls\static_mesh_vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="mask_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

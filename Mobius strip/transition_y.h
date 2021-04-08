@@ -8,7 +8,7 @@ private:
 	static constexpr float speed_coeff = 150.0f;
 	static constexpr float timer_coeff = 10.0f;
 
-	static constexpr const wchar_t* file_pass = nullptr;
+	static constexpr const wchar_t* file_pass = L"Data/Sprite/clock.dds";
 	const bool isFileExist;
 
 	static constexpr float amout_s	= 6.0f * OnceInRadians;

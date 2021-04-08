@@ -21,9 +21,10 @@ namespace Balance
 	BalanceResult getTilt(const B_weight& right, const B_weight& left, Quaternion* _tile = nullptr);
 
 	//上記の関数で作成したクオータニオンを使いZ軸の傾きを徐々につけていく
+	//complementary→補完率0~１の範囲で０に近づくほど滑らかに動く
 	void makeAnAngle(Quaternion& posture,const Quaternion& tile,float complementary = 0.3f);
 
-
+	//テスト用
 	void demoPlay();
 }
 

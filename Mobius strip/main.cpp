@@ -14,6 +14,7 @@
 void TyDamoPlay();
 #include "StageManager.h"
 #include "Balance.h"
+#include "ScreenRecord.h"
 /********************************************************************/
 
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
@@ -30,13 +31,26 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	testBGM->play();
 #endif
 
+	ScreenRecord s;
+
+	s.init();
+
 	while (Function::GameLoop())
 	{
 		
 		//StageEditor::Run();
 
-		Balance::demoPlay();
+		//Balance::demoPlay();
 
+		if (input::TRG(input::F1))
+		{
+			s.save(0);
+		}
+
+		s.begin();
+		TyDamoPlay();
+		s.end();
+		s.demoPlay();
 		AliceLib::Present(0u, 0u);
 	}
 

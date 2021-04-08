@@ -67,23 +67,35 @@ void Transition_y::Render()
 	{
 		//表示スケール
 		static const FLOAT2 Scales = ArithmeticLib::ScalarToFloat2(1.0f);
+
+		static const FLOAT2 texpos_d = {};
+		static const FLOAT2 texsize_d = { 1050.0f,1080.0f };
+		static const FLOAT2 texcenter_d = texsize_d / 2.0f;
+
+		//土台の描画
+		SpriteRender(cTex, ClockCentral, Scales, texpos_d, texsize_d, texcenter_d, 0.0f, { 1.0f,1.0f,1.0f,alpha });
+
 		/*
 			テクスチャの切り取り位置、幅、基準点の宣言
 			基準点は時計の針の根本にすること
+			土台　1050,1080
+			針(左) 100,400
+			針(真ん中) 125,300
+			針(右) 75,250
 		*/
 
 		// h
-		static const FLOAT2 texpos_h;
-		static const FLOAT2 texsize_h;
-		static const FLOAT2 texcenter_h;
+		static const FLOAT2 texpos_h	= { 1275.0f,0.0f };
+		static const FLOAT2 texsize_h	= { 75.0f,250.0f };
+		static const FLOAT2 texcenter_h	= { 37.5f,220.0f };
 		// m
-		static const FLOAT2 texpos_m;
-		static const FLOAT2 texsize_m;
-		static const FLOAT2 texcenter_m;
+		static const FLOAT2 texpos_m	= { 1150.0f,0.0f  };
+		static const FLOAT2 texsize_m	= { 125.0f,300.0f };
+		static const FLOAT2 texcenter_m	= { 62.5f,280.0f  };
 		// s
-		static const FLOAT2 texpos_s;
-		static const FLOAT2 texsize_s;
-		static const FLOAT2 texcenter_s;
+		static const FLOAT2 texpos_s	= { 1050.0f,0.0f  };
+		static const FLOAT2 texsize_s	= { 100.0f,400.0f };
+		static const FLOAT2 texcenter_s	= { 50.0f,390.0f  };
 		
 		// h
 		SpriteRender(cTex, ClockCentral, Scales, texpos_h, texsize_h, texcenter_h, h, { 1.0f,1.0f,1.0f,alpha });
@@ -91,6 +103,8 @@ void Transition_y::Render()
 		SpriteRender(cTex, ClockCentral, Scales, texpos_m, texsize_m, texcenter_m, m, { 1.0f,1.0f,1.0f,alpha });
 		// s
 		SpriteRender(cTex, ClockCentral, Scales, texpos_s, texsize_s, texcenter_s, s, { 1.0f,1.0f,1.0f,alpha });
+
+		primitive::circle(ClockCentral, 4.0f, { 0.0f,0.0f,0.0f,alpha });
 	}
 	else
 	{
@@ -126,6 +140,7 @@ void Transition_y::Render()
 void TyDamoPlay()
 {
 	static Transition_y ty_s;
+	ty_s.init();
 	static bool swich_r = true;
 	static bool swich_f = true;
 	static bool isFade = false;

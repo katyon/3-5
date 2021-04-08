@@ -7,23 +7,27 @@ namespace Balance
 		
 		BalanceResult result = {};
 		
-		B_weight _result = right - left;
+		B_weight _result = left - right;
 		
 		if (_result == static_cast<B_weight>(0))result = BR_Equal;
-		else result = _result < 0 ? BR_Left : BR_Right;
-		
+		else result = _result > 0 ? BR_Left : BR_Right;
+	
 		if (_tile != nullptr)
 		{
 			_tile->reset();
 
+			//頻度
 			static constexpr B_weight	frequency	=	static_cast<B_weight>(3);
+			//頻度当たりの傾き
 			static constexpr float		coefficient	=	15.0f * OnceInRadians;
+			//回転の最大角度
 			static constexpr float		max_angle	=	75.0f * OnceInRadians;
 
+			//達成値を算出する。
+			//達成値  = (左右の差分/傾きの頻度) * １頻度当たりの回転角度
+			float angle = (static_cast<float>(_result) / static_cast<float>(frequency)) * coefficient;
 
-			float angle = -(static_cast<float>(_result) / static_cast<float>(frequency)) * coefficient;
-
-			//達成値を算出
+			//達成値を保存
 			_tile->RotationRoll(fabsf(angle) >= max_angle ? (angle < 0 ? -max_angle : max_angle) : angle);
 
 		}
@@ -34,6 +38,7 @@ namespace Balance
 	{
 		DirectX::XMVECTOR q0 = DirectX::XMLoadFloat4(&posture.GetQuaternion());
 		DirectX::XMVECTOR q1 = DirectX::XMLoadFloat4(&tile.GetQuaternion());
+		//現在の姿勢から達成値の角度までを補完する
 		DirectX::XMVECTOR v = DirectX::XMQuaternionSlerp(q0, q1, complementary);
 		static FLOAT4 _quaternion;
 		DirectX::XMStoreFloat4(&_quaternion, DirectX::XMQuaternionNormalize(v));
@@ -46,10 +51,15 @@ namespace Balance
 
 	void demoPlay()
 	{
+		//現在の姿勢
 		static Quaternion	postrue;
+		
+		//達成値取得用のコンテナ
 		Quaternion			result;
 
-		static int r = 0, l = 0;
+		//左右の重さを保存コンテナ
+		//ただのint型
+		static B_weight r = 0, l = 0;
 
 		ImGuiNewFrame();
 
@@ -73,9 +83,10 @@ namespace Balance
 
 		ImGui::End();
 
-
+		//左右の重さから達成値を算出
 		getTilt(r, l, &result);
 
+		//傾けていく
 		makeAnAngle(postrue, result);
 
 
