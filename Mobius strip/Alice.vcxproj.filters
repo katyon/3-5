@@ -197,6 +197,15 @@
     <ClCompile Include="StageManager.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="orbital_camera.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="tps_camera.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Balance.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -380,6 +389,15 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="StageData.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="orbital_camera.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="tps_camera.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Balance.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
