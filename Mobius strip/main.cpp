@@ -47,10 +47,10 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			s.save(0);
 		}
 
-		s.begin();
-		TyDamoPlay();
-		s.end();
-		s.demoPlay();
+		//s.begin();
+		//TyDamoPlay();
+		//s.end();
+		//s.demoPlay();
 		AliceLib::Present(0u, 0u);
 	}
 

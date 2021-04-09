@@ -6,10 +6,12 @@ void ScreenRecord::init()
 	mask_ps.LoadPixelShader("Data/shader/mask_ps.cso");
 	ScreenSize = AliceLib::GetWindowSize();
 	buffer.init(static_cast<int>(ScreenSize.x), static_cast<int>(ScreenSize.y));
+	cbuff.CreateConstantBuffer();
 }
 
-void ScreenRecord::save(int num)
+bool ScreenRecord::save(int num)
 {
+	if (0 > num || num < max_racord)return false;
 	framebuffer _save;
 	_save.init(static_cast<int>(ScreenSize.x), static_cast<int>(ScreenSize.y));
 	//テクスチャバインドによるエラー回避用
@@ -20,13 +22,13 @@ void ScreenRecord::save(int num)
 	//Todo
 	buffer.SetShaderResource(0, 0, 1);
 	mask.Set(1, 0, 1);
+	cbuff.Active(0, 0, 1);
 	SampleState->Active(SampleType::S_CLAMP);
 	mask_ps.SetPSSharders();
 	FullScreenQuadBlit();
 	_save.end();
-	records[0].load(_save.render_target_shader_resource_view.Get());
-	test = _save.render_target_shader_resource_view.Get();
-	test->AddRef();
+	records[num].load(_save.render_target_shader_resource_view.Get());
+	return true;
 }
 
 void ScreenRecord::begin()
@@ -44,12 +46,11 @@ void ScreenRecord::end()
 	FrameBufferRender(buffer, {});
 }
 
-void ScreenRecord::demoPlay()
-{
-	ImGuiNewFrame();
-	ImGui::Begin("test");
-	if(test)
-	ImGui::Image(test, { ScreenSize.x/5.0f,ScreenSize.y / 5.0f });
-	ImGui::End();
-	ImGuiRender();
-}
+//void ScreenRecord::demoPlay()
+//{
+//	ImGuiNewFrame();
+//	ImGui::Begin("test");
+//	//if(test)ImGui::Image(test, { ScreenSize.x/5.0f,ScreenSize.y / 5.0f });
+//	ImGui::End();
+//	ImGuiRender();
+//}
