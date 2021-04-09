@@ -9,6 +9,7 @@ class ScreenRecord:public TempTool
 public:
 	static constexpr int max_racord = 32;
 private:
+
 	struct GrayCbuffer
 	{
 		COLOR gray = { 0.299f, 0.587f, 0.114f,0.0f };
