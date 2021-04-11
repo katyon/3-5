@@ -209,6 +209,9 @@
     <ClCompile Include="ScreenRecord.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Shelter.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -404,6 +407,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="ScreenRecord.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Shelter.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
