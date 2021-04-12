@@ -20,12 +20,12 @@ private:
 	Texture		mask;
 	Shaders		mask_ps;
 	framebuffer buffer;
-	//ID3D11ShaderResourceView* test = nullptr;
+	ID3D11ShaderResourceView* test = nullptr;
 public:
 
 	~ScreenRecord()
 	{
-		//SafeRelease(test);
+		SafeRelease(test);
 	}
 
 	void init();
@@ -36,7 +36,7 @@ public:
 	void begin();
 	void end();
 
-	//void demoPlay();
+	void demoPlay();
 
 };
 

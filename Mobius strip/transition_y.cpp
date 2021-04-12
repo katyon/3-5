@@ -137,7 +137,7 @@ void Transition_y::Render()
 	Debug->display();
 }
 
-void TyDamoPlay()
+void TyDemoPlay()
 {
 	static Transition_y ty_s;
 	ty_s.init();

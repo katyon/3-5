@@ -4,7 +4,6 @@ bool ColLineOBB(const FLOAT3& start, const FLOAT3& end, const OBB& obb, FLOAT3& 
 {
 	static AABB box;
 
-	
 	DirectX::XMFLOAT4X4 r_matrix = 
 	{
 		obb.direct.right.x,		obb.direct.right.y,		obb.direct.right.z,		0.0f,
@@ -99,14 +98,12 @@ void ColDemoPlay()
 	light->direction = eye.LightFloamCamera();
 	light.Active();
 
-
 	static FLOAT3 s, e = {5.0f,0.0f,0.0f};
 	static FLOAT3 hitPos[2];
 	
 	static FLOAT2 mouse_pos;
 
 	Debug->SetString("ƒNƒŠƒbƒN‚³‚ê‚½Box‚Í”’‚­‚È‚è‚Ü‚·");
-
 
 	static bool isTrg = false;
 	if (input::STATE(input::MOUSE_L))
@@ -163,8 +160,8 @@ void ColDemoPlay()
 				//}
 			}
 		}
-		//primitive::circle(mouse_pos, 64.0f, {DCOLOR_YELLOW});
-		//primitive::line(mouse_pos, input::GetMousePos(), { DCOLOR_GREEN });
+		primitive::circle(mouse_pos, 64.0f, {DCOLOR_YELLOW});
+		primitive::line(mouse_pos, input::GetMousePos(), { DCOLOR_GREEN });
 
 		auto area_check = [](FLOAT3& pos)
 		{
