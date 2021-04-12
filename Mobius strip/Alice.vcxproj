@@ -223,8 +223,10 @@
     <ClCompile Include="AliceLib\Texture.cpp" />
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="Balance.cpp" />
+    <ClCompile Include="fps_camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="orbital_camera.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="ScreenRecord.cpp" />
     <ClCompile Include="StageEditor.cpp" />
     <ClCompile Include="StageManager.cpp" />
@@ -290,7 +292,9 @@
     <ClInclude Include="AL_Sound.h" />
     <ClInclude Include="Balance.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="fps_camera.h" />
     <ClInclude Include="orbital_camera.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="ScreenRecord.h" />
     <ClInclude Include="StageData.h" />
     <ClInclude Include="StageEditor.h" />
