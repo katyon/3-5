@@ -203,15 +203,15 @@ void ColDemoPlay()
 
 }
 
-bool Shelter::isClick(const Camera& eye, int& num)
+bool Shelter::isClick()
 {
 	bool result = false;
-	num = -1;
+	operation = -1;
 	float dis = 0.0f;
 	FLOAT3 hitPos[2] = {};
 	static FLOAT3 s, e;
-	s = ::screen_to_world(eye, { mouse_pos_o,0.0f });
-	e = ::screen_to_world(eye, { mouse_pos_o,1.0f });
+	s = ::screen_to_world(*eye, { mouse_pos_o,0.0f });
+	e = ::screen_to_world(*eye, { mouse_pos_o,1.0f });
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (ColLineOBB(s, e, {blocks[i].pos,blocks[i].size,blocks[i].angles},hitPos[0]))
@@ -220,7 +220,7 @@ bool Shelter::isClick(const Camera& eye, int& num)
 			{
 				hitPos[1] = hitPos[0];
 				dis = s.distanceFrom(hitPos[1]);
-				num = i;
+				operation = i;
 				result = true;
 			}
 			else
@@ -228,7 +228,7 @@ bool Shelter::isClick(const Camera& eye, int& num)
 				float s_h = s.distanceFrom(hitPos[0]);
 				if (s_h < dis)
 				{
-					num = i;
+					operation = i;
 					hitPos[1] = hitPos[0];
 					dis = s.distanceFrom(hitPos[1]);
 				}
@@ -238,29 +238,221 @@ bool Shelter::isClick(const Camera& eye, int& num)
 	return result;
 }
 
-void Shelter::update()
+void Shelter::getVector()
 {
+	static VECTOR2 f = { 0.0f,-1.0f };
+	VECTOR2 v = mouse_pos_o.FindTheVector2D(mouse_pos).normalize();
+	float rad = f.dot(v);
+
+	if (fabsf(rad) >= static_cast<float>(1.0f / 3.0f))
+	{
+		vector_move = rad > 0 ? MV_F : MV_B;
+	}
+	else
+	{
+		vector_move = f.x * v.y - f.y * v.x > 0 ? MV_R : MV_L;
+	}
+}
+
+bool Shelter::isMove(BLOCK& block)
+{
+	auto equal = [](DirectX::XMINT2 a, DirectX::XMINT2 b)
+	{
+		return (a.x == b.x) && (a.y == b.y);
+	};
+	switch (vector_move)
+	{
+	case Shelter::MV_F:
+		if (block.trout.y > 0
+			&& map[block.trout.y - 1][block.trout.x] != 1)
+		{
+			return true;
+		}
+		else if (block.isPair() 
+			&& equal({ block.trout.x ,block.trout.y - 1 },blocks[block.pair].trout))
+		{
+			return true;
+		}
+		else return false;
+		break;
+	case Shelter::MV_B:
+		if (block.trout.y < 5
+			&& map[block.trout.y + 1][block.trout.x] != 1)
+		{
+			return true;
+		}
+		else if (block.isPair()
+			&& equal({ block.trout.x ,block.trout.y + 1 }, blocks[block.pair].trout))
+		{
+			return true;
+		}
+		else return false;
+		break;
+	case Shelter::MV_L:
+		if (block.trout.x > 0
+			&& map[block.trout.y][block.trout.x - 1] != 1)
+		{
+			return true;
+		}
+		else if (block.isPair()
+			&& equal({ block.trout.x - 1 ,block.trout.y }, blocks[block.pair].trout))
+		{
+			return true;
+		}
+		else return false;
+		break;
+	case Shelter::MV_R:
+		if (block.trout.x < 4
+			&& map[block.trout.y][block.trout.x + 1] != 1)
+		{
+			return true;
+		}
+		else if (block.isPair()
+			&& equal({ block.trout.x + 1 ,block.trout.y }, blocks[block.pair].trout))
+		{
+			return true;
+		}
+		else return false;
+		break;
+	default:
+		break;
+	}
+	return false;
+}
+
+bool Shelter::Move(BLOCK& block,float delta_time)
+{
+	//pos.x = static_cast<float>((trout.x - 2) *  1.0f);
+	//pos.z = static_cast<float>((trout.y - 2) * -1.0f);
+	
+	switch (vector_move)
+	{
+	case Shelter::MV_F:
+		block.pos.z += SPEED * delta_time;
+		if (static_cast<float>((block.trout.y - 3) * -1.0f)
+			<= block.pos.z)
+		{
+			block.pos.z = static_cast<float>((block.trout.y - 3) * -1.0f);
+			block.trout.y -= 1;
+			return true;
+		}
+		break;
+	case Shelter::MV_B:
+		block.pos.z -= SPEED * delta_time;
+		if (static_cast<float>((block.trout.y - 1) * -1.0f)
+			>= block.pos.z)
+		{
+			block.pos.z = static_cast<float>((block.trout.y - 1) * -1.0f);
+			block.trout.y += 1;
+			return true;
+		}
+		break;
+	case Shelter::MV_L:
+		block.pos.x -= SPEED * delta_time;
+		if (static_cast<float>((block.trout.x - 3) * 1.0f)
+			>= block.pos.x)
+		{
+			block.pos.x = static_cast<float>((block.trout.x - 3) * 1.0f);
+			block.trout.x -= 1;
+			return true;
+		}
+		break;
+	case Shelter::MV_R:
+		block.pos.x += SPEED * delta_time;
+		if (static_cast<float>((block.trout.x - 1) * 1.0f)
+			<= block.pos.x)
+		{
+			block.pos.x = static_cast<float>((block.trout.x - 1) * 1.0f);
+			block.trout.x += 1;
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
+void Shelter::Maping()
+{
+	for (int y = 0; y < 5; y++)
+	{
+		for (int x = 0; x < 5; x++)
+		{
+			map[y][x] = 0;
+		}
+	}
+	for (auto block : blocks)
+	{
+		map[block.trout.y][block.trout.x] = 1;
+		if (block.trout.y == 5 && block.trout.x == 2&&block.type==1)
+		{
+			isClear = true;
+		}
+	}
+}
+
+void Shelter::update(float delta_time)
+{
+	Shelter::Maping();
 	switch (state)
 	{
 	case Shelter::SS_CHOICE:
 		if (input::TRG(input::MOUSE_L))
 		{
-			state++;
 			mouse_pos_o = input::GetMousePos();
+			if (isClick())
+			{
+				state++;
+			}
 		}
 		break;
 	case Shelter::SS_CALCULATION:
 		if (input::STATE(input::MOUSE_L))
 		{
-
+			mouse_pos = input::GetMousePos();
+			if (mouse_pos.distanceFrom(mouse_pos_o) > 128.0f)
+			{
+				getVector();
+				if (isMove(blocks[operation]))
+				{
+					if (blocks[operation].isPair())
+					{
+						if (isMove(blocks[blocks[operation].pair]))
+						{
+							state++;
+						}
+						else state = Shelter::SS_CHOICE;
+					}
+					else state++;
+				}
+				else
+				{
+					state = Shelter::SS_CHOICE;
+				}
+			}
 		}
 		else { state = Shelter::SS_CHOICE; }
 		break;
 	case Shelter::SS_MOVE:
-		
+	{
+		bool flg1 = Move(blocks[operation], delta_time);
+		bool flg2 = blocks[operation].isPair()?
+			Move(blocks[blocks[operation].pair], delta_time) : true;
+		if (flg1 && flg2)
+		{
+			state++;
+		}
 		break;
+	}
 	case Shelter::SS_REJUDGMENT:
-		
+		if (input::STATE(input::MOUSE_L))
+		{
+			mouse_pos_o = input::GetMousePos();
+			state = SS_CALCULATION;
+		}
+		else
+		{
+			state = SS_CHOICE;
+		}
 		break;
 	default:
 		break;
@@ -268,4 +460,137 @@ void Shelter::update()
 
 
 
+}
+
+void Shelter::render()
+{
+	eye->Active();
+	
+	Geometric::Begin();
+	Geometric::Board({}, { 5.0f,0.0f,5.0f }, {});
+	for (auto block : blocks)
+	{
+		switch (block.type)
+		{
+		case 1:
+			Geometric::Cube(block.pos, block.size, block.angles, { DCOLOR_BLUE });
+			break;
+		default:
+			Geometric::Cube(block.pos, block.size, block.angles, { DCOLOR_RED });
+			break;
+		}
+	}
+	Geometric::Board({ 0,0,static_cast<float>(3 - 6 * 1.0f) }, { 1.0f,0.0f,1.0f }, {}, {DCOLOR_GREEN});
+	Geometric::End();
+}
+
+void Shelter::Ui()
+{
+	switch (state)
+	{
+	case Shelter::SS_CHOICE:
+		//âΩÇ‡ï`âÊÇµÇ»Ç¢
+		break;
+	case Shelter::SS_MOVE:
+	{
+		switch (vector_move)
+		{
+		case Shelter::MV_F:
+			SpriteRender(cursor, mouse_pos_o,
+				ScalarToFloat2(.3f),
+				{},
+				{ 384.0f,128.0f },
+				{ 192.0f,256.0f }
+			);
+			break;
+		case Shelter::MV_B:
+			SpriteRender(cursor, mouse_pos_o,
+				ScalarToFloat2(.3f),
+				{},
+				{ 384.0f,128.0f },
+				{ 192.0f,256.0f },
+				toRadian(180.0f)
+			);
+			break;
+		case Shelter::MV_L:
+			SpriteRender(cursor, mouse_pos_o,
+				ScalarToFloat2(.3f),
+				{},
+				{ 384.0f,128.0f },
+				{ 192.0f,256.0f },
+				toRadian(270.0f)
+			);
+			break;
+		case Shelter::MV_R:
+			SpriteRender(cursor, mouse_pos_o,
+				ScalarToFloat2(.3f),
+				{},
+				{ 384.0f,128.0f },
+				{ 192.0f,256.0f },
+				toRadian(90.0f)
+			);
+			break;
+		default:
+			break;
+		}
+	}
+		break;
+	default:
+	{
+		SpriteRender(cursor, mouse_pos_o,
+			ScalarToFloat2(.3f),
+			{},
+			{ 384.0f,128.0f },
+			{ 192.0f,256.0f }
+		);
+		SpriteRender(cursor, mouse_pos_o,
+			ScalarToFloat2(.3f),
+			{},
+			{ 384.0f,128.0f },
+			{ 192.0f,256.0f },
+			toRadian(90.0f)
+		);
+		SpriteRender(cursor, mouse_pos_o,
+			ScalarToFloat2(.3f),
+			{},
+			{ 384.0f,128.0f },
+			{ 192.0f,256.0f },
+			toRadian(180.0f)
+		);
+		SpriteRender(cursor, mouse_pos_o,
+			ScalarToFloat2(.3f),
+			{},
+			{ 384.0f,128.0f },
+			{ 192.0f,256.0f },
+			toRadian(270.0f)
+		);
+	}
+		break;
+	}
+}
+
+
+void ShDemoPlay()
+{
+	static Camera eye;
+	static AmbientLight l;
+	l->option.x = 0.5f;
+	l->direction = eye.LightFloamCamera();
+	l.Active();
+	//eye.Control();
+	static Shelter s;
+	static bool f = true;
+	if (f)
+	{
+		f = false;
+		eye.SetPos({0.0f,15.0f,-0.5f});
+		s.init(&eye);
+	}
+	s.update(DeltaTime());
+	s.render();
+	s.Ui();
+	if (s.isClear)
+	{
+		font::OutPut(L"ÉNÉäÉA", 0, 0);
+	}
 }

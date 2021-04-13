@@ -28,8 +28,8 @@ bool ScreenRecord::save(int num)
 	FullScreenQuadBlit();
 	_save.end();
 	records[num].load(_save.render_target_shader_resource_view.Get());
-	test = _save.render_target_shader_resource_view.Get();
-	test->AddRef();
+	//test = _save.render_target_shader_resource_view.Get();
+	//test->AddRef();
 	return true;
 }
 
@@ -48,11 +48,11 @@ void ScreenRecord::end()
 	FrameBufferRender(buffer, {});
 }
 
-void ScreenRecord::demoPlay()
-{
-	ImGuiNewFrame();
-	ImGui::Begin("test");
-	if(test)ImGui::Image(test, { ScreenSize.x/5.0f,ScreenSize.y / 5.0f });
-	ImGui::End();
-	ImGuiRender();
-}
+//void ScreenRecord::demoPlay()
+//{
+//	ImGuiNewFrame();
+//	ImGui::Begin("test");
+//	//if(test)ImGui::Image(test, { ScreenSize.x/5.0f,ScreenSize.y / 5.0f });
+//	ImGui::End();
+//	ImGuiRender();
+//}
