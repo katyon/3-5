@@ -68,7 +68,7 @@ private://5*5
 	FLOAT2	mouse_pos_o;
 	
 	static constexpr int BLOCK_MAX = 8;
-	static constexpr float SPEED = 1.0f;
+	static constexpr float SPEED = 5.0f;
 	BLOCK	blocks[BLOCK_MAX] =
 	{
 	//＠マップチップ上での座標	＠種類		ペア

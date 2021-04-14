@@ -8,6 +8,7 @@ class ScreenRecord:public TempTool
 {
 public:
 	static constexpr int max_racord = 32;
+	Sprite		records[max_racord];
 private:
 
 	struct GrayCbuffer
@@ -16,7 +17,6 @@ private:
 	};
 	ConstantBuffer<GrayCbuffer> cbuff;
 	FLOAT2		ScreenSize;
-	Sprite		records[max_racord];
 	Texture		mask;
 	Shaders		mask_ps;
 	framebuffer buffer;

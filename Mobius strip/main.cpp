@@ -7,8 +7,8 @@
 /*							プロトタイプ宣言						*/
 /********************************************************************/
 
+void ShDemoPlay();
 /********************************************************************/
-
 
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 {
@@ -23,7 +23,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	{
 		//現在のシーンを取得する
 		scene = AliceLib::GetNowScene();
-
+		ShDemoPlay();
 		//前のシーンと現在のシーンが違うとき
 		if (AliceLib::InitFlg())
 		{
