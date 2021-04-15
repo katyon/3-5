@@ -212,6 +212,9 @@
     <ClCompile Include="Shelter.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="PipePuzzle.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -410,6 +413,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Shelter.h">
+      <Filter>ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PipePuzzle.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
