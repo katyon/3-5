@@ -415,13 +415,13 @@
     <ClInclude Include="ScreenRecord.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Shelter.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
     <ClInclude Include="PipePuzzle.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Shelter.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
