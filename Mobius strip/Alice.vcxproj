@@ -224,6 +224,7 @@
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="Balance.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="orbital_camera.cpp" />
     <ClCompile Include="PipePuzzle.cpp" />
     <ClCompile Include="ScreenRecord.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="AL_Sound.h" />
     <ClInclude Include="Balance.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="orbital_camera.h" />
     <ClInclude Include="PipePuzzle.h" />
     <ClInclude Include="ScreenRecord.h" />

@@ -215,6 +215,9 @@
     <ClCompile Include="PipePuzzle.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -416,6 +419,9 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="PipePuzzle.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
