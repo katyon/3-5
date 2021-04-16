@@ -11,9 +11,9 @@ void ButtonPush::init()
 	// 31 32 33 34 35
 	// 41 42 43 44 45
 	// 51 52 53 54 55  ‚±‚¤‚È‚Á‚Ä‚é‚Í‚¸
-	for (int i = 0; i < 5; i++) 
+	for (int i = 0; i < 5; i++)
 	{
-		for (int j = 0; j < 5; j++) 
+		for (int j = 0; j < 5; j++)
 		{
 			stone_board[i][j] = ((i + 1) * 10) + (j + 1);
 		}
@@ -44,7 +44,7 @@ bool ButtonPush::judge_answer()
 		{
 			//provisional_judge = false;
 			// 1‚Â‚Å‚àŠÔˆá‚Á‚Ä‚¢‚½‚çstorage_board‚ð‚·‚×‚Ä0‚É–ß‚·
-			for (int i = 0; i < 5; i++) 
+			for (int i = 0; i < 5; i++)
 			{
 				storage_board[i] = 0;
 			}
@@ -72,19 +72,19 @@ void ButtonPush::update()
 	}
 
 	// –â‘è‚ª‰ð‚¯‚½ê‡‚Ìˆ—
-	if (final_judge) 
+	if (final_judge)
 	{
 
 	}
-	
+
 }
 
 void ButtonPush::push_botton(int height, int width)
 {
 	// storage_board‚É‹ó‚«(0)‚ª‚ ‚ê‚Î‚»‚±‚É“ü‚ê‚é
-	for (int i = 0; i < 5; i++) 
+	for (int i = 0; i < 5; i++)
 	{
-		if (storage_board[i] == 0) 
+		if (storage_board[i] == 0)
 		{
 			storage_board[i] = stone_board[height][width];
 			break;
