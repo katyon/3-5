@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "ButtonPush.h"
+#include "AliceLib/AliceLib.h"
+//#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
 
@@ -63,8 +65,11 @@ bool ButtonPush::judge_answer()
 
 void ButtonPush::update()
 {
-
-
+	// ‚±‚±‚ÉƒL[‘€ì
+	//if (input::TRG('A'))
+	//{
+	//	push_botton(0, 0);
+	//}
 	// 5‚Â‚·‚×‚Ä‰Ÿ‚µ‚½‚ç”»’è
 	if (storage_board[4] != 0) {
 		// false‚Ìê‡‚Íjudge_answe“à‚Åstorage_board‚ª‰Šú‰»‚³‚ê‚Ü‚·

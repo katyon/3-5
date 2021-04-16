@@ -25,12 +25,13 @@ class ItemArr
 private:
     FLOAT2 pos;   // 表示位置
     FLOAT2 scale; // 表示サイズ
-    
+    bool HasItem[5]; // アイテムを持っとるか
+    int get_order[5]; // アイテム獲得順(注文じゃない)
+
 public:
     Sprite item_ptr;
     static constexpr int ITEM_MAX = 8;
     ITEM_ID items[8];
-    int get_order[5]; // アイテム獲得順(注文じゃない)
 
     void init();
     virtual void update() = 0;
@@ -148,6 +149,7 @@ class Menu
 private:
     Sprite menu_ptr;
     FLOAT2 pos;
+    FLOAT2 scale;
     int tab;
 
 public:
@@ -156,4 +158,6 @@ public:
     void update();
     void draw();
     void uninit();
+
+
 };
