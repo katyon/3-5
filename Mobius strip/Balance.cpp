@@ -34,6 +34,31 @@ namespace Balance
 		return result;
 	}
 
+	BalanceResult getTilt(const B_weight& right, const B_weight& left, float* _tile)
+	{
+		BalanceResult result = {};
+
+		B_weight _result = left - right;
+
+		if (_result == static_cast<B_weight>(0))result = BR_Equal;
+		else result = _result > 0 ? BR_Left : BR_Right;
+
+		if (_tile != nullptr)
+		{
+			//•p“x
+			static constexpr B_weight	frequency = static_cast<B_weight>(3);
+			//•p“x“–‚½‚è‚ÌŒX‚«
+			static constexpr float		coefficient = 15.0f * OnceInRadians;
+			//‰ñ“]‚ÌÅ‘åŠp“x
+			static constexpr float		max_angle = 75.0f * OnceInRadians;
+
+			//’B¬’l‚ğZo‚·‚éB
+			//’B¬’l  = (¶‰E‚Ì·•ª/ŒX‚«‚Ì•p“x) * ‚P•p“x“–‚½‚è‚Ì‰ñ“]Šp“x
+			(*_tile) = (static_cast<float>(_result) / static_cast<float>(frequency)) * coefficient;
+		}
+		return result;
+	}
+
 	void makeAnAngle(Quaternion& posture, const Quaternion& tile, float complementary)
 	{
 		DirectX::XMVECTOR q0 = DirectX::XMLoadFloat4(&posture.GetQuaternion());
