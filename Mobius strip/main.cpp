@@ -41,7 +41,7 @@ void AllInitializes()
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 {
 	//ライブラリの初期化処理
-	AliceLib::Entry(L"AliceLib", 1280, 720, DefaultWindowMode::WM_WINDOW, 60);
+	AliceLib::Entry(L"AliceLib", 1920, 1080, DefaultWindowMode::WM_FULLSCREEN, 60);
 
 	AllInitializes();
 
