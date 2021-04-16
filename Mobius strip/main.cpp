@@ -18,6 +18,7 @@ void TyDamoPlay();
 #include "Balance.h"
 #include "ScreenRecord.h"
 #include "PipePuzzle.h"
+#include "player.h"
 #include "menu.h"
 Menu menu;
 //PipePuzzle pp; 
@@ -94,3 +95,25 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		return AliceLib::Exit();
 	}
 }
+
+
+// ---kiira_develop---
+// 
+//SpriteLoad(1, L"Data/Sprite/center.png");
+//Camera camera;
+//camera.SetPos({ 0, 0, -30 });
+
+//Player player;
+//player.init();
+
+
+//player.update();
+//camera.SetTarget({ 0.0f,5.0f,0.0f });
+//
+//player.render(camera);
+//
+//FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+//SetCursorPos(center.x, center.y);
+//
+//SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
+//--------------------------

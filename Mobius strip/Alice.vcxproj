@@ -224,10 +224,12 @@
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="Balance.cpp" />
     <ClCompile Include="ButtonPush.cpp" />
+    <ClCompile Include="fps_camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="orbital_camera.cpp" />
     <ClCompile Include="PipePuzzle.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="ScreenRecord.cpp" />
     <ClCompile Include="Shelter.cpp" />
     <ClCompile Include="StageEditor.cpp" />
@@ -295,9 +297,11 @@
     <ClInclude Include="Balance.h" />
     <ClInclude Include="ButtonPush.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="fps_camera.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="orbital_camera.h" />
     <ClInclude Include="PipePuzzle.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="ScreenRecord.h" />
     <ClInclude Include="Shelter.h" />
     <ClInclude Include="StageData.h" />
