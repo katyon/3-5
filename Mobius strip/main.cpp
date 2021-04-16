@@ -16,7 +16,9 @@ void TyDamoPlay();
 #include "Balance.h"
 #include "ScreenRecord.h"
 #include "menu.h"
+#include "Item.h"
 Menu menu;
+ItemArr itemArr;
 /********************************************************************/
 
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
@@ -43,6 +45,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
                 break;
             case 0:
                 menu.init();
+                //itemlist.init();
                 break;
             }
         }
@@ -54,6 +57,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
             break;
         case 0:
            menu.update();
+           //itemlist.update();
             break;
         }
 
@@ -64,6 +68,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
             break;
         case 0:
             menu.draw();
+            //itemlist.draw(&menu);
             break;
         }
 

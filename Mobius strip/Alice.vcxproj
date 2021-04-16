@@ -223,6 +223,7 @@
     <ClCompile Include="AliceLib\Texture.cpp" />
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="Balance.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="orbital_camera.cpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="AL_Sound.h" />
     <ClInclude Include="Balance.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="orbital_camera.h" />
     <ClInclude Include="ScreenRecord.h" />
