@@ -7,36 +7,62 @@
 /*							プロトタイプ宣言						*/
 /********************************************************************/
 
-void ShDemoPlay();
-#include "StageEditor.h"
-//#define TEST_OPENAL
-#ifdef TEST_OPENAL
-#include "AL_Sound.h"
-#endif // TEST_OPENAL
-void TyDemoPlay();
-#include "StageManager.h"
-#include "Balance.h"
-#include "ScreenRecord.h"
-#include "PipePuzzle.h"
-#include "player.h"
-#include "menu.h"
-Menu menu;
-//PipePuzzle pp; 
+#include "SceneTite.h"
+#include "SceneGame.h"
+#include "common.h"
+
 /********************************************************************/
 
+void _AllInitializes(bool& isFin)
+{
+	isFin = false;
+	SceneGame::getInstance();
+	SceneTitle::getInstance();
+	isFin = true;
+}
+
+void AllInitializes()
+{
+	bool isFin = false;
+	//マルチスレッド開始
+	std::thread(_AllInitializes, isFin).detach();
+
+	while (!isFin)
+	{
+		//Todo:: なうろーでぃんぐ的な
+	}
+}
+
+
+/*
+	※ ここから下は触らないこと!!! ※
+*/
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 {
 	//ライブラリの初期化処理
 	AliceLib::Entry(L"AliceLib", 1280, 720, DefaultWindowMode::WM_WINDOW, 60);
 
+	AllInitializes();
+
 	//複数箇所で使うため用意しておいたほうがいい
 	int scene = AliceLib::GetNowScene();
+
+	//getInstanceを毎回呼ばなくなるので
+	//パフォーマンスが少しだけよくなる
+	SceneTitle* scene_title	=	SceneTitle::getInstance();
+	SceneGame*	scene_game	=	SceneGame::getInstance();
+#if _DEBUG	//デバッグ文字表示用
+	debug* _debug			=	Debug;
+#endif
+
+	float elapsed_time = 0.0f;
 
 	//ゲームループ
 	while (Function::GameLoop())
 	{
 		//現在のシーンを取得する
 		scene = AliceLib::GetNowScene();
+		elapsed_time = DeltaTime();
 
 		//前のシーンと現在のシーンが違うとき
 		if (AliceLib::InitFlg())
@@ -44,9 +70,11 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			//初期化処理
 			switch (scene)
 			{
-			default:
+			case S_TITLE:
+				scene_title->Initialize();
 				break;
-			case 0:
+			case S_GAME:
+				scene_game->Initialize();
 				break;
 			}
 		}
@@ -54,18 +82,22 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		//更新処理
 		switch (scene)
 		{
-		default:
+		case S_TITLE:
+			scene_title->Update(elapsed_time);
 			break;
-		case 0:
+		case S_GAME:
+			scene_game->Update(elapsed_time);
 			break;
 		}
 
 		//描画処理
 		switch (scene)
 		{
-		default:
+		case S_TITLE:
+			scene_title->Render();
 			break;
-		case 0:
+		case S_GAME:
+			scene_game->Render();
 			break;
 		}
 
@@ -75,39 +107,28 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			//終了処理
 			switch (scene)
 			{
-			default:
+			case S_TITLE:
+				scene_title->Uninitialize();
 				break;
-			case 0:
+			case S_GAME:
+				scene_game->Uninitialize();
 				break;
 			}
 		}
+
+#if _DEBUG //デバッグ文字表示用
+		_debug->display();
+#endif
 
 		//バックバッファに送信
 		AliceLib::Present(0u, 0u);
 
 	}
 
+	//念のための終了処理
+	scene_title->Uninitialize();
+	scene_game->Uninitialize();
+
 	//ライブラリの終了処理
 	return AliceLib::Exit();
 }
-
-// ---kiira_develop---
-// 
-//SpriteLoad(1, L"Data/Sprite/center.png");
-//Camera camera;
-//camera.SetPos({ 0, 0, -30 });
-
-//Player player;
-//player.init();
-
-
-//player.update();
-//camera.SetTarget({ 0.0f,5.0f,0.0f });
-//
-//player.render(camera);
-//
-//FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
-//SetCursorPos(center.x, center.y);
-//
-//SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
-//--------------------------
