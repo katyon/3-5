@@ -13,6 +13,9 @@ enum MapChipName
     GOAL = 10
 };
 
+#define GOAL_POS_X 4
+#define GOAL_POS_Y 4
+
 int Pipes[5][5] =
 {
     9, 1, 6, 1, 2,
@@ -59,11 +62,7 @@ void PipePuzzle::Update()
 {
     timer++;
 
-    if (input::TRG(VK_SPACE))
-    {
-        Pipes[Cursor_pos_y][Cursor_pos_x] = 5;     
-    }
-    if (input::TRG(VK_BACK))
+    if (input::TRG(0))
     {
         Pipes[Cursor_pos_y][Cursor_pos_x] = 0;
     }
@@ -83,7 +82,7 @@ void PipePuzzle::Update()
     if (Water_pos_y > 4) { Water_pos_y = 4; }
     if (Water_pos_y < 0) { Water_pos_y = 0; }
 
-    if (input::TRG(KEY::VK_R))
+    if (input::TRG(VK_SPACE))
     {
         switch (Pipes[Cursor_pos_y][Cursor_pos_x])
         {
@@ -111,6 +110,11 @@ void PipePuzzle::Update()
             Pipes[Cursor_pos_y][Cursor_pos_x] = STRAIGHT0;
             break;
         }
+
+        if (Cursor_pos_x == Water_pos_x && Cursor_pos_y == Water_pos_y)
+        {
+            Reset();
+        }
     }
 
     for (int y = 0; y < 5; y++)
@@ -128,6 +132,18 @@ void PipePuzzle::Update()
             }
         }
     }
+
+    //// Clear System
+    //if (wateres[GOAL_POS_Y - 1][GOAL_POS_X] > 0)
+    //{
+    //    if (Pipes[GOAL_POS_Y - 1][GOAL_POS_X] == CURVE1 || Pipes[GOAL_POS_Y - 1][GOAL_POS_X] == CURVE2 || Pipes[GOAL_POS_Y - 1][GOAL_POS_X] == STRAIGHT1)
+    //    {
+    //        pre_Water_pos_x = Water_pos_x;
+    //        pre_Water_pos_y = Water_pos_y;
+    //        Water_pos_y += 1;
+    //        wateres[Water_pos_y][Water_pos_x] += 2;
+    //    }
+    //}
 
     
     if (timer % 2 == 0 )
@@ -213,7 +229,7 @@ void PipePuzzle::Update()
             }
             else if (pre_Water_pos_x < Water_pos_x)
             {
-                if (Pipes[Water_pos_y + 1][Water_pos_x] == CURVE0 || Pipes[Water_pos_y + 1][Water_pos_x] == CURVE3 || Pipes[Water_pos_y + 1][Water_pos_x] == STRAIGHT1)
+                if (Pipes[Water_pos_y + 1][Water_pos_x] == CURVE0 || Pipes[Water_pos_y + 1][Water_pos_x] == CURVE3 || Pipes[Water_pos_y + 1][Water_pos_x] == STRAIGHT1 || Pipes[Water_pos_y + 1][Water_pos_x] == GOAL)
                 {
                     pre_Water_pos_x = Water_pos_x;
                     pre_Water_pos_y = Water_pos_y;
@@ -292,7 +308,7 @@ void PipePuzzle::Update()
         case STRAIGHT1:
             if (pre_Water_pos_y < Water_pos_y)
             {
-                if (Pipes[Water_pos_y + 1][Water_pos_x] == CURVE0 || Pipes[Water_pos_y + 1][Water_pos_x] == CURVE3 || Pipes[Water_pos_y + 1][Water_pos_x] == STRAIGHT1)
+                if (Pipes[Water_pos_y + 1][Water_pos_x] == CURVE0 || Pipes[Water_pos_y + 1][Water_pos_x] == CURVE3 || Pipes[Water_pos_y + 1][Water_pos_x] == STRAIGHT1 || Pipes[Water_pos_y + 1][Water_pos_x] == GOAL)
                 {
                     pre_Water_pos_x = Water_pos_x;
                     pre_Water_pos_y = Water_pos_y;
@@ -335,9 +351,11 @@ void PipePuzzle::Update()
             break;
 
         case GOAL:
+            clearFlg = true;
             break;
 
         default:
+            Reset();
             break;
         }
     }
@@ -355,6 +373,7 @@ void PipePuzzle::Render()
         for (int x = 0; x < 5; x++)
         {
             if (Pipes[y][x] == CURVE0)
+    
             {
                 SpriteRender(curve_pipe, { x * 150.0f + 150.0f / 2, y * 150.0f + 150.0f / 2 }, SCALE, {}, {}, { 150.0f, 150.0f }, 0);
             }
@@ -396,8 +415,11 @@ void PipePuzzle::Render()
     }
 
     SpriteRender(cursor, { Cursor_pos_x * 150.0f, Cursor_pos_y * 150.0f }, { 5.0f, 5.0f });
-    //SpriteRender(water, { Water_pos_x * 150.0f, Water_pos_y * 150.0f }, { 5.0f, 5.0f }, {}, {}, {}, {}, { 0.3, 0.7, 0.7, 1.0 } );
-
+    SpriteRender(water, { Water_pos_x * 150.0f, Water_pos_y * 150.0f }, { 5.0f, 5.0f }, {}, {}, {}, {}, { 0.3, 0.3, 0.7, 1.0 } );
+    if (clearFlg == true)
+    {
+        font::OutPut(L"Clear!", 720.0f, 0.0f);
+    }
 }
 
 void PipePuzzle::Release()

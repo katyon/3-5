@@ -15,7 +15,8 @@ private:
     Sprite water;
     Sprite water_block;
 
-    int timer = 0;
+    int  timer = 0;
+    bool clearFlg = false;
 
     void Reset();
 
