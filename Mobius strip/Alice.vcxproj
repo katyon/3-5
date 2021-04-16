@@ -223,12 +223,8 @@
     <ClCompile Include="AliceLib\Texture.cpp" />
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="Balance.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="Item.cpp" />
-=======
     <ClCompile Include="ButtonPush.cpp" />
     <ClCompile Include="fps_camera.cpp" />
->>>>>>> 3aa77a5163f9ffafb6f01e1c3798edf9a94b17b4
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="orbital_camera.cpp" />
@@ -301,11 +297,7 @@
     <ClInclude Include="Balance.h" />
     <ClInclude Include="ButtonPush.h" />
     <ClInclude Include="common.h" />
-<<<<<<< HEAD
-    <ClInclude Include="Item.h" />
-=======
     <ClInclude Include="fps_camera.h" />
->>>>>>> 3aa77a5163f9ffafb6f01e1c3798edf9a94b17b4
     <ClInclude Include="menu.h" />
     <ClInclude Include="orbital_camera.h" />
     <ClInclude Include="PipePuzzle.h" />

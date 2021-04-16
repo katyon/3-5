@@ -218,9 +218,6 @@
     <ClCompile Include="menu.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Item.cpp">
-=======
     <ClCompile Include="ButtonPush.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -228,7 +225,6 @@
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
->>>>>>> 3aa77a5163f9ffafb6f01e1c3798edf9a94b17b4
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -434,9 +430,6 @@
     <ClInclude Include="menu.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Item.h">
-=======
     <ClInclude Include="Shelter.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
@@ -447,7 +440,6 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
->>>>>>> 3aa77a5163f9ffafb6f01e1c3798edf9a94b17b4
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
