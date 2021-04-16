@@ -13,7 +13,7 @@ void ShDemoPlay();
 #ifdef TEST_OPENAL
 #include "AL_Sound.h"
 #endif // TEST_OPENAL
-void TyDamoPlay();
+void TyDemoPlay();
 #include "StageManager.h"
 #include "Balance.h"
 #include "ScreenRecord.h"
@@ -83,19 +83,13 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		}
 
 		//バックバッファに送信
-	//pp.Init();
-		while (Function::GameLoop())
-		{
-			//pp.run();
-			AliceLib::Present(0u, 0u);
+		AliceLib::Present(0u, 0u);
 
-		}
-
-		//ライブラリの終了処理
-		return AliceLib::Exit();
 	}
-}
 
+	//ライブラリの終了処理
+	return AliceLib::Exit();
+}
 
 // ---kiira_develop---
 // 
