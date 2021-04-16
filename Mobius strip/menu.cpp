@@ -3,7 +3,6 @@
 void ItemArr::init()
 {
     SpriteLoad(item_ptr, L"Data/Sprite/item.png");
-
 }
 
 void Menu::init()
