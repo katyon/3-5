@@ -230,6 +230,8 @@
     <ClCompile Include="orbital_camera.cpp" />
     <ClCompile Include="PipePuzzle.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SceneTite.cpp" />
     <ClCompile Include="ScreenRecord.cpp" />
     <ClCompile Include="Shelter.cpp" />
     <ClCompile Include="StageEditor.cpp" />
@@ -302,6 +304,8 @@
     <ClInclude Include="orbital_camera.h" />
     <ClInclude Include="PipePuzzle.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SceneTite.h" />
     <ClInclude Include="ScreenRecord.h" />
     <ClInclude Include="Shelter.h" />
     <ClInclude Include="StageData.h" />
