@@ -3,6 +3,7 @@
 /********************************************************************/
 #include "./AliceLib/AliceLib.h"
 #include "./AliceLib/Loop.h"
+#include <thread>
 /********************************************************************/
 /*							プロトタイプ宣言						*/
 /********************************************************************/
@@ -13,20 +14,20 @@
 
 /********************************************************************/
 
-void _AllInitializes(bool& isFin)
+void _AllInitializes(bool* isFin)
 {
-	isFin = false;
+	*isFin = false;
 	SceneGame::getInstance();
 	SceneTitle::getInstance();
-	isFin = true;
+	*isFin = true;
 }
 
 void AllInitializes()
 {
 	bool isFin = false;
 	//マルチスレッド開始
-	std::thread(_AllInitializes, isFin).detach();
-
+	std::thread th(_AllInitializes, &isFin);
+	th.detach();
 	while (!isFin)
 	{
 		//Todo:: なうろーでぃんぐ的な
