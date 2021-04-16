@@ -21,13 +21,14 @@ void TyDamoPlay();
 #include "player.h"
 #include "menu.h"
 Menu menu;
+ItemMenu item;
 //PipePuzzle pp; 
 /********************************************************************/
 
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 {
 	//ライブラリの初期化処理
-	AliceLib::Entry(L"AliceLib", 1280, 720, DefaultWindowMode::WM_WINDOW, 60);
+	AliceLib::Entry(L"AliceLib", 1920, 1080, DefaultWindowMode::WM_FULLSCREEN, 60);
 
 	//複数箇所で使うため用意しておいたほうがいい
 	int scene = AliceLib::GetNowScene();
@@ -47,6 +48,8 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			default:
 				break;
 			case 0:
+                menu.init();
+                item.init();
 				break;
 			}
 		}
@@ -57,6 +60,8 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		default:
 			break;
 		case 0:
+            menu.update();
+            item.update();
 			break;
 		}
 
@@ -66,6 +71,8 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		default:
 			break;
 		case 0:
+            menu.draw();
+            item.draw();
 			break;
 		}
 
@@ -78,6 +85,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			default:
 				break;
 			case 0:
+                menu.uninit();
 				break;
 			}
 		}
