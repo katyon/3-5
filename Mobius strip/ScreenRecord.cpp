@@ -11,7 +11,7 @@ void ScreenRecord::init()
 
 bool ScreenRecord::save(int num)
 {
-	if (0 > num || num < max_racord)return false;
+	if (0 > num || num >= max_racord)return false;
 	framebuffer _save;
 	_save.init(static_cast<int>(ScreenSize.x), static_cast<int>(ScreenSize.y));
 	//テクスチャバインドによるエラー回避用
@@ -28,6 +28,8 @@ bool ScreenRecord::save(int num)
 	FullScreenQuadBlit();
 	_save.end();
 	records[num].load(_save.render_target_shader_resource_view.Get());
+	//test = _save.render_target_shader_resource_view.Get();
+	//test->AddRef();
 	return true;
 }
 

@@ -209,10 +209,26 @@
     <ClCompile Include="ScreenRecord.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Shelter.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PipePuzzle.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
     <ClCompile Include="menu.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Item.cpp">
+=======
+    <ClCompile Include="ButtonPush.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="fps_camera.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+>>>>>>> 3aa77a5163f9ffafb6f01e1c3798edf9a94b17b4
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -412,10 +428,26 @@
     <ClInclude Include="ScreenRecord.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="PipePuzzle.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
     <ClInclude Include="menu.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Item.h">
+=======
+    <ClInclude Include="Shelter.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonPush.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="fps_camera.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+>>>>>>> 3aa77a5163f9ffafb6f01e1c3798edf9a94b17b4
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
