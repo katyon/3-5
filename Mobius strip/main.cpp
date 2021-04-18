@@ -16,7 +16,7 @@
 
 void _AllInitializes(bool* isFin)
 {
-	*isFin = false;
+	//*isFin = false;
 	SceneGame::getInstance();
 	SceneTitle::getInstance();
 	*isFin = true;
@@ -25,12 +25,30 @@ void _AllInitializes(bool* isFin)
 void AllInitializes()
 {
 	bool isFin = false;
+	Shaders flame;
+	flame.LoadPixelShader("Data/shader/flame_ps.cso");
+	struct cBuffer
+	{
+		FLOAT3	size;
+		float	time;
+	};
+	ConstantBuffer<cBuffer> flame_constant;
+	flame_constant->size = FLOAT3(GetWindowSize(), 0.0f);
+	flame_constant->time = 0.0f;
 	//マルチスレッド開始
 	std::thread th(_AllInitializes, &isFin);
 	th.detach();
-	while (!isFin)
+	while (Function::GameLoop())
 	{
+		if (isFin) return;
 		//Todo:: なうろーでぃんぐ的な
+		flame_constant->time += DeltaTime();
+		flame_constant.Active(0, 0, 1);
+		flame.SetPSSharders();
+		FullScreenQuadBlit();
+		font::OutPut(L"なうろーでぃんぐ(仮)",0,0);
+
+		AliceLib::Present(1, 0);
 	}
 }
 
@@ -41,7 +59,7 @@ void AllInitializes()
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 {
 	//ライブラリの初期化処理
-	AliceLib::Entry(L"AliceLib", 1920, 1080, DefaultWindowMode::WM_FULLSCREEN, 60);
+	AliceLib::Entry(L"AliceLib", 1280, 720, DefaultWindowMode::WM_WINDOW, 60);
 
 	AllInitializes();
 
@@ -56,6 +74,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	debug* _debug			=	Debug;
 #endif
 
+
 	float elapsed_time = 0.0f;
 
 	//ゲームループ
@@ -64,7 +83,35 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		//現在のシーンを取得する
 		scene = AliceLib::GetNowScene();
 		elapsed_time = DeltaTime();
-
+#if _DEBUG
+		ImGuiNewFrame();
+		{
+			static bool isOpen = false;
+			if (input::SWICH(input::F1, isOpen))
+			{
+				ImGui::Begin("SceneChanger", &isOpen);
+				switch (scene)
+				{
+				case S_TITLE:
+					ImGui::Text("Current Scene :: Title");
+					break;
+				case S_GAME:
+					ImGui::Text("Current Scene :: Game");
+					break;
+				}
+				if (ImGui::Button("Title"))
+				{
+					ChangeScene(S_TITLE);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Game"))
+				{
+					ChangeScene(S_GAME);
+				}
+				ImGui::End();
+			}
+		}
+#endif
 		//前のシーンと現在のシーンが違うとき
 		if (AliceLib::InitFlg())
 		{
@@ -118,6 +165,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		}
 
 #if _DEBUG //デバッグ文字表示用
+		ImGuiRender();
 		_debug->display();
 #endif
 
