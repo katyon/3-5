@@ -1,8 +1,16 @@
 #pragma once
 #include "AliceLib\AliceLib.h"
+#include "fps_camera.h"
+#include "tps_camera.h"
+#include "player.h"
+
 class SceneTitle
 {
 private:
+	//FPSCamera camera;
+	//Player player;
+	//SkinnedMesh stage;
+
 	SceneTitle();
 public:
 
@@ -18,6 +26,5 @@ public:
 	void Render();
 
 	void Uninitialize();
-
 };
 

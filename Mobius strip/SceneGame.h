@@ -1,10 +1,16 @@
 #pragma once
-
 #include "AliceLib\AliceLib.h"
+#include "fps_camera.h"
+#include "tps_camera.h"
+#include "player.h"
 
 class SceneGame
 {
 private:
+	FPSCamera camera;
+	Player player;
+	SkinnedMesh stage;
+
 	SceneGame();
 public:
 
