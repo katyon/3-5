@@ -1,4 +1,5 @@
 #include "Balance.h"
+#include "StageManager.h"
 
 namespace Balance
 {
@@ -54,7 +55,9 @@ namespace Balance
 
 			//íBê¨ílÇéZèoÇ∑ÇÈÅB
 			//íBê¨íl  = (ç∂âEÇÃç∑ï™/åXÇ´ÇÃïpìx) * ÇPïpìxìñÇΩÇËÇÃâÒì]äpìx
-			(*_tile) = (static_cast<float>(_result) / static_cast<float>(frequency)) * coefficient;
+			float angle = (static_cast<float>(_result) / static_cast<float>(frequency)) * coefficient;
+			angle = fabsf(angle) >= max_angle ? (angle < 0 ? -max_angle : max_angle) : angle;
+			(*_tile) = static_cast<float>((angle / max_angle));
 		}
 		return result;
 	}
@@ -71,9 +74,121 @@ namespace Balance
 	}
 
 
+	void makeAnAngle(int& frame, const float& rate)
+	{
+		static constexpr int middle_frame = 149;
+		frame = middle_frame - static_cast<int>(middle_frame * rate);
+	}
 
 
 
+	static bool			flgs[2] = {false};
+	static bool			isClear = false;
+	static ModelReplica	balance_model;
+	static ModelReplica	omori_model;
+	static FLOAT3		pos[3];
+	static Quaternion	postrue;
+	static Camera		eye;
+	void Init()
+	{
+		flgs[0] = flgs[1] = false;
+		isClear = false;
+		if (!balance_model.IsModel()) 
+		{
+			Model* model = StageManager::getIns()->getModel("tenbin.fbx");
+			if (model)
+			{
+				balance_model.SetModel(model);
+			}
+			else
+			{
+				Model _model;
+				ModelLoad(_model,"Data\\Objects\\tenbin.fbx");
+				balance_model.SetModel(&_model);
+			}
+			balance_model.PlayAnimation(1, 1);
+		}
+		if (!omori_model.IsModel())
+		{
+			Model* model = StageManager::getIns()->getModel("omori.fbx");
+			if (model)
+			{
+				omori_model.SetModel(model);
+			}
+			else
+			{
+				Model _model;
+				ModelLoad(_model, "Data\\Objects\\omori.fbx");
+				omori_model.SetModel(&_model);
+			}
+		}
+		eye.SetPos({ 0.0f,50.0f, - 150.0f });
+		eye.SetTarget({ 0,25.0f,0.0f });
+	}
+
+	bool Update()
+	{
+		if (isClear)return true;
+
+		static int r = 0;
+		static constexpr int l = 6;
+		r = (static_cast<int>(flgs[0]) + static_cast<int>(flgs[1])) * 3;
+		float rate = 0.0f;
+		getTilt(r, l, &rate);
+		int frame = 150;
+		makeAnAngle(frame, rate);
+		balance_model.UpdateBlendAnimation(0, frame, 1.0f, 0.0f);
+		pos[0].y = 10.5f + static_cast<float>((r - l) * 0.8f);
+		pos[0].x = -14.25f + static_cast<float>(fabsf(rate) * 1.75f);
+		pos[1].y = 10.5f + static_cast<float>((l - r) * 0.8f);
+		pos[1].x = 12.25f - static_cast<float>(fabsf(rate) * 1.75f);
+		pos[2].y = 10.5f + static_cast<float>((l - r) * 0.8f);
+		pos[2].x = 18.25f - static_cast<float>(fabsf(rate) * 1.75f);
+		return isClear;
+	}
+
+	bool Set()
+	{
+		if (!flgs[0])return flgs[0] = true;
+		else if (!flgs[1])return flgs[1] = true;
+		return false;
+	}
+
+	void Render()
+	{
+		XMMATRIX world = GetWorldMatrix({}, ScalarToFloat3(1.0f), postrue);
+		DirectX::XMStoreFloat3(&pos[0],
+			DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat3(&pos[0]), world));
+		DirectX::XMStoreFloat3(&pos[1],
+			DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat3(&pos[1]), world));
+		DirectX::XMStoreFloat3(&pos[2],
+			DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat3(&pos[2]), world));
+
+		static AmbientLight light;
+		light->direction = { 0.0f,-1.0f,0.0f,0.0f };
+		light->option.x = 0.3f;
+		light.Active();
+		eye.Active();
+
+		ModelRenderBegin();
+		ModelRender(balance_model, world);
+		ModelRender(omori_model, pos[0], ScalarToFloat3(0.6f), postrue);
+		if (flgs[0])ModelRender(omori_model, pos[1], ScalarToFloat3(0.45f), postrue);
+		if (flgs[1])ModelRender(omori_model, pos[2], ScalarToFloat3(0.45f), postrue);
+		ModelRenderEnd();
+	}
+
+
+
+
+
+
+
+
+
+
+
+	//é◊ñÇÇæÇ◊
 	void demoPlay()
 	{
 		//åªç›ÇÃépê®

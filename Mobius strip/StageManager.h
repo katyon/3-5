@@ -32,7 +32,21 @@ public:
 
 	const UINT& getStageNum()const { return now_stage; }
 
+	Model* getModel(const std::string& ID)
+	{
+		auto it = model_manager.find(ID);
+		if (it != model_manager.end())
+		{
+			return &it->second.m;
+		}
+		return nullptr;
+	}
 
+	static StageManager* getIns()
+	{
+		static StageManager ins;
+		return &ins;
+	}
 
 };
 

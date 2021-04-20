@@ -43,7 +43,7 @@ FLOAT3 screen_to_world(const Camera& eye,
 	const FLOAT3& screen_pos)
 {
 	static D3D11_VIEWPORT viewport;
-	GetViewPort(viewport, 1u);
+	AliceLib::GetViewPort(viewport, 1u);
 	DirectX::XMVECTOR vector = DirectX::XMVector3Unproject
 	(
 		DirectX::XMVectorSet(screen_pos.x, screen_pos.y, screen_pos.z, 0),
@@ -55,6 +55,14 @@ FLOAT3 screen_to_world(const Camera& eye,
 	static FLOAT3 pos;
 	DirectX::XMStoreFloat3(&pos, vector);
 	return pos;
+}
+
+/*マウスからのレイを取得*/
+void getMouseRay(const Camera& eye,FLOAT3& start,FLOAT3& end)
+{
+	FLOAT2 mouse_pos = input::GetMousePos();
+	start	= ::screen_to_world(eye, { mouse_pos,0.0f });
+	end		= ::screen_to_world(eye, { mouse_pos,1.0f });
 }
 
 PostureVector getPostureVector(const VECTOR3D& forward,const VECTOR3D& up)
@@ -594,3 +602,6 @@ void ShDemoPlay()
 		font::OutPut(L"クリア", 0, 0);
 	}
 }
+
+
+
