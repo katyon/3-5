@@ -7,6 +7,8 @@ class SceneGame
 private:
 	SceneGame();
 public:
+	// ’Ç‰Á@ƒ{ƒ^ƒ“‰Ÿ‚µ‚İ
+	//Camera camera;
 
 	static SceneGame* getInstance()
 	{

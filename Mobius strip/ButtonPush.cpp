@@ -1,13 +1,80 @@
 #include <stdio.h>
 #include "ButtonPush.h"
 #include "AliceLib/AliceLib.h"
+#include "Shelter.h"
 //#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
 
+
+ButtonPush::ButtonPush()
+{
+
+	button[0][0].model.load("Data/Buttons/botan1.fbx");
+	button[0][1].model.load("Data/Buttons/botan2.fbx");
+	button[0][2].model.load("Data/Buttons/botan3.fbx");
+	button[0][3].model.load("Data/Buttons/botan4.fbx");
+	button[0][4].model.load("Data/Buttons/botan5.fbx");
+	button[1][0].model.load("Data/Buttons/botan6.fbx");
+	button[1][1].model.load("Data/Buttons/botan7.fbx");
+	button[1][2].model.load("Data/Buttons/botan8.fbx");
+	button[1][3].model.load("Data/Buttons/botan9.fbx");
+	button[1][4].model.load("Data/Buttons/botan10.fbx");
+	button[2][0].model.load("Data/Buttons/botan11.fbx");
+	button[2][1].model.load("Data/Buttons/botan12.fbx");
+	button[2][2].model.load("Data/Buttons/botan13.fbx");
+	button[2][3].model.load("Data/Buttons/botan14.fbx");
+	button[2][4].model.load("Data/Buttons/botan15.fbx");
+	button[3][0].model.load("Data/Buttons/botan16.fbx");
+	button[3][1].model.load("Data/Buttons/botan17.fbx");
+	button[3][2].model.load("Data/Buttons/botan18.fbx");
+	button[3][3].model.load("Data/Buttons/botan19.fbx");
+	button[3][4].model.load("Data/Buttons/botan20.fbx");
+	button[4][0].model.load("Data/Buttons/botan21.fbx");
+	button[4][1].model.load("Data/Buttons/botan22.fbx");
+	button[4][2].model.load("Data/Buttons/botan23.fbx");
+	button[4][3].model.load("Data/Buttons/botan24.fbx");
+	button[4][4].model.load("Data/Buttons/botan25.fbx");
+	base.model.load("Data/Buttons/hako.fbx");
+
+}
+
 void ButtonPush::init()
 {
-	// êŒî¬ÇÃéØï î‘çÜì¸óÕ
+	// èâä˙ç¿ïW
+	base.pos = { 0,3,0 };
+
+	button[0][0].pos = { -26,13,28 };
+	button[0][1].pos = { -13,13,28 };
+	button[0][2].pos = { 0,13,28 };
+	button[0][3].pos = { 13,13,28 };
+	button[0][4].pos = { 26,13,28 };
+
+	button[1][0].pos = { -26,13,14 };
+	button[1][1].pos = { -13,13,14 };
+	button[1][2].pos = { 0,13,14 };
+	button[1][3].pos = { 13,13,14 };
+	button[1][4].pos = { 26,13,14 };
+
+	button[2][0].pos = { -26,13,0 };
+	button[2][1].pos = { -13,13,0 };
+	button[2][2].pos = { 0,13,0 };
+	button[2][3].pos = { 13,13,0 };
+	button[2][4].pos = { 26,13,0 };
+
+	button[3][0].pos = { -26,13,-14 };
+	button[3][1].pos = { -13,13,-14 };
+	button[3][2].pos = { 0,13,-14 };
+	button[3][3].pos = { 13,13,-14 };
+	button[3][4].pos = { 26,13,-14 };
+
+	button[4][0].pos = { -26,13,-28 };
+	button[4][1].pos = { -13,13,-28 };
+	button[4][2].pos = { 0,13,-28 };
+	button[4][3].pos = { 13,13,-28 };
+	button[4][4].pos = { 26,13,-28 };
+
+	// êŒî¬ÇÃéØï î‘çÜê›íË
 	// 11 12 13 14 15
 	// 21 22 23 24 25
 	// 31 32 33 34 35
@@ -23,10 +90,10 @@ void ButtonPush::init()
 
 	// ìöÇ¶ÇÃêîéöÇì¸ÇÍÇÈ
 	answer_board[0] = 11;
-	answer_board[1] = 22;
-	answer_board[2] = 33;
-	answer_board[3] = 44;
-	answer_board[4] = 55;
+	answer_board[1] = 12;
+	answer_board[2] = 13;
+	answer_board[3] = 14;
+	answer_board[4] = 15;
 
 	final_judge = false;
 	provisional_judge = false;
@@ -47,7 +114,12 @@ bool ButtonPush::judge_answer()
 			//provisional_judge = false;
 			// 1Ç¬Ç≈Ç‡ä‘à·Ç¡ÇƒÇ¢ÇΩÇÁstorage_boardÇÇ∑Ç◊Çƒ0Ç…ñﬂÇ∑
 			for (int i = 0; i < 5; i++)
-			{
+			{			
+				int tens = storage_board[i] / 10 % 10 - 1;
+				int ones = storage_board[i] % 10 - 1;
+				button[tens][ones].pos.y = 13;
+				button[tens][ones].Pushflg = false;
+
 				storage_board[i] = 0;
 			}
 			return false;
@@ -63,13 +135,205 @@ bool ButtonPush::judge_answer()
 	}
 }
 
-void ButtonPush::update()
+void ButtonPush::update(const Camera& camera)
 {
+	FLOAT3 start, end;
+	FLOAT3 HitPos[25];
+
+
 	// Ç±Ç±Ç…ÉLÅ[ëÄçÏ
-	//if (input::TRG('A'))
-	//{
-	//	push_botton(0, 0);
-	//}
+	if (input::TRG(input::MOUSE_L)&& !final_judge) {
+		
+		getMouseRay(camera, start, end);
+		
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				button[i][j].isPush = ColLineOBB(start, end, { button[i][j].pos,FLOAT3(10, 10, 10),button[i][j].posture }, HitPos[i]);
+			}
+		}
+		
+		
+		if (button[0][0].isPush && !button[0][0].Pushflg)
+		{
+			push_botton(0, 0);
+			button[0][0].isPush = false;
+			button[0][0].pos.y = 5;
+			button[0][0].Pushflg = true;
+		}
+		if (button[1][0].isPush && !button[1][0].Pushflg)
+		{
+			push_botton(1, 0);
+			button[1][0].isPush = false;
+			button[1][0].pos.y = 5;
+			button[1][0].Pushflg = true;
+		}
+		if (button[2][0].isPush && !button[2][0].Pushflg)
+		{
+			push_botton(2, 0);
+			button[2][0].isPush = false;
+			button[2][0].pos.y = 5;
+			button[2][0].Pushflg = true;
+		}
+		if (button[3][0].isPush && !button[3][0].Pushflg)
+		{
+			push_botton(3, 0);
+			button[3][0].isPush = false;
+			button[3][0].pos.y = 5;
+			button[3][0].Pushflg = true;
+		}
+		if (button[4][0].isPush && !button[4][0].Pushflg)
+		{
+			push_botton(4, 0);
+			button[4][0].isPush = false;
+			button[4][0].pos.y = 5;
+			button[4][0].Pushflg = true;
+		}
+
+		if (button[0][1].isPush && !button[0][1].Pushflg)
+		{
+			push_botton(0, 1);
+			button[0][1].isPush = false;
+			button[0][1].pos.y = 5;
+			button[0][1].Pushflg = true;
+		}
+		if (button[1][1].isPush && !button[1][1].Pushflg)
+		{
+			push_botton(1, 1);
+			button[1][1].isPush = false;
+			button[1][1].pos.y = 5;
+		}
+		if (button[2][1].isPush && !button[2][1].Pushflg)
+		{
+			push_botton(2, 1);
+			button[2][1].isPush = false;
+			button[2][1].pos.y = 5;
+			button[2][1].Pushflg = true;
+		}
+		if (button[3][1].isPush && !button[3][1].Pushflg)
+		{
+			push_botton(3, 1);
+			button[3][1].isPush = false;
+			button[3][1].pos.y = 5;
+			button[3][1].Pushflg = true;
+		}
+		if (button[4][1].isPush && !button[4][1].Pushflg)
+		{
+			push_botton(4, 1);
+			button[4][1].isPush = false;
+			button[4][1].pos.y = 5;
+			button[4][1].Pushflg = true;
+		}
+
+		if (button[0][2].isPush && !button[0][2].Pushflg)
+		{
+			push_botton(0, 2);
+			button[0][2].isPush = false;
+			button[0][2].pos.y = 5;
+			button[0][2].Pushflg = true;
+		}
+		if (button[1][2].isPush && !button[1][2].Pushflg)
+		{
+			push_botton(1, 2);
+			button[1][2].isPush = false;
+			button[1][2].pos.y = 5;
+			button[1][2].Pushflg = true;
+		}
+		if (button[2][2].isPush && !button[2][2].Pushflg)
+		{
+			push_botton(2, 2);
+			button[2][2].isPush = false;
+			button[2][2].pos.y = 5;
+			button[2][2].Pushflg = true;
+		}
+		if (button[3][2].isPush && !button[3][2].Pushflg)
+		{
+			push_botton(3, 2);
+			button[3][2].isPush = false;
+			button[3][2].pos.y = 5;
+		}
+		if (button[4][2].isPush && !button[4][2].Pushflg)
+		{
+			push_botton(4, 2);
+			button[4][2].isPush = false;
+			button[4][2].pos.y = 5;
+			button[4][2].Pushflg = true;
+		}
+
+		if (button[0][3].isPush && !button[0][3].Pushflg)
+		{
+			push_botton(0, 3);
+			button[0][3].isPush = false;
+			button[0][3].pos.y = 5;
+			button[0][3].Pushflg = true;
+		}
+		if (button[1][3].isPush && !button[1][3].Pushflg)
+		{
+			push_botton(1, 3);
+			button[1][3].isPush = false;
+			button[1][3].pos.y = 5;
+			button[1][3].Pushflg = true;
+		}
+		if (button[2][3].isPush && !button[2][3].Pushflg)
+		{
+			push_botton(2, 3);
+			button[2][3].isPush = false;
+			button[2][3].pos.y = 5;
+			button[2][3].Pushflg = true;
+		}
+		if (button[3][3].isPush && !button[3][3].Pushflg)
+		{
+			push_botton(3, 3);
+			button[3][3].isPush = false;
+			button[3][3].pos.y = 5;
+			button[3][3].Pushflg = true;
+		}
+		if (button[4][3].isPush && !button[4][3].Pushflg)
+		{
+			push_botton(4, 3);
+			button[4][3].isPush = false;
+			button[4][3].pos.y = 5;
+			button[4][3].Pushflg = true;
+		}
+
+		if (button[0][4].isPush && !button[0][4].Pushflg)
+		{
+			push_botton(0, 4);
+			button[0][4].isPush = false;
+			button[0][4].pos.y = 5;
+			button[0][4].Pushflg = true;
+		}
+		if (button[1][4].isPush && !button[1][4].Pushflg)
+		{
+			push_botton(1, 4);
+			button[1][4].isPush = false;		
+			button[1][4].pos.y = 5;
+			button[1][4].Pushflg = true;
+		}
+		if (button[2][4].isPush && !button[2][4].Pushflg)
+		{
+			push_botton(2, 4);
+			button[2][4].isPush = false;
+			button[2][4].pos.y = 5;
+			button[2][4].Pushflg = true;
+		}
+		if (button[3][4].isPush && !button[3][4].Pushflg)
+		{
+			push_botton(3, 4);
+			button[3][4].isPush = false;
+			button[3][4].pos.y = 5;
+			button[3][4].Pushflg = true;
+		}
+		if (button[4][4].isPush && !button[4][4].Pushflg)
+		{
+			push_botton(4, 4);
+			button[4][4].isPush = false;
+			button[4][4].pos.y = 5;
+			button[4][4].Pushflg = true;
+		}
+
+
+
+	}
 	// 5Ç¬Ç∑Ç◊ÇƒâüÇµÇΩÇÁîªíË
 	if (storage_board[4] != 0) {
 		// falseÇÃèÍçáÇÕjudge_answeì‡Ç≈storage_boardÇ™èâä˙âªÇ≥ÇÍÇ‹Ç∑
@@ -79,8 +343,21 @@ void ButtonPush::update()
 	// ñ‚ëËÇ™âÇØÇΩèÍçáÇÃèàóù
 	if (final_judge)
 	{
+		//font::OutPut(L"clear", { 100,100 }, { 10,10 }, { 1,1,0,1 });
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) 
+			{
+				if (button[i][j].pos.y > 5) {
+					button[i][j].pos.y -= 0.5;
+				}
+			}
+		}
+
+	}else
+	{
 
 	}
+	font::OutPut(L"ButtonPush", { 0,0 }, { 1,1 }, { 1,0,0,1 });
 
 }
 
@@ -94,6 +371,17 @@ void ButtonPush::push_botton(int height, int width)
 			storage_board[i] = stone_board[height][width];
 			break;
 			// ì¸ÇÍÇΩÇÁÇ‡Ç§èàóùÇµÇ»Ç¢
+		}
+	}
+}
+
+void ButtonPush::Render(const Camera& camera)
+{
+	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(1, 1, 1), base.posture, camera.LightFloamCamera());
+
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			SkinnedMeshRender(button[i][j].model, camera, button[i][j].pos, FLOAT3(1, 1, 1), button[i][j].posture, camera.LightFloamCamera());
 		}
 	}
 }

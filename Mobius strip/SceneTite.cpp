@@ -6,9 +6,6 @@ SceneTitle::SceneTitle()
 {
 	//Todo::ここにソースを記入する
 
-
-
-
 	//コンストラクタの最後で念のための初期化を行う
 	SceneTitle::Initialize();
 }
