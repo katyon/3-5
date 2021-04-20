@@ -16,6 +16,13 @@ private:
 
 	PipePuzzle pipe_puzzle;
 
+	enum GameMode
+	{
+		normal = 0,
+		menue,
+		balance,
+	};
+	int game_mode = 0;
 
 public:
 	// ’Ç‰Á@ƒ{ƒ^ƒ“‰Ÿ‚µ‚İ

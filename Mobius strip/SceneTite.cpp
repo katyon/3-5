@@ -28,7 +28,7 @@ void SceneTitle::Update(float elapsed_time)
 {
    // if (input::TRG(VK_SPACE))
    // {
-   //     ChangeScene(S_GAME);
+        ChangeScene(S_GAME);
    // }
 	/*camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1,1,1), {0,0,0}), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
 	player.update(camera);
