@@ -8,7 +8,12 @@ bool ColLineOBB(const FLOAT3& start, const FLOAT3& end, const OBB& obb, FLOAT3& 
 //AliceLib内のScreenToWorld関数が間違ってたので
 //代わりを用意しました
 _NODISCARD FLOAT3 screen_to_world(const Camera& eye,const FLOAT3& screen_pos);
-
+/*マウスからのレイを取得*/
+void getMouseRay(
+	const Camera& eye,//カメラのデータ
+	FLOAT3& start,//返り値
+	FLOAT3& end//返り値
+);
 class Shelter
 {
 private://5*5

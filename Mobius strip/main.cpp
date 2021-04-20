@@ -28,7 +28,7 @@ void AllInitializes()
 	//マルチスレッド開始
 	std::thread th(_AllInitializes, &isFin);
 	th.detach();
-	while (!isFin)
+	while (isFin)
 	{
 		//Todo:: なうろーでぃんぐ的な
 	}

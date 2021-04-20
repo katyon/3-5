@@ -5,6 +5,7 @@ class SceneTitle
 private:
 	SceneTitle();
 public:
+	//Camera camera;
 
 	static SceneTitle* getInstance()
 	{

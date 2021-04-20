@@ -57,6 +57,18 @@ FLOAT3 screen_to_world(const Camera& eye,
 	return pos;
 }
 
+/*マウスからのレイを取得*/
+void getMouseRay(
+	const Camera& eye,//カメラのデータ
+	FLOAT3& start,//返り値
+	FLOAT3& end//返り値
+)
+{
+	FLOAT2 mouse_pos = input::GetMousePos();
+	start = ::screen_to_world(eye, { mouse_pos,0.0f });
+	end = ::screen_to_world(eye, { mouse_pos,1.0f });
+}
+
 PostureVector getPostureVector(const VECTOR3D& forward,const VECTOR3D& up)
 {
 	PostureVector result;
