@@ -16,7 +16,7 @@
 
 void _AllInitializes(bool* isFin)
 {
-	*isFin = false;
+	//*isFin = false;
 	SceneGame::getInstance();
 	SceneTitle::getInstance();
 	*isFin = true;
@@ -28,9 +28,13 @@ void AllInitializes()
 	//マルチスレッド開始
 	std::thread th(_AllInitializes, &isFin);
 	th.detach();
-	while (!isFin)
+	while (Function::GameLoop())
 	{
+		if (isFin) return;
 		//Todo:: なうろーでぃんぐ的な
+		font::OutPut(L"なうろーでぃんぐ(仮)",0,0);
+
+		AliceLib::Present(1, 0);
 	}
 }
 
@@ -41,7 +45,7 @@ void AllInitializes()
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 {
 	//ライブラリの初期化処理
-	AliceLib::Entry(L"AliceLib", 1920, 1080, DefaultWindowMode::WM_FULLSCREEN, 60);
+	AliceLib::Entry(L"AliceLib", 1920, 1080, DefaultWindowMode::WM_WINDOW, 60);
 
 	AllInitializes();
 
@@ -55,6 +59,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 #if _DEBUG	//デバッグ文字表示用
 	debug* _debug			=	Debug;
 #endif
+
 
 	float elapsed_time = 0.0f;
 

@@ -1,12 +1,18 @@
 #pragma once
 
 #include "AliceLib\AliceLib.h"
+#include "PipePuzzle.h"
 
 class SceneGame
 {
 private:
 	SceneGame();
+
+	PipePuzzle pipe_puzzle;
+
+
 public:
+	Camera camera;
 
 	static SceneGame* getInstance()
 	{
