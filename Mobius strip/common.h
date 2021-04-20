@@ -4,5 +4,6 @@ enum SCENE
 {
 	S_TITLE = 0,
 	S_GAME,
+    S_MENU,
 };
 #endif

@@ -54,24 +54,24 @@ void AllInitializes()
 
 
 /*
-	※ ここから下は触らないこと!!! ※
+    ※ ここから下は触らないこと!!! ※
 */
 INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 {
 	//ライブラリの初期化処理
 	AliceLib::Entry(L"AliceLib", 1280, 720, DefaultWindowMode::WM_WINDOW, 60);
 
-	AllInitializes();
+    AllInitializes();
 
-	//複数箇所で使うため用意しておいたほうがいい
-	int scene = AliceLib::GetNowScene();
+    //複数箇所で使うため用意しておいたほうがいい
+    int scene = AliceLib::GetNowScene();
 
-	//getInstanceを毎回呼ばなくなるので
-	//パフォーマンスが少しだけよくなる
-	SceneTitle* scene_title	=	SceneTitle::getInstance();
-	SceneGame*	scene_game	=	SceneGame::getInstance();
+    //getInstanceを毎回呼ばなくなるので
+    //パフォーマンスが少しだけよくなる
+    SceneTitle* scene_title = SceneTitle::getInstance();
+    SceneGame* scene_game = SceneGame::getInstance();
 #if _DEBUG	//デバッグ文字表示用
-	debug* _debug			=	Debug;
+    debug* _debug = Debug;
 #endif
 
 
@@ -127,57 +127,57 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			}
 		}
 
-		//更新処理
-		switch (scene)
-		{
-		case S_TITLE:
-			scene_title->Update(elapsed_time);
-			break;
-		case S_GAME:
-			scene_game->Update(elapsed_time);
-			break;
-		}
+        //更新処理
+        switch (scene)
+        {
+        case S_TITLE:
+            scene_title->Update(elapsed_time);
+            break;
+        case S_GAME:
+            scene_game->Update(elapsed_time);
+            break;
+        }
 
-		//描画処理
-		switch (scene)
-		{
-		case S_TITLE:
-			scene_title->Render();
-			break;
-		case S_GAME:
-			scene_game->Render();
-			break;
-		}
+        //描画処理
+        switch (scene)
+        {
+        case S_TITLE:
+            scene_title->Render();
+            break;
+        case S_GAME:
+            scene_game->Render();
+            break;
+        }
 
-		//シーンが変更されるとき
-		if (AliceLib::EndFlg())
-		{
-			//終了処理
-			switch (scene)
-			{
-			case S_TITLE:
-				scene_title->Uninitialize();
-				break;
-			case S_GAME:
-				scene_game->Uninitialize();
-				break;
-			}
-		}
+        //シーンが変更されるとき
+        if (AliceLib::EndFlg())
+        {
+            //終了処理
+            switch (scene)
+            {
+            case S_TITLE:
+                scene_title->Uninitialize();
+                break;
+            case S_GAME:
+                scene_game->Uninitialize();
+                break;
+            }
+        }
 
 #if _DEBUG //デバッグ文字表示用
 		ImGuiRender();
 		_debug->display();
 #endif
 
-		//バックバッファに送信
-		AliceLib::Present(0u, 0u);
+        //バックバッファに送信
+        AliceLib::Present(0u, 0u);
 
-	}
+    }
 
-	//念のための終了処理
-	scene_title->Uninitialize();
-	scene_game->Uninitialize();
+    //念のための終了処理
+    scene_title->Uninitialize();
+    scene_game->Uninitialize();
 
-	//ライブラリの終了処理
-	return AliceLib::Exit();
+    //ライブラリの終了処理
+    return AliceLib::Exit();
 }

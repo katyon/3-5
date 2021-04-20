@@ -1,5 +1,5 @@
 #include "SceneTite.h"
-
+#include "common.h"
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
 SceneTitle::SceneTitle()
@@ -13,18 +13,25 @@ SceneTitle::SceneTitle()
 //シーン変更された瞬間に実行される処理
 void SceneTitle::Initialize()
 {
+
 }
 
 //シーン全体の更新処理
 //経過時間が渡されます
 void SceneTitle::Update(float elapsed_time)
 {
+   // if (input::TRG(VK_SPACE))
+   // {
+   //     ChangeScene(S_GAME);
+   // }
 }
 
 //シーンの描画処理
 void SceneTitle::Render()
 {
+
 }
+
 
 //シーンが切り替わるタイミングで呼ばれる処理
 void SceneTitle::Uninitialize()
