@@ -1,11 +1,17 @@
 #pragma once
-
 #include "AliceLib\AliceLib.h"
 #include "PipePuzzle.h"
+#include "fps_camera.h"
+#include "tps_camera.h"
+#include "player.h"
 
 class SceneGame
 {
 private:
+	FPSCamera camera;
+	Player player;
+	SkinnedMesh stage;
+
 	SceneGame();
 
 	PipePuzzle pipe_puzzle;
@@ -14,7 +20,7 @@ private:
 public:
 	// í«â¡Å@É{É^ÉìâüÇµçûÇ›
 	//Camera camera;
-	Camera camera;
+	//Camera camera;
 
 	static SceneGame* getInstance()
 	{

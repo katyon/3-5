@@ -1,38 +1,71 @@
 #pragma once
 #include "AliceLib/AliceLib.h"
 
+//class FPSCamera : public Camera
+//{
+//private:
+//	struct CursorParameter
+//	{
+//		FLOAT2 preview_pos;
+//		FLOAT2 current_pos;
+//	}Cursor;
+//
+//	FLOAT3 focus_point;
+//	VECTOR3D relative_focus_point;
+//
+//	VECTOR3D forward;
+//	VECTOR3D relative_pos;
+//
+//	XMMATRIX rotate_to_target;
+//	int magnification = 15;
+//	//static int correct_sensitivity;
+//
+//private:
+//	VECTOR2D getCursorMoveAmount();
+//public:
+//	// TODO:プレイヤーの視点方向にカメラを向ける処理
+//
+//	FPSCamera();
+//	void init();
+//	void update(FLOAT3 player_pos);
+//
+//	VECTOR3D getForward() { return forward; }
+//	//void zoom();
+//	//bool getUseADS() { return useADS; }
+//	//void setSensitivity(int s) { correct_sensitivity = s; }
+//};
+
 class FPSCamera : public Camera
 {
 private:
+
 	struct CursorParameter
 	{
 		FLOAT2 preview_pos;
 		FLOAT2 current_pos;
 	}Cursor;
 
-	FLOAT3 focus_point;
-	VECTOR3D relative_focus_point;
-
 	VECTOR3D forward;
 	VECTOR3D relative_pos;
 
+	FLOAT3 focus_pos;
+
 	XMMATRIX rotate_to_target;
 	int magnification = 15;
-	//static int correct_sensitivity;
-
+	static int correct_sensitivity;
+	bool useADS;
 private:
 	VECTOR2D getCursorMoveAmount();
 public:
-	// TODO:プレイヤーの視点方向にカメラを向ける処理
-
 	FPSCamera();
-	void init();
+	void initPos();
 	void update(XMMATRIX player_world_matrix, FLOAT3 center);
 
 	VECTOR3D getForward() { return forward; }
-	//void zoom();
-	//bool getUseADS() { return useADS; }
-	//void setSensitivity(int s) { correct_sensitivity = s; }
+	void zoom();
+	bool getUseADS() { return useADS; }
+	void setSensitivity(int s) { correct_sensitivity = s; }
+	void setFocusPos(FLOAT3 pos) { focus_pos = pos; }
 };
 
 // ---kiira_develop---

@@ -61,7 +61,8 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	//ライブラリの初期化処理
 	AliceLib::Entry(L"AliceLib", 1280, 720, DefaultWindowMode::WM_WINDOW, 60);
 
-    AllInitializes();
+	AllInitializes();
+	SetShowCursor(false);
 
     //複数箇所で使うため用意しておいたほうがいい
     int scene = AliceLib::GetNowScene();
