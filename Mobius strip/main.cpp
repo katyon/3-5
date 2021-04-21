@@ -75,12 +75,12 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
     debug* _debug = Debug;
 #endif
 
-
 	float elapsed_time = 0.0f;
-
+	
 	//ゲームループ
 	while (Function::GameLoop())
 	{
+
 		//現在のシーンを取得する
 		scene = AliceLib::GetNowScene();
 		elapsed_time = DeltaTime();
@@ -169,7 +169,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 		ImGuiRender();
 		_debug->display();
 #endif
-
+		
         //バックバッファに送信
         AliceLib::Present(0u, 0u);
 

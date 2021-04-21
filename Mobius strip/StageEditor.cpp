@@ -268,17 +268,17 @@ void StageEditor::Update()
 					//ImGui::SameLine();
 					//if (ImGui::Button("Z - 90Åã")) { object.posture.RotationPitch(n90); }
 					//ImGui::SameLine();
-					if (ImGui::Button("Z - 30Åã")) { object.posture.RotationPitch(n30); }
+					if (ImGui::Button("Z - 30Åã")) { object.posture.RotationRoll(n30); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z - 15Åã")) { object.posture.RotationPitch(n15); }
+					if (ImGui::Button("Z - 15Åã")) { object.posture.RotationRoll(n15); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z - 1Åã")) { object.posture.RotationPitch(-OnceInRadians); }
+					if (ImGui::Button("Z - 1Åã")) { object.posture.RotationRoll(-OnceInRadians); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z + 1Åã")) { object.posture.RotationPitch(OnceInRadians); }
+					if (ImGui::Button("Z + 1Åã")) { object.posture.RotationRoll(OnceInRadians); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z + 15Åã")) { object.posture.RotationPitch(p15); }
+					if (ImGui::Button("Z + 15Åã")) { object.posture.RotationRoll(p15); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z + 30Åã")) { object.posture.RotationPitch(p30); }
+					if (ImGui::Button("Z + 30Åã")) { object.posture.RotationRoll(p30); }
 					//ImGui::SameLine();
 					//if (ImGui::Button("Z + 90Åã")) { object.posture.RotationPitch(p90); }
 					//ImGui::SameLine();
