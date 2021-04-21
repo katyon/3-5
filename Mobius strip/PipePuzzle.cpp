@@ -22,7 +22,7 @@ enum MapChipName
 int Pipes[5][5] =
 {
     9, 1, 5, 1, 2,
-    6, 2, 6, 2, 6,
+    5, 2, 6, 2, 6,
     2, 1, 3, 6, 4,
     4, 3, 4, 6, 1,
     1, 5, 2, 3, 10
@@ -61,8 +61,9 @@ PipePuzzle::PipePuzzle()
 
 void PipePuzzle::Init()
 {
-    scale = ScalarToFloat3(0.165f);
-    OBBscale = ScalarToFloat3(2.5f);
+    //scale = ScalarToFloat3(0.165f);
+    scale = ScalarToFloat3(0.3f);
+    OBBscale = ScalarToFloat3(4.8f);
 }
 
 void PipePuzzle::Update()
@@ -367,7 +368,7 @@ void PipePuzzle::Render(const Camera& camera)
     {
         for (int x = 0; x < 5; x++)
         {
-            FLOAT3 pos = { x * 3.0f - 7, 0 - y * 3.0f + 6, 0 };
+            pos = { x * 5.5f + 22, 0 - y * 5.5f + 27, 50 };
             posture.reset();
 
             COLOR color; 
@@ -386,9 +387,17 @@ void PipePuzzle::Render(const Camera& camera)
                     color = { 1.0f, 1.0f, 1.0f, 1.0f };
                 }
             }
+            if (Cursor_pos_y == y && Cursor_pos_x == x)
+            {
+                if (!ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+                {
+                    Cursor_pos_x = 0;
+                    Cursor_pos_y = 0;
+                }
 
-            if (Pipes[y][x] == CURVE0)
-    
+            }
+
+            if (Pipes[y][x] == CURVE0)  
             {
                 posture.RotationPitch(PI / 2);
                 if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
@@ -456,23 +465,16 @@ void PipePuzzle::Render(const Camera& camera)
             if (Pipes[y][x] == START)
             {
                 posture.RotationPitch(-PI / 2);
-                if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
-                {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
-                }
-                SkinnedMeshRender(start_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+
+                SkinnedMeshRender(start_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), { 1.0f, 1.0f, 1.0f, 1.0f });
             }
             if (Pipes[y][x] == GOAL)
             {
                 posture.RotationPitch(-PI / 2);
-                if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
-                {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
-                }
-                SkinnedMeshRender(goal_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+
+                SkinnedMeshRender(goal_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), { 1.0f, 1.0f, 1.0f, 1.0f });
             }
+            
         }
     }
 

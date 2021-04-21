@@ -134,5 +134,5 @@ void SceneGame::Render()
 //シーンが切り替わるタイミングで呼ばれる処理
 void SceneGame::Uninitialize()
 {
-    pipe_puzzle.Release();
+    //pipe_puzzle.Release();
 }
