@@ -135,6 +135,71 @@ inline void load_stage_from_file(const std::string& file_pass,
 
 
 /*
+	ファイルからステージデータを取得する関数
+*/
+template<size_t arr_size>
+inline void load_stage_from_file_ex(const std::string& file_pass,
+	StageObject(&objects)[arr_size], std::vector<OBB>& ColBoxs, std::map<std::string, cStageModel>* manager)
+{
+	//ファイルがないならロードしない
+	if (!checkFileExistence(file_pass))
+	{
+		return;
+	}
+	FILE* fp = fopen(file_pass.c_str(), "r");
+	static	FLOAT4 q;
+	if (fp)
+	{
+		int   isbody, isshow, option;
+		for (StageObject& object : objects)
+		{
+			char filename[256] = {};
+			//使用しているかのフラグ
+			fscanf(fp, "%d,", &isbody);
+			//表示しているかのフラグ
+			fscanf(fp, "%d,", &isshow);
+			//座標データ
+			fscanf(fp, "%f,", &object.position.x);
+			fscanf(fp, "%f,", &object.position.y);
+			fscanf(fp, "%f,", &object.position.z);
+			//スケール値のデータ
+			fscanf(fp, "%f,", &object.scales.x);
+			fscanf(fp, "%f,", &object.scales.y);
+			fscanf(fp, "%f,", &object.scales.z);
+			//クオータニオンの成分データ
+			fscanf(fp, "%f,", &q.x);
+			fscanf(fp, "%f,", &q.y);
+			fscanf(fp, "%f,", &q.z);
+			fscanf(fp, "%f,", &q.w);
+			//オプション
+			fscanf(fp, "%d,", &option);
+			//ID
+			fscanf(fp, "%s", filename);
+			fprintf(fp, "\n");
+			object.posture.SetQuaternion(q);
+			if (isbody == 1)
+			{
+				object.isShow = (isshow != 0);
+				auto it = manager->find(filename);
+				if (it != manager->end())
+				{
+					object.ID = filename;
+					if (object.ID != "ColBox.fbx")
+					{
+						object.body.SetModel(&it->second.m);
+					}
+					else
+					{
+						ColBoxs.push_back(OBB(object.position, object.scales,object.posture));
+					}
+				}
+			}
+		}
+		fclose(fp);
+	}
+}
+
+/*
 	ステージのデータ
 */
 class StageData
@@ -143,19 +208,23 @@ public:
 	static constexpr UINT MaxObjects = 128u;
 protected:
 	//ステージ内に設置するオブジェクト
-	StageObject objects[StageData::MaxObjects];
+	StageObject	objects[StageData::MaxObjects];
+	std::vector<OBB>			ColBoxs;
 public:
 	StageData() {}
 	StageData(const StageData&) {}
 	void Load(std::string file_name, std::map<std::string, cStageModel>* manager)
 	{
-		load_stage_from_file(file_name, objects, manager);
+		load_stage_from_file_ex(file_name, objects, ColBoxs, manager);
 	}
 	StageObject* getObdects()
 	{
 		return objects;
 	}
-
+	const std::vector<OBB>& GetObbs()const
+	{
+		return ColBoxs;
+	}
 	void Render()
 	{
 		ModelRenderBegin();
