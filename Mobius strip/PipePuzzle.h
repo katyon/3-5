@@ -10,7 +10,7 @@ private:
     SkinnedMesh start_pipe;
     SkinnedMesh goal_pipe;
 
-    //FLOAT3 pos;
+    FLOAT3 pos;
     FLOAT3 scale;
     XMMATRIX world_matrix;
 
@@ -23,11 +23,8 @@ private:
     Quaternion posture;
 
     int  timer = 0;
-    bool clearFlg = false;
 
     void Reset();
-
-public:
 
     int Cursor_pos_x = 0;
     int Cursor_pos_y = 0;
@@ -38,6 +35,10 @@ public:
     // pre => Previous : ’¼‘O
     int pre_Water_pos_x = 0;
     int pre_Water_pos_y = 0;
+
+public:
+
+    bool clearFlg = false;
 
     PipePuzzle();
 
