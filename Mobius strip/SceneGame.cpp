@@ -101,7 +101,6 @@ void SceneGame::Render()
    // screenR->end();
     player.render(camera);
     SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
-    Geometric::Board(GetWorldMatrix({ 0,-1,3 }, { 1,1,1 }, { 0,0,0 }));
     SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
 }
 

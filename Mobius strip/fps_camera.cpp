@@ -251,7 +251,6 @@ void FPSCamera::update(XMMATRIX player_world_matrix, FLOAT3 center)
 
 	XMStoreFloat3(&targetVec3, targetVec);
 	targetPos = FLOAT3(center.x, center.y, center.z) + FLOAT3(targetVec3.x, targetVec3.y, targetVec3.z) * 10.0f;
-	Geometric::Sphere(GetWorldMatrix(targetPos, { 1,1,1 }, { 0,0,0 }));
 	SetTarget(targetPos);
 	zoom();
 }
