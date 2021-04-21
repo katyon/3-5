@@ -142,29 +142,35 @@ public:
     }
 };
 
-//class GameItem :public ItemArr
-//{
-//private:
-//    GameItem()
-//    {
-//        for (int i = 0; i < ITEM_MAX; i++)
-//        {
-//            pos[i] = { 128.0f,256.0f * i + 128.0f };
-//        }
-//        reset();
-//    }
-//
-//public:
-//    void isChoice() override;
-//    void update();
-//    void draw();
-//
-//    static GameItem* getInstance()
-//    {
-//        static GameItem ins;
-//        return &ins;
-//    }
-//
-//};
+#define M_Item ItemMenu::getInstance()
 
+class GameItem :public ItemArr
+{
+private:
+    SkinnedMesh Item;
+    bool select = false;
 
+    GameItem()
+    {
+        for (int i = 0; i < ITEM_MAX; i++)
+        {
+            pos[i] = { 128.0f,256.0f * i + 128.0f };
+        }
+        reset();
+    }
+    int timer = 0;
+
+public:
+    void init();
+    void isChoice() override;
+    void update();
+    void draw();
+
+    static GameItem* getInstance()
+    {
+        static GameItem ins;
+        return &ins;
+    }
+};
+
+#define G_Item GameItem::getInstance()

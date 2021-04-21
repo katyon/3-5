@@ -1,6 +1,5 @@
 #include "SceneGame.h"
 #include "ButtonPush.h"
-
 #include "menu.h"
 #include "Item.h"
 Menu menu;
@@ -33,7 +32,7 @@ void SceneGame::Initialize()
     //ButtonPush::getInstance()->init();
     //pipe_puzzle.Init();
     menu.init();
-    ItemMenu::getInstance()->init();
+    M_Item->init();
     camera.SetPos(FLOAT3(0, 0, -1));
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
@@ -44,41 +43,53 @@ void SceneGame::Initialize()
 //経過時間が渡されます
 void SceneGame::Update(float elapsed_time)
 {
-    switch (game_mode)
-    {
-    case normal:
-        // ボタンプッシュ
-        //ButtonPush::getInstance()->update(camera);
-        //pipe_puzzle.Update();
-        //if (input::TRG('P'))
-        //{
-        //    for (int i = 0; i < screenR->max_racord; i++)
-        //    {
-        //        if (!screenR->records[i])
-        //        {
-        //            screenR->save(i);
-        //        }
-        //    }
-        //}
-        //if (input::TRG(VK_TAB))
-        //{
-        //    menu.isPause = true;
-        //    game_mode = menue;
-        //}
-        break;
-    case menue:
-        //if (menu.isPause)
-        //{
-        //    menu.update();
-        //    ItemMenu::getInstance()->update();
-        //}
-        break;
-    case balance:
+ 
 
-        break;
-    }
+        switch (game_mode)
+        {
+        case normal:
+            // ボタンプッシュ
+            //ButtonPush::getInstance()->update(camera);
+            //pipe_puzzle.Update();
+            if (input::TRG('P'))
+            {
+                for (int i = 0; i < screenR->max_racord; i++)
+                {
+                    if (!screenR->records[i])
+                    {
+                        screenR->save(i);
+                        break;
+                    }
+                }
+            }
 
-    camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+            camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+
+            if (input::TRG(VK_TAB))
+            {
+                menu.isPause = true;
+                menu.tab = MenuTab::Item;
+                game_mode = menue;
+            }
+            break;
+
+        case menue:
+            if (input::TRG(VK_TAB))
+            {
+                game_mode = normal;
+            }
+            if (menu.isPause)
+            {
+                menu.update();
+                M_Item->update();
+            }
+            G_Item->update();
+            break;
+        case balance:
+
+            break;
+        }
+
     player.update(camera);
     Debug->SetString("カメラ回転中心座標 %f %f %f", player.getPos().x, player.getPos().y + 12.5f, player.getPos().z);
     Debug->SetString("カメラ座標 %f %f %f", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
@@ -88,21 +99,34 @@ void SceneGame::Update(float elapsed_time)
 //シーンの描画処理
 void SceneGame::Render()
 {
+    switch (game_mode)
+    {
+    case normal:
+        screenR->begin();
+         player.render(camera);
+         SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
+         SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
+         screenR->end();
+        break;
+
+    case menue:
+        screenR->begin();
+        if (menu.isPause)
+        {
+            menu.draw();
+        }
+        screenR->end();
+        G_Item->draw();
+        break;
+    case balance:
+
+        break;
+    }
     // ボタンプッシュ
     //ButtonPush::getInstance()->Render(camera);
     //pipe_puzzle.Render(camera);
-   // screenR->begin();
-   // Debug->SetString("マウスカーソル.x::%f", input::GetMousePos().x);
-   // Debug->SetString("マウスカーソル.y::%f", input::GetMousePos().y);
-    //if (menu.isPause)
-    //{
-    //    menu.draw();
-    //}
-   // screenR->end();
-    player.render(camera);
-    SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
-    Geometric::Board(GetWorldMatrix({ 0,-1,3 }, { 1,1,1 }, { 0,0,0 }));
-    SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
+
+
 }
 
 
