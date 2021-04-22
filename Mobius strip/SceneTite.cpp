@@ -80,8 +80,7 @@ void SceneTitle::Update(float elapsed_time)
 
 	camera.SetPos(cPos);
 	camera.SetTarget(cTarget);
-}
-{
+
 	if (input::TRG(input::MOUSE_L))
 	{
 		ChangeScene(S_GAME);

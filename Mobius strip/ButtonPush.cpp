@@ -406,8 +406,10 @@ void ButtonPush::Render(const Camera& camera)
 {
 	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(0.1, 0.1, 0.1), base.posture, camera.LightFloamCamera());
 
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5; j++) {
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++) 
+		{
 			SkinnedMeshRender(button[i][j].model, camera, button[i][j].pos, FLOAT3(0.1, 0.1, 0.1), button[i][j].posture, camera.LightFloamCamera());
 		}
 	}

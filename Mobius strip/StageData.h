@@ -195,7 +195,7 @@ inline void load_stage_from_file_ex(const std::string& file_pass,
 				if (it != manager->end())
 				{
 					object.ID = filename;
-					//if (object.ID != "ColBox.fbx")
+					if (object.ID != "ColBox.fbx")
 					{
 						object.body.SetModel(&it->second.m);
 					}

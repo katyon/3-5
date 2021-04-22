@@ -303,6 +303,7 @@
     <ClInclude Include="fps_camera.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="OBBs.h" />
     <ClInclude Include="orbital_camera.h" />
     <ClInclude Include="PipePuzzle.h" />
     <ClInclude Include="player.h" />
