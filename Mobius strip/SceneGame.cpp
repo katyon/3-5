@@ -14,7 +14,7 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     stage.load("Data/Objects/stage.fbx");
     SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
-    SpriteLoad(3, L"Data/Sprite/CLEAR.png");
+    SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
     itemObj->init();
     // ボタンプッシュ ここから
     camera.SetPos({ 0,200,-10 });
@@ -66,6 +66,12 @@ void SceneGame::Initialize()
 //経過時間が渡されます
 void SceneGame::Update(float elapsed_time)
 {
+    if (ClearGame)
+        return;
+    //if (input::TRG(input::TRG('T')))
+    //{
+    //    ClearGame = true;
+    //}
     switch (game_mode)
     {
     case normal:
@@ -110,7 +116,6 @@ void SceneGame::Update(float elapsed_time)
 
         break;
     }
-    ClearGame = true;
 
     player.update(camera);
     Debug->SetString("カメラ回転中心座標 %f %f %f", player.getPos().x, player.getPos().y + 12.5f, player.getPos().z);
@@ -144,7 +149,10 @@ void SceneGame::Render()
 
         SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
         SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
-        //SpriteRender(3, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
+        if (ClearGame)
+        {
+            Animation(sprClear, 12, nowdata, 2, 2, { 0,0 }, { 1,1 }, { 0,0 }, { 1920,1080 });
+        }
         break;
 
     case menue:

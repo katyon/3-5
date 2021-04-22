@@ -1,5 +1,6 @@
 #pragma once
 #include "AliceLib\AliceLib.h"
+#include "AliceLib\Animation.h"
 #include "PipePuzzle.h"
 #include "fps_camera.h"
 #include "tps_camera.h"
@@ -17,6 +18,9 @@ private:
 	SceneGame();
 
 	PipePuzzle pipe_puzzle;
+
+	Sprite sprClear;
+	AnimaData nowdata;
 
 	enum GameMode
 	{

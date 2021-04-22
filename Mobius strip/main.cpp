@@ -47,7 +47,7 @@ void AllInitializes()
 		flame_constant.Active(0, 0, 1);
 		flame.SetPSSharders();
 		FullScreenQuadBlit();
-		font::OutPut(L"なうろーでぃんぐ(仮)",0,0);
+		font::OutPut(L"Loading...",0,0);
 
 		AliceLib::Present(1, 0);
 	}
