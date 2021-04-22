@@ -5,7 +5,7 @@
 SceneTitle::SceneTitle()
 {
 	//Todo::ここにソースを記入する
-
+	title.load("Data/Objects/title.fbx");
 	//コンストラクタの最後で念のための初期化を行う
 	SceneTitle::Initialize();
 }
@@ -13,18 +13,75 @@ SceneTitle::SceneTitle()
 //シーン変更された瞬間に実行される処理
 void SceneTitle::Initialize()
 {
-
+	cPos = { 35.5,14,13.5 };
+	cTarget = { -141.5,-5.5,7 };
+	title_pos = { 0,0,0 };
 }
 
 //シーン全体の更新処理
 //経過時間が渡されます
 void SceneTitle::Update(float elapsed_time)
-{
+{	
+	//if (input::STATE('A'))
+	//{
+	//	cPos.x += 0.5f;
+	//}
+	//if (input::STATE('D'))
+	//{
+	//	cPos.x -= 0.5f;
+	//}
+	//if (input::STATE('W'))
+	//{
+	//	cPos.y += 0.5f;
+	//}
+	//if (input::STATE('S'))
+	//{
+	//	cPos.y -= 0.5f;
+	//}	
+	//if (input::STATE('Q'))
+	//{
+	//	cPos.z += 0.5f;
+	//}
+	//if (input::STATE('E'))
+	//{		
+	//	cPos.z -= 0.5f;
+	//}
+
+	//if (input::STATE('J'))
+	//{
+	//	cTarget.x += 0.5f;
+	//}
+	//if (input::STATE('L'))
+	//{
+	//	cTarget.x -= 0.5f;
+	//}
+	//if (input::STATE('I'))
+	//{
+	//	cTarget.y += 0.5f;
+	//}
+	//if (input::STATE('K'))
+	//{
+	//	cTarget.y -= 0.5f;
+	//}
+	//if (input::STATE('U'))
+	//{
+	//	cTarget.z += 0.5f;
+	//}
+	//if (input::STATE('O'))
+	//{
+	//	cTarget.z -= 0.5f;
+	//}
+
+	camera.SetPos(cPos);
+	camera.SetTarget(cTarget);
 }
 
 //シーンの描画処理
 void SceneTitle::Render()
 {
+	Debug->SetString("X:%f\nY:%f\nZ:%fTarget\nX:%f\nY:%f\nZ:%f", cPos.x, cPos.y, cPos.z, cTarget.x, cTarget.y, cTarget.z);
+
+	SkinnedMeshRender(title, camera, title_pos, FLOAT3(0.1, 0.1, 0.1), title_posture, camera.LightFloamCamera());
 }
 
 

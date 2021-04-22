@@ -9,11 +9,16 @@ class SceneTitle
 private:
 	//FPSCamera camera;
 	//Player player;
-	//SkinnedMesh stage;
+	SkinnedMesh title;
+	FLOAT3	title_pos;
+	Quaternion title_posture;
+
+	FLOAT3 cPos;
+	FLOAT3 cTarget;
 
 	SceneTitle();
 public:
-	//Camera camera;
+	Camera camera;
 
 	static SceneTitle* getInstance()
 	{
