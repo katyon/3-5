@@ -136,6 +136,7 @@ void SceneGame::Render()
         break;
 
     case menue:
+
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
         if (menu.isPause)
