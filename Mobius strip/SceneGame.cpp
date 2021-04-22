@@ -13,8 +13,8 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     SpriteLoad(1, L"Data/Sprite/center.png");
     itemObj->init();
     // ボタンプッシュ ここから
-    //camera.SetPos({ 0,200,-10 });
-    //camera.SetTarget({ 0,0,0 });
+    camera.SetPos({ 0,200,-10 });
+    camera.SetTarget({ 0,0,0 });
 
     ButtonPush::getInstance()->init();
     // ボタンプッシュ　ここまで
@@ -29,15 +29,15 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 void SceneGame::Initialize()
 {
     // ボタンプッシュ これはいらないかも
-    //ButtonPush::getInstance()->init();
-    //pipe_puzzle.Init();
-    menu.init();
+    ButtonPush::getInstance()->init();
+    pipe_puzzle.Init();
+    itemObj->init();
     M_Item->init();
+    menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
     player.init();
-    itemObj->init();
 
 }
 
@@ -49,8 +49,9 @@ void SceneGame::Update(float elapsed_time)
     {
     case normal:
         // ボタンプッシュ
-        //ButtonPush::getInstance()->update(camera);
-        //pipe_puzzle.Update();
+        ButtonPush::getInstance()->update(camera);
+        pipe_puzzle.Update();
+        itemObj->update(camera);
         if (input::TRG('P'))
         {
             for (int i = 0; i < screenR->max_racord; i++)
@@ -80,7 +81,6 @@ void SceneGame::Update(float elapsed_time)
         if (menu.isPause)
         {
             menu.update();
-            M_Item->update();
         }
         break;
     case balance:
@@ -89,7 +89,6 @@ void SceneGame::Update(float elapsed_time)
     }
 
     player.update(camera);
-    itemObj->update(camera);
     Debug->SetString("カメラ回転中心座標 %f %f %f", player.getPos().x, player.getPos().y + 12.5f, player.getPos().z);
     Debug->SetString("カメラ座標 %f %f %f", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
     Debug->SetString("カメラの距離 %f", FLOAT3::distanceFrom({ player.getPos().x, player.getPos().y + 12.5f, player.getPos().z }, camera.GetPos()));
@@ -103,36 +102,37 @@ void SceneGame::Render()
     case normal:
         screenR->begin();
         player.render(camera);
-        SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera()); 
-        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
-         screenR->end();
+        SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
 
+        // ボタンプッシュ
+        ButtonPush::getInstance()->Render(camera);
+        itemObj->render(camera);
+
+        pipe_puzzle.Render(camera);
+
+        screenR->end();
+
+        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
         break;
 
     case menue:
-        //screenR->begin();
+
+        Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
+        Debug->SetString("y座標：%f", input::GetMousePos().y);
         if (menu.isPause)
         {
             menu.draw();
         }
-        //screenR->end();
         break;
     case balance:
 
         break;
     }
-    // ボタンプッシュ
-    //ButtonPush::getInstance()->Render(camera);
-    itemObj->render(camera);
-
-    pipe_puzzle.Render(camera);
-
-
 }
 
 
 //シーンが切り替わるタイミングで呼ばれる処理
 void SceneGame::Uninitialize()
 {
-    //pipe_puzzle.Release();
+    pipe_puzzle.Release();
 }

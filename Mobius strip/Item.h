@@ -20,6 +20,7 @@ public:
     FLOAT2 pos[ITEM_MAX];   // 表示位置
     FLOAT2 scale[ITEM_MAX]; // 表示サイズ
     FLOAT2 src[ITEM_MAX];
+
     ITEM_ID items[ITEM_MAX];
     bool isobserve[ITEM_MAX];
     bool exist[ITEM_MAX];
@@ -118,9 +119,17 @@ public:
         }
         return ID_EMPTY;
     }
+
+    static ItemArr* getInstance()
+    {
+        static ItemArr ins;
+        return &ins;
+    }
 };
 
-class ItemObj :public ItemArr
+#define arr ItemArr::getInstance()
+
+class ItemObj
 {
 private:
     SkinnedMesh kami;
@@ -150,18 +159,15 @@ public:
 
 #define itemObj ItemObj::getInstance()
 
-class ItemMenu :public ItemArr
+class ItemMenu
 {
 public:
     ItemMenu()
     {
-        for (int i = 0; i < ITEM_MAX; i++)
-        {
-            pos[i] = { 128.0f * i + 128.0f,256.0f };
-        }
-        reset();
+        arr->reset();
     }
     void isChoice();
+    void init();
     void update();
     void draw();
 
