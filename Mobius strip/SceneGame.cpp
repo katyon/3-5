@@ -36,6 +36,8 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 
     Audio::load(1, L"Data/BGM/Waltz.wav");
     Audio::SetVolume(1, 0.4f);
+    Audio::load(5, L"Data/BGM/menu.wav");
+    Audio::SetVolume(5, 0.7f);
     //コンストラクタの最後で念のための初期化を行う
     //SceneGame::Initialize();
 }
@@ -107,6 +109,7 @@ void SceneGame::Update(float elapsed_time)
         if (input::TRG(VK_TAB))
         {
             game_mode = normal;
+            Audio::play(5);
         }
         if (menu.isPause)
         {
@@ -176,5 +179,4 @@ void SceneGame::Render()
 void SceneGame::Uninitialize()
 {
     pipe_puzzle.Release();
-    //Audio::unload(1);
 }
