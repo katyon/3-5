@@ -50,6 +50,14 @@ struct StageObject
 	}
 };
 
+struct ItemBox
+{
+	int option;
+	OBB obb;
+	ItemBox(const FLOAT3& pos, const FLOAT3& len, const Quaternion& angle, int o)
+		:obb(pos,len,angle),option(o) {}
+};
+
 /*
 	ステージ内に設置するモデル
 	をカプセルしたクラス
@@ -91,7 +99,7 @@ inline void load_stage_from_file(const std::string& file_pass,
 	static	FLOAT4 q;
 	if (fp)
 	{
-		int   isbody, isshow,option;
+		int   isbody, isshow;
 		for (StageObject& object : objects)
 		{
 			char filename[256] = {};
@@ -113,7 +121,7 @@ inline void load_stage_from_file(const std::string& file_pass,
 			fscanf(fp, "%f,", &q.z);
 			fscanf(fp, "%f,", &q.w);
 			//オプション
-			fscanf(fp, "%d,", &option);
+			fscanf(fp, "%d,", &object.option);
 			//ID
 			fscanf(fp, "%s", filename);
 			fprintf(fp, "\n");
@@ -139,7 +147,10 @@ inline void load_stage_from_file(const std::string& file_pass,
 */
 template<size_t arr_size>
 inline void load_stage_from_file_ex(const std::string& file_pass,
-	StageObject(&objects)[arr_size], std::vector<OBB>& ColBoxs, std::map<std::string, cStageModel>* manager)
+	StageObject(&objects)[arr_size], 
+	std::vector<OBB>& ColBoxs, 
+	std::vector<ItemBox> ItemBoxs, 
+	std::map<std::string, cStageModel>* manager)
 {
 	//ファイルがないならロードしない
 	if (!checkFileExistence(file_pass))
@@ -150,7 +161,7 @@ inline void load_stage_from_file_ex(const std::string& file_pass,
 	static	FLOAT4 q;
 	if (fp)
 	{
-		int   isbody, isshow, option;
+		int   isbody, isshow;
 		for (StageObject& object : objects)
 		{
 			char filename[256] = {};
@@ -172,7 +183,7 @@ inline void load_stage_from_file_ex(const std::string& file_pass,
 			fscanf(fp, "%f,", &q.z);
 			fscanf(fp, "%f,", &q.w);
 			//オプション
-			fscanf(fp, "%d,", &option);
+			fscanf(fp, "%d,", &object.option);
 			//ID
 			fscanf(fp, "%s", filename);
 			fprintf(fp, "\n");
@@ -190,7 +201,15 @@ inline void load_stage_from_file_ex(const std::string& file_pass,
 					}
 					else
 					{
-						ColBoxs.push_back(OBB(object.position, object.scales,object.posture));
+						switch (object.option)
+						{
+						case -1:
+							ColBoxs.push_back(OBB(object.position, object.scales,object.posture));
+							break;
+						default:
+							ItemBoxs.push_back({ object.position, object.scales,object.posture ,object.option});
+							break;
+						}
 					}
 				}
 			}
@@ -209,13 +228,16 @@ public:
 protected:
 	//ステージ内に設置するオブジェクト
 	StageObject	objects[StageData::MaxObjects];
+	
 	std::vector<OBB>			ColBoxs;
+	std::vector<ItemBox>			ItemBoxs;
+
 public:
 	StageData() {}
 	StageData(const StageData&) {}
 	void Load(std::string file_name, std::map<std::string, cStageModel>* manager)
 	{
-		load_stage_from_file_ex(file_name, objects, ColBoxs, manager);
+		load_stage_from_file_ex(file_name, objects, ColBoxs,ItemBoxs, manager);
 	}
 	StageObject* getObdects()
 	{
@@ -224,6 +246,11 @@ public:
 	const std::vector<OBB>& GetObbs()const
 	{
 		return ColBoxs;
+	}
+
+	const std::vector<ItemBox>& GetItemBoxs()const
+	{
+		return ItemBoxs;
 	}
 	void Render()
 	{
