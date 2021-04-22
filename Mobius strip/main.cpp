@@ -82,7 +82,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	{
 
 		//現在のシーンを取得する
-		scene = AliceLib::GetNowScene();
+		//scene = AliceLib::GetNowScene();
 		elapsed_time = DeltaTime();
 #if _DEBUG
 		ImGuiNewFrame();
@@ -113,6 +113,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			}
 		}
 #endif
+		scene = AliceLib::GetNowScene();
 		//前のシーンと現在のシーンが違うとき
 		if (AliceLib::InitFlg())
 		{

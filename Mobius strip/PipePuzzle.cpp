@@ -66,6 +66,9 @@ PipePuzzle::PipePuzzle()
     straight_pipe.load("Data\\Objects\\StrightPipe.fbx");
     start_pipe.load("Data\\Objects\\StartPipe.fbx");
     goal_pipe.load("Data\\Objects\\GoalPipe.fbx");
+
+    Audio::load(2, L"Data/BGM/pipe.wav");
+
 }
 
 void PipePuzzle::Init()
@@ -116,26 +119,32 @@ void PipePuzzle::Update()
         {
         case CURVE0:
             Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE1;
+            Audio::play(2);
             break;
 
         case CURVE1:
             Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE2;
+            Audio::play(2);
             break;
 
         case CURVE2:
             Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE3;
+            Audio::play(2);
             break;
 
         case CURVE3:
             Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE0;
+            Audio::play(2);
             break;
             
         case STRAIGHT0:
             Pipes[Cursor_pos_y][Cursor_pos_x] = STRAIGHT1;
+            Audio::play(2);
             break;
 
         case STRAIGHT1:
             Pipes[Cursor_pos_y][Cursor_pos_x] = STRAIGHT0;
+            Audio::play(2);
             break;
         }
 
