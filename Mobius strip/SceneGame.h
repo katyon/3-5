@@ -31,6 +31,7 @@ public:
 	// ’Ç‰Á@ƒ{ƒ^ƒ“‰Ÿ‚µ‚İ
 	//Camera camera;
 	//Camera camera;
+	bool ClearButoon = false;
 
 	static SceneGame* getInstance()
 	{

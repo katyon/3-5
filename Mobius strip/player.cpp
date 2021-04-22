@@ -56,6 +56,15 @@ void Player::move(const Camera& camera)
 		Dest.target += Dest.back;
 	}
 
+	if (input::STATE('E'))
+	{
+		pos.y += 0.5f;
+	}
+	if (input::STATE('Q'))
+	{
+		pos.y -= 0.5f;
+	}
+
 	if (Dest.target.length() <= 0.000001)
 	{
 		moves = false;
