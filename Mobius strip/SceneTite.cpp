@@ -17,7 +17,7 @@ void SceneTitle::Initialize()
 	cPos = { 35.5,14,13.5 };
 	cTarget = { -141.5,-5.5,7 };
 	title_pos = { 0,0,0 };
-	ChangeScene(1);
+	//ChangeScene(1);
 	Audio::stop(1);
 
 	//Audio::SetVolume(0, 0.5f);
