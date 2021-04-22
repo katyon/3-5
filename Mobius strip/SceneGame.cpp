@@ -13,8 +13,8 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     SpriteLoad(1, L"Data/Sprite/center.png");
     itemObj->init();
     // ボタンプッシュ ここから
-    //camera.SetPos({ 0,200,-10 });
-    //camera.SetTarget({ 0,0,0 });
+    camera.SetPos({ 0,200,-10 });
+    camera.SetTarget({ 0,0,0 });
 
     ButtonPush::getInstance()->init();
     // ボタンプッシュ　ここまで
@@ -29,8 +29,8 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 void SceneGame::Initialize()
 {
     // ボタンプッシュ これはいらないかも
-    //ButtonPush::getInstance()->init();
-    //pipe_puzzle.Init();
+    ButtonPush::getInstance()->init();
+    pipe_puzzle.Init();
     menu.init();
     M_Item->init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -49,8 +49,8 @@ void SceneGame::Update(float elapsed_time)
     {
     case normal:
         // ボタンプッシュ
-        //ButtonPush::getInstance()->update(camera);
-        //pipe_puzzle.Update();
+        ButtonPush::getInstance()->update(camera);
+        pipe_puzzle.Update();
         if (input::TRG('P'))
         {
             for (int i = 0; i < screenR->max_racord; i++)
@@ -104,9 +104,16 @@ void SceneGame::Render()
         screenR->begin();
         player.render(camera);
         SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera()); 
-        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
+
+        // ボタンプッシュ
+        ButtonPush::getInstance()->Render(camera);
+        itemObj->render(camera);
+
+        pipe_puzzle.Render(camera);
+
          screenR->end();
 
+        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
         break;
 
     case menue:
@@ -121,18 +128,11 @@ void SceneGame::Render()
 
         break;
     }
-    // ボタンプッシュ
-    //ButtonPush::getInstance()->Render(camera);
-    itemObj->render(camera);
-
-    pipe_puzzle.Render(camera);
-
-
 }
 
 
 //シーンが切り替わるタイミングで呼ばれる処理
 void SceneGame::Uninitialize()
 {
-    //pipe_puzzle.Release();
+    pipe_puzzle.Release();
 }

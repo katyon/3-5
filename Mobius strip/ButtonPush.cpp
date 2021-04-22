@@ -5,7 +5,7 @@
 //#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
-
+#define DownPos 2.5
 
 ButtonPush::ButtonPush()
 {
@@ -42,37 +42,37 @@ ButtonPush::ButtonPush()
 void ButtonPush::init()
 {
 	// èâä˙ç¿ïW
-	base.pos = { 0,3,0 };
+	base.pos = { 10,2,0 };
 
-	button[0][0].pos = { -26,13,28 };
-	button[0][1].pos = { -13,13,28 };
-	button[0][2].pos = { 0,13,28 };
-	button[0][3].pos = { 13,13,28 };
-	button[0][4].pos = { 26,13,28 };
+	button[0][0].pos = {10+ -2.6,3,2.8 };
+	button[0][1].pos = {10+ -1.3,3,2.8 };
+	button[0][2].pos = {10+ 0,3,2.8 };
+	button[0][3].pos = {10+ 1.3,3,2.8 };
+	button[0][4].pos = {10+ 2.6,3,2.8 };
 
-	button[1][0].pos = { -26,13,14 };
-	button[1][1].pos = { -13,13,14 };
-	button[1][2].pos = { 0,13,14 };
-	button[1][3].pos = { 13,13,14 };
-	button[1][4].pos = { 26,13,14 };
+	button[1][0].pos = {10 + -2.6,3,1.4 };
+	button[1][1].pos = {10 + -1.3,3,1.4 };
+	button[1][2].pos = {10 + 0,3,1.4 };
+	button[1][3].pos = {10 + 1.3,3,1.4 };
+	button[1][4].pos = {10 + 2.6,3,1.4 };
 
-	button[2][0].pos = { -26,13,0 };
-	button[2][1].pos = { -13,13,0 };
-	button[2][2].pos = { 0,13,0 };
-	button[2][3].pos = { 13,13,0 };
-	button[2][4].pos = { 26,13,0 };
+	button[2][0].pos = {10 + -2.6,3,0 };
+	button[2][1].pos = {10 + -1.3,3,0 };
+	button[2][2].pos = {10 + 0,3,0 };
+	button[2][3].pos = {10 + 1.3,3,0 };
+	button[2][4].pos = {10 + 2.6,3,0 };
 
-	button[3][0].pos = { -26,13,-14 };
-	button[3][1].pos = { -13,13,-14 };
-	button[3][2].pos = { 0,13,-14 };
-	button[3][3].pos = { 13,13,-14 };
-	button[3][4].pos = { 26,13,-14 };
+	button[3][0].pos = { 10 + -2.6,3,-1.4 };
+	button[3][1].pos = { 10 + -1.3,3,-1.4 };
+	button[3][2].pos = { 10 + 0,3,-1.4 };
+	button[3][3].pos = { 10 + 1.3,3,-1.4 };
+	button[3][4].pos = { 10 + 2.6,3,-1.4 };
 
-	button[4][0].pos = { -26,13,-28 };
-	button[4][1].pos = { -13,13,-28 };
-	button[4][2].pos = { 0,13,-28 };
-	button[4][3].pos = { 13,13,-28 };
-	button[4][4].pos = { 26,13,-28 };
+	button[4][0].pos = {10+ -2.6,3,-2.8 };
+	button[4][1].pos = {10+ -1.3,3,-2.8 };
+	button[4][2].pos = {10+ 0,3,-2.8 };
+	button[4][3].pos = {10+ 1.3,3,-2.8 };
+	button[4][4].pos = {10+ 2.6,3,-2.8 };
 
 	// êŒî¬ÇÃéØï î‘çÜê›íË
 	// 11 12 13 14 15
@@ -117,7 +117,7 @@ bool ButtonPush::judge_answer()
 			{			
 				int tens = storage_board[i] / 10 % 10 - 1;
 				int ones = storage_board[i] % 10 - 1;
-				button[tens][ones].pos.y = 13;
+				button[tens][ones].pos.y = 3;
 				button[tens][ones].Pushflg = false;
 
 				storage_board[i] = 0;
@@ -138,54 +138,81 @@ bool ButtonPush::judge_answer()
 void ButtonPush::update(const Camera& camera)
 {
 	FLOAT3 start, end;
-	FLOAT3 HitPos[25];
-
+	FLOAT3 HitPos[2];
+	bool result = false;
+	float dis = 0.0f;
+	int operation_x = -1;
+	int operation_y = -1;
 
 	// Ç±Ç±Ç…ÉLÅ[ëÄçÏ
 	if (input::TRG(input::MOUSE_L)&& !final_judge) {
 		
 		getMouseRay(camera, start, end);
 		
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				button[i][j].isPush = ColLineOBB(start, end, { button[i][j].pos,FLOAT3(10, 10, 10),button[i][j].posture }, HitPos[i]);
+		for (int i = 0; i < 5; i++) 
+		{
+			for (int j = 0; j < 5; j++) 
+			{
+				button[i][j].isPush = false;
+				if (ColLineOBB(start, end, { button[i][j].pos,FLOAT3(1, 1, 1),button[i][j].posture }, HitPos[0])) 
+				{
+					if (!result)
+					{
+						HitPos[1] = HitPos[0];
+						dis = start.distanceFrom(HitPos[1]);
+						operation_y = i;
+						operation_x = j;
+						result = true;
+					}
+					else
+					{
+						float s_h = start.distanceFrom(HitPos[0]);
+						if (s_h < dis)
+						{
+							operation_y = i;
+							operation_x = j;
+							HitPos[1] = HitPos[0];
+							dis = start.distanceFrom(HitPos[1]);
+						}
+					}
+				}
 			}
 		}
-		
+		button[operation_y][operation_x].isPush = true;
 		
 		if (button[0][0].isPush && !button[0][0].Pushflg)
 		{
 			push_botton(0, 0);
 			button[0][0].isPush = false;
-			button[0][0].pos.y = 5;
+			button[0][0].pos.y = DownPos;
 			button[0][0].Pushflg = true;
 		}
 		if (button[1][0].isPush && !button[1][0].Pushflg)
 		{
 			push_botton(1, 0);
 			button[1][0].isPush = false;
-			button[1][0].pos.y = 5;
+			button[1][0].pos.y = DownPos;
 			button[1][0].Pushflg = true;
 		}
 		if (button[2][0].isPush && !button[2][0].Pushflg)
 		{
 			push_botton(2, 0);
 			button[2][0].isPush = false;
-			button[2][0].pos.y = 5;
+			button[2][0].pos.y = DownPos;
 			button[2][0].Pushflg = true;
 		}
 		if (button[3][0].isPush && !button[3][0].Pushflg)
 		{
 			push_botton(3, 0);
 			button[3][0].isPush = false;
-			button[3][0].pos.y = 5;
+			button[3][0].pos.y = DownPos;
 			button[3][0].Pushflg = true;
 		}
 		if (button[4][0].isPush && !button[4][0].Pushflg)
 		{
 			push_botton(4, 0);
 			button[4][0].isPush = false;
-			button[4][0].pos.y = 5;
+			button[4][0].pos.y = DownPos;
 			button[4][0].Pushflg = true;
 		}
 
@@ -193,34 +220,34 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 1);
 			button[0][1].isPush = false;
-			button[0][1].pos.y = 5;
+			button[0][1].pos.y = DownPos;
 			button[0][1].Pushflg = true;
 		}
 		if (button[1][1].isPush && !button[1][1].Pushflg)
 		{
 			push_botton(1, 1);
 			button[1][1].isPush = false;
-			button[1][1].pos.y = 5;
+			button[1][1].pos.y = DownPos;
 		}
 		if (button[2][1].isPush && !button[2][1].Pushflg)
 		{
 			push_botton(2, 1);
 			button[2][1].isPush = false;
-			button[2][1].pos.y = 5;
+			button[2][1].pos.y = DownPos;
 			button[2][1].Pushflg = true;
 		}
 		if (button[3][1].isPush && !button[3][1].Pushflg)
 		{
 			push_botton(3, 1);
 			button[3][1].isPush = false;
-			button[3][1].pos.y = 5;
+			button[3][1].pos.y = DownPos;
 			button[3][1].Pushflg = true;
 		}
 		if (button[4][1].isPush && !button[4][1].Pushflg)
 		{
 			push_botton(4, 1);
 			button[4][1].isPush = false;
-			button[4][1].pos.y = 5;
+			button[4][1].pos.y = DownPos;
 			button[4][1].Pushflg = true;
 		}
 
@@ -228,34 +255,34 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 2);
 			button[0][2].isPush = false;
-			button[0][2].pos.y = 5;
+			button[0][2].pos.y = DownPos;
 			button[0][2].Pushflg = true;
 		}
 		if (button[1][2].isPush && !button[1][2].Pushflg)
 		{
 			push_botton(1, 2);
 			button[1][2].isPush = false;
-			button[1][2].pos.y = 5;
+			button[1][2].pos.y = DownPos;
 			button[1][2].Pushflg = true;
 		}
 		if (button[2][2].isPush && !button[2][2].Pushflg)
 		{
 			push_botton(2, 2);
 			button[2][2].isPush = false;
-			button[2][2].pos.y = 5;
+			button[2][2].pos.y = DownPos;
 			button[2][2].Pushflg = true;
 		}
 		if (button[3][2].isPush && !button[3][2].Pushflg)
 		{
 			push_botton(3, 2);
 			button[3][2].isPush = false;
-			button[3][2].pos.y = 5;
+			button[3][2].pos.y = DownPos;
 		}
 		if (button[4][2].isPush && !button[4][2].Pushflg)
 		{
 			push_botton(4, 2);
 			button[4][2].isPush = false;
-			button[4][2].pos.y = 5;
+			button[4][2].pos.y = DownPos;
 			button[4][2].Pushflg = true;
 		}
 
@@ -263,35 +290,35 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 3);
 			button[0][3].isPush = false;
-			button[0][3].pos.y = 5;
+			button[0][3].pos.y = DownPos;
 			button[0][3].Pushflg = true;
 		}
 		if (button[1][3].isPush && !button[1][3].Pushflg)
 		{
 			push_botton(1, 3);
 			button[1][3].isPush = false;
-			button[1][3].pos.y = 5;
+			button[1][3].pos.y = DownPos;
 			button[1][3].Pushflg = true;
 		}
 		if (button[2][3].isPush && !button[2][3].Pushflg)
 		{
 			push_botton(2, 3);
 			button[2][3].isPush = false;
-			button[2][3].pos.y = 5;
+			button[2][3].pos.y = DownPos;
 			button[2][3].Pushflg = true;
 		}
 		if (button[3][3].isPush && !button[3][3].Pushflg)
 		{
 			push_botton(3, 3);
 			button[3][3].isPush = false;
-			button[3][3].pos.y = 5;
+			button[3][3].pos.y = DownPos;
 			button[3][3].Pushflg = true;
 		}
 		if (button[4][3].isPush && !button[4][3].Pushflg)
 		{
 			push_botton(4, 3);
 			button[4][3].isPush = false;
-			button[4][3].pos.y = 5;
+			button[4][3].pos.y = DownPos;
 			button[4][3].Pushflg = true;
 		}
 
@@ -299,35 +326,35 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 4);
 			button[0][4].isPush = false;
-			button[0][4].pos.y = 5;
+			button[0][4].pos.y = DownPos;
 			button[0][4].Pushflg = true;
 		}
 		if (button[1][4].isPush && !button[1][4].Pushflg)
 		{
 			push_botton(1, 4);
 			button[1][4].isPush = false;		
-			button[1][4].pos.y = 5;
+			button[1][4].pos.y = DownPos;
 			button[1][4].Pushflg = true;
 		}
 		if (button[2][4].isPush && !button[2][4].Pushflg)
 		{
 			push_botton(2, 4);
 			button[2][4].isPush = false;
-			button[2][4].pos.y = 5;
+			button[2][4].pos.y = DownPos;
 			button[2][4].Pushflg = true;
 		}
 		if (button[3][4].isPush && !button[3][4].Pushflg)
 		{
 			push_botton(3, 4);
 			button[3][4].isPush = false;
-			button[3][4].pos.y = 5;
+			button[3][4].pos.y = DownPos;
 			button[3][4].Pushflg = true;
 		}
 		if (button[4][4].isPush && !button[4][4].Pushflg)
 		{
 			push_botton(4, 4);
 			button[4][4].isPush = false;
-			button[4][4].pos.y = 5;
+			button[4][4].pos.y = DownPos;
 			button[4][4].Pushflg = true;
 		}
 
@@ -347,8 +374,8 @@ void ButtonPush::update(const Camera& camera)
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) 
 			{
-				if (button[i][j].pos.y > 5) {
-					button[i][j].pos.y -= 0.5;
+				if (button[i][j].pos.y > DownPos) {
+					button[i][j].pos.y -= 0.05;
 				}
 			}
 		}
@@ -377,11 +404,11 @@ void ButtonPush::push_botton(int height, int width)
 
 void ButtonPush::Render(const Camera& camera)
 {
-	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(1, 1, 1), base.posture, camera.LightFloamCamera());
+	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(0.1, 0.1, 0.1), base.posture, camera.LightFloamCamera());
 
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
-			SkinnedMeshRender(button[i][j].model, camera, button[i][j].pos, FLOAT3(1, 1, 1), button[i][j].posture, camera.LightFloamCamera());
+			SkinnedMeshRender(button[i][j].model, camera, button[i][j].pos, FLOAT3(0.1, 0.1, 0.1), button[i][j].posture, camera.LightFloamCamera());
 		}
 	}
 }
