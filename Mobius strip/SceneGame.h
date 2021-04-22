@@ -26,6 +26,7 @@ private:
 	};
 	int game_mode = 0;
 
+	bool ClearGame = false;
 public:
 	// ’Ç‰Á@ƒ{ƒ^ƒ“‰Ÿ‚µ‚İ
 	//Camera camera;

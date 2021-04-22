@@ -17,7 +17,7 @@ private:
 	FLOAT3 cPos;
 	FLOAT3 cTarget;
 
-	Sprite spr;
+	Sprite sprTitle;
 	AnimaData nowdata;
 
 	SceneTitle();

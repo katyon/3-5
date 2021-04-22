@@ -8,7 +8,7 @@ SceneTitle::SceneTitle()
     //Todo::ここにソースを記入する
     title.load("Data/Objects/title.fbx");
     Audio::load(0, L"./Data/BGM/BGM.wav");
-    SpriteLoad(spr, L"Data/Sprite/title.png");
+    SpriteLoad(sprTitle, L"Data/Sprite/title.png");
     //コンストラクタの最後で念のための初期化を行う
     //SceneTitle::Initialize();
 }
@@ -87,7 +87,7 @@ void SceneTitle::Update(float elapsed_time)
     {
         ChangeScene(S_GAME);
     }
-
+    
 }
 
 //シーンの描画処理
@@ -96,7 +96,7 @@ void SceneTitle::Render()
     Debug->SetString("X:%f\nY:%f\nZ:%fTarget\nX:%f\nY:%f\nZ:%f", cPos.x, cPos.y, cPos.z, cTarget.x, cTarget.y, cTarget.z);
 
     SkinnedMeshRender(title, camera, title_pos, FLOAT3(0.1, 0.1, 0.1), title_posture, camera.LightFloamCamera());
-    Animation(spr, 6, nowdata, 5, 10,{ 0,0 }, { 1,1 }, { 0,0 }, { 1920,1080 }, { 0.0f,0.0f }, 0.0f, { 1.0f,1.0f,1.0f ,1.0f }, true);
+    Animation(sprTitle, 6, nowdata, 5, 10,{ 0,0 }, { 1,1 }, { 0,0 }, { 1920,1080 }, { 0.0f,0.0f }, 0.0f, { 1.0f,1.0f,1.0f ,1.0f }, true);
 }
 
 //シーンが切り替わるタイミングで呼ばれる処理
