@@ -62,14 +62,14 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	//ライブラリの初期化処理
 	AliceLib::Entry(L"AliceLib", 1920,1080, DefaultWindowMode::WM_FULLSCREEN, 60);
 
-	//AllInitializes();
+	AllInitializes();
 	SetShowCursor(false);
-	std::string fill_pass[] =
-	{
-		"Data\StageData\stage_data.csv",
-	};
-
-	StageManager::getIns()->LoadStages(fill_pass);
+	//std::string fill_pass[] =
+	//{
+	//	"Data\StageData\stage_data.csv",
+	//};
+	//
+	//StageManager::getIns()->LoadStages(fill_pass);
     //複数箇所で使うため用意しておいたほうがいい
     int scene = AliceLib::GetNowScene();
 
@@ -88,7 +88,6 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	{
 
 		//現在のシーンを取得する
-		scene = AliceLib::GetNowScene();
 		elapsed_time = DeltaTime();
 #if _DEBUG
 		ImGuiNewFrame();
@@ -119,6 +118,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			}
 		}
 #endif
+		scene = AliceLib::GetNowScene();
 		//前のシーンと現在のシーンが違うとき
 		if (AliceLib::InitFlg())
 		{
