@@ -2,10 +2,14 @@
 #include "ButtonPush.h"
 #include "AliceLib/AliceLib.h"
 #include "Shelter.h"
+#include "SceneGame.h"
 //#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
-#define DownPos 2.5
+#define ButtonPosX -40
+#define ButtonPosY 44
+#define ButtonPosZ -8
+#define DownPos ButtonPosY-0.5
 
 ButtonPush::ButtonPush()
 {
@@ -42,37 +46,37 @@ ButtonPush::ButtonPush()
 void ButtonPush::init()
 {
 	// 初期座標
-	base.pos = { 10,2,0 };
+	base.pos = { -40,43,-8 };
 
-	button[0][0].pos = {10+ -2.6,3,2.8 };
-	button[0][1].pos = {10+ -1.3,3,2.8 };
-	button[0][2].pos = {10+ 0,3,2.8 };
-	button[0][3].pos = {10+ 1.3,3,2.8 };
-	button[0][4].pos = {10+ 2.6,3,2.8 };
+	button[0][0].pos = { ButtonPosX + -2.6,ButtonPosY,ButtonPosZ + 2.8 };
+	button[0][1].pos = { ButtonPosX + -1.3,ButtonPosY,ButtonPosZ + 2.8 };
+	button[0][2].pos = { ButtonPosX + 0,ButtonPosY,ButtonPosZ + 2.8 };
+	button[0][3].pos = { ButtonPosX + 1.3,ButtonPosY,ButtonPosZ + 2.8 };
+	button[0][4].pos = { ButtonPosX + 2.6,ButtonPosY,ButtonPosZ + 2.8 };
 
-	button[1][0].pos = {10 + -2.6,3,1.4 };
-	button[1][1].pos = {10 + -1.3,3,1.4 };
-	button[1][2].pos = {10 + 0,3,1.4 };
-	button[1][3].pos = {10 + 1.3,3,1.4 };
-	button[1][4].pos = {10 + 2.6,3,1.4 };
+	button[1][0].pos = { ButtonPosX + -2.6,ButtonPosY,ButtonPosZ + 1.4 };
+	button[1][1].pos = { ButtonPosX + -1.3,ButtonPosY,ButtonPosZ + 1.4 };
+	button[1][2].pos = { ButtonPosX + 0,ButtonPosY,ButtonPosZ + 1.4 };
+	button[1][3].pos = { ButtonPosX + 1.3,ButtonPosY,ButtonPosZ + 1.4 };
+	button[1][4].pos = { ButtonPosX + 2.6,ButtonPosY,ButtonPosZ + 1.4 };
 
-	button[2][0].pos = {10 + -2.6,3,0 };
-	button[2][1].pos = {10 + -1.3,3,0 };
-	button[2][2].pos = {10 + 0,3,0 };
-	button[2][3].pos = {10 + 1.3,3,0 };
-	button[2][4].pos = {10 + 2.6,3,0 };
+	button[2][0].pos = { ButtonPosX + -2.6,ButtonPosY,ButtonPosZ + 0 };
+	button[2][1].pos = { ButtonPosX + -1.3,ButtonPosY,ButtonPosZ + 0 };
+	button[2][2].pos = { ButtonPosX + 0,ButtonPosY,ButtonPosZ + 0 };
+	button[2][3].pos = { ButtonPosX + 1.3,ButtonPosY,ButtonPosZ + 0 };
+	button[2][4].pos = { ButtonPosX + 2.6,ButtonPosY,ButtonPosZ + 0 };
 
-	button[3][0].pos = { 10 + -2.6,3,-1.4 };
-	button[3][1].pos = { 10 + -1.3,3,-1.4 };
-	button[3][2].pos = { 10 + 0,3,-1.4 };
-	button[3][3].pos = { 10 + 1.3,3,-1.4 };
-	button[3][4].pos = { 10 + 2.6,3,-1.4 };
+	button[3][0].pos = { ButtonPosX + -2.6,ButtonPosY,ButtonPosZ + -1.4 };
+	button[3][1].pos = { ButtonPosX + -1.3,ButtonPosY,ButtonPosZ + -1.4 };
+	button[3][2].pos = { ButtonPosX + 0,ButtonPosY,ButtonPosZ + -1.4 };
+	button[3][3].pos = { ButtonPosX + 1.3,ButtonPosY,ButtonPosZ + -1.4 };
+	button[3][4].pos = { ButtonPosX + 2.6,ButtonPosY,ButtonPosZ + -1.4 };
 
-	button[4][0].pos = {10+ -2.6,3,-2.8 };
-	button[4][1].pos = {10+ -1.3,3,-2.8 };
-	button[4][2].pos = {10+ 0,3,-2.8 };
-	button[4][3].pos = {10+ 1.3,3,-2.8 };
-	button[4][4].pos = {10+ 2.6,3,-2.8 };
+	button[4][0].pos = { ButtonPosX + -2.6,ButtonPosY,ButtonPosZ + -2.8 };
+	button[4][1].pos = { ButtonPosX + -1.3,ButtonPosY,ButtonPosZ + -2.8 };
+	button[4][2].pos = { ButtonPosX + 0,ButtonPosY,ButtonPosZ + -2.8 };
+	button[4][3].pos = { ButtonPosX + 1.3,ButtonPosY,ButtonPosZ + -2.8 };
+	button[4][4].pos = { ButtonPosX + 2.6,ButtonPosY,ButtonPosZ + -2.8 };
 
 	// 石板の識別番号設定
 	// 11 12 13 14 15
@@ -85,18 +89,24 @@ void ButtonPush::init()
 		for (int j = 0; j < 5; j++)
 		{
 			stone_board[i][j] = ((i + 1) * 10) + (j + 1);
+			button[i][j].isPush = false;
+			button[i][j].Pushflg = false;
 		}
 	}
-
+	for (int i = 0; i < 5; i++) 
+	{
+		storage_board[i] = 0;
+	}
 	// 答えの数字を入れる
-	answer_board[0] = 11;
-	answer_board[1] = 12;
-	answer_board[2] = 13;
+	answer_board[0] = 31;
+	answer_board[1] = 53;
+	answer_board[2] = 45;
 	answer_board[3] = 14;
-	answer_board[4] = 15;
+	answer_board[4] = 22;
 
 	final_judge = false;
 	provisional_judge = false;
+	isPlay = true;
 }
 
 bool ButtonPush::judge_answer()
@@ -114,10 +124,10 @@ bool ButtonPush::judge_answer()
 			//provisional_judge = false;
 			// 1つでも間違っていたらstorage_boardをすべて0に戻す
 			for (int i = 0; i < 5; i++)
-			{			
+			{
 				int tens = storage_board[i] / 10 % 10 - 1;
 				int ones = storage_board[i] % 10 - 1;
-				button[tens][ones].pos.y = 3;
+				button[tens][ones].pos.y = ButtonPosY;
 				button[tens][ones].Pushflg = false;
 
 				storage_board[i] = 0;
@@ -137,6 +147,13 @@ bool ButtonPush::judge_answer()
 
 void ButtonPush::update(const Camera& camera)
 {
+	// デバッグ用
+	//if (input::TRG('R'))
+	//{
+	//	init();
+	//}
+	if (!isPlay) { return; }
+
 	FLOAT3 start, end;
 	FLOAT3 HitPos[2];
 	bool result = false;
@@ -377,14 +394,45 @@ void ButtonPush::update(const Camera& camera)
 				if (button[i][j].pos.y > DownPos) {
 					button[i][j].pos.y -= 0.05;
 				}
+				else if(i==4&&j==4)
+				{
+					isPlay = false;
+					SceneGame::getInstance()->ClearButoon = true;
+				}
 			}
 		}
+
 
 	}else
 	{
 
 	}
-	font::OutPut(L"ButtonPush", { 0,0 }, { 1,1 }, { 1,0,0,1 });
+
+	//// 土台のポジション調節用
+	//if (input::STATE('U'))
+	//{
+	//	base.pos.y += 0.5f;
+	//}
+	//if (input::STATE('O'))
+	//{
+	//	base.pos.y -= 0.5f;
+	//}
+	//if (input::STATE('I'))
+	//{
+	//	base.pos.x += 0.5f;
+	//}
+	//if (input::STATE('K'))
+	//{
+	//	base.pos.x -= 0.5f;
+	//}	
+	//if (input::STATE('L'))
+	//{
+	//	base.pos.z += 0.5f;
+	//}
+	//if (input::STATE('J'))
+	//{
+	//	base.pos.z -= 0.5f;
+	//}
 
 }
 
@@ -404,6 +452,7 @@ void ButtonPush::push_botton(int height, int width)
 
 void ButtonPush::Render(const Camera& camera)
 {
+	//Debug->SetString("Base  X:%f  Y:%f  Z:%f", base.pos.x, base.pos.y, base.pos.z);
 	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(0.1, 0.1, 0.1), base.posture, camera.LightFloamCamera());
 
 	for (int i = 0; i < 5; i++) {
