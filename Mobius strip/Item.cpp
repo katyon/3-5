@@ -13,22 +13,32 @@ void ItemObj::update(const Camera& camera)
 {
     getMouseRay(camera, rayStart, rayEnd);
 
-    if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+    for (int i=0;i< arr->ITEM_MAX;i++)
     {
-        if (input::TRG(VK_LBUTTON))
+        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
         {
-            get_item(ITEM_ID::ID_ITEM1);
+            if (input::TRG(VK_LBUTTON))
+            {
+                arr->get_item(static_cast<ITEM_ID>(i));
+            }
         }
+        break;
     }
 }
 
 void ItemObj::render(const Camera& camera)
 {
+    Debug->SetString("‘¶Ý[0]:%d", arr->exist[0]);
+    Debug->SetString("‘¶Ý[1]:%d", arr->exist[1]);
     COLOR color = { 1.0f,1.0f,1.0f,1.0f };
     posture.reset();
-    if (exist[0])
+    for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        SkinnedMeshRender(kami, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+        if (arr->exist[i])
+        {
+            SkinnedMeshRender(kami, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+        }
+        break;
     }
 }
 

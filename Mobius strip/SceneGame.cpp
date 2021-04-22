@@ -31,13 +31,13 @@ void SceneGame::Initialize()
     // ボタンプッシュ これはいらないかも
     ButtonPush::getInstance()->init();
     pipe_puzzle.Init();
-    menu.init();
+    itemObj->init();
     M_Item->init();
+    menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
     player.init();
-    itemObj->init();
 
 }
 
@@ -45,6 +45,7 @@ void SceneGame::Initialize()
 //経過時間が渡されます
 void SceneGame::Update(float elapsed_time)
 {
+    itemObj->update(camera);
     switch (game_mode)
     {
     case normal:
@@ -80,7 +81,6 @@ void SceneGame::Update(float elapsed_time)
         if (menu.isPause)
         {
             menu.update();
-            M_Item->update();
         }
         break;
     case balance:
@@ -89,7 +89,6 @@ void SceneGame::Update(float elapsed_time)
     }
 
     player.update(camera);
-    itemObj->update(camera);
     Debug->SetString("カメラ回転中心座標 %f %f %f", player.getPos().x, player.getPos().y + 12.5f, player.getPos().z);
     Debug->SetString("カメラ座標 %f %f %f", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
     Debug->SetString("カメラの距離 %f", FLOAT3::distanceFrom({ player.getPos().x, player.getPos().y + 12.5f, player.getPos().z }, camera.GetPos()));
@@ -117,12 +116,12 @@ void SceneGame::Render()
         break;
 
     case menue:
-        screenR->begin();
+        Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
+        Debug->SetString("y座標：%f", input::GetMousePos().y);
         if (menu.isPause)
         {
             menu.draw();
         }
-        screenR->end();
         break;
     case balance:
 
