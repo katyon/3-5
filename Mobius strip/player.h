@@ -41,6 +41,7 @@ public:
 
 	void move(const Camera& camera);
 	void updateDestVec(VECTOR3D forward);
+	void restrict_area();
 
 	void colWall();
 	void colFloor();

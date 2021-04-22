@@ -16,6 +16,8 @@ private:
 
 	SceneGame();
 
+	bool fix_cursor;
+
 	PipePuzzle pipe_puzzle;
 
 	enum GameMode

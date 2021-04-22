@@ -257,7 +257,7 @@ void FPSCamera::update(XMMATRIX player_world_matrix, FLOAT3 center)
 
 void FPSCamera::zoom()
 {
-	if (input::STATE(input::MOUSE_R))
+	if (input::STATE(input::MOUSE_C))
 	{
 		if (magnification > 15) { magnification -= 2; }
 		useADS = true;

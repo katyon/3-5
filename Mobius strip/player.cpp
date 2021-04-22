@@ -1,6 +1,10 @@
 #include "player.h"
 #include "StageManager.h"
 
+#include <cassert>
+#include <cmath>
+#include <limits>
+
 Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
@@ -21,9 +25,11 @@ void Player::update(const Camera& camera)
 	horizontal_lay_end = horizontal_lay_start + (Dest.target * 30.0f);
 	vertical_lay_start = pos + FLOAT3(0, 1.0f, 0);
 	vertical_lay_end = vertical_lay_start + FLOAT3(0, 3.0f, 0);
+	Debug->SetString("プレイヤー座標 x:%f,z:%f", pos.x, pos.z);
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
+	restrict_area();
 	colWall();
 }
 
@@ -111,13 +117,26 @@ void Player::colWall()
 	if (distance < 5.0f)
 	{
 		// 押し戻し用ベクトル
-		VECTOR3D vec = horizontal_lay_start - hitPos[MINIMUM];
-		vec = vec.normalize();
+		VECTOR3D vec = horizontal_lay_start - horizontal_lay_end;
+		
+		if(distance != 0)vec = vec.normalize();
 
 		// 押し戻し処理
 		pos = hitPos[MINIMUM] + vec*5.0f;
 		pos.y = 0;
+		if (isnan(pos.x))
+		{
+			int hoge = 0;
+		}
 	}
+}
+
+void Player::restrict_area()
+{
+	if (pos.x > 50) { pos.x = 50; }
+	if (pos.x < -50) { pos.x = -50; }
+	if (pos.z > 50) { pos.z = 50; }
+	if (pos.z < -50) { pos.z = -50; }
 }
 
 void Player::colFloor()

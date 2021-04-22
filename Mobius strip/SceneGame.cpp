@@ -48,7 +48,7 @@ void SceneGame::Initialize()
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
     player.init();
-
+    fix_cursor = false;
 }
 
 //シーン全体の更新処理
@@ -73,8 +73,16 @@ void SceneGame::Update(float elapsed_time)
                 }
             }
         }
+        if (input::TRG(input::MOUSE_R))
+        {
+            fix_cursor = !fix_cursor;
+            SetShowCursor(fix_cursor);
+        }
 
-        camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+        if (!fix_cursor)
+        {
+            camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+        }
         if (input::TRG(VK_TAB))
         {
             menu.isPause = true;
