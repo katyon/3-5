@@ -259,12 +259,12 @@ void FPSCamera::zoom()
 {
 	if (input::STATE(input::MOUSE_C))
 	{
-		if (magnification > 15) { magnification -= 2; }
+		if (magnification > 30) { magnification -= 2; }
 		useADS = true;
 	}
 	else
 	{
-		if (magnification < 30) { magnification += 2; }
+		if (magnification < 60) { magnification += 2; }
 		useADS = false;
 	}
 	SetFov(toRadian(magnification));

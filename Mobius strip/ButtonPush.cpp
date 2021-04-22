@@ -363,7 +363,7 @@ void ButtonPush::update(const Camera& camera)
 	}
 	// 5‚Â‚·‚×‚Ä‰Ÿ‚µ‚½‚ç”»’è
 	if (storage_board[4] != 0) {
-		// false‚Ìê‡‚Íjudge_answe“à‚Åstorage_board‚ª‰Šú‰»‚³‚ê‚Ü‚·
+		 //false‚Ìê‡‚Íjudge_answe“à‚Åstorage_board‚ª‰Šú‰»‚³‚ê‚Ü‚·
 		final_judge = judge_answer();
 	}
 

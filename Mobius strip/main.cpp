@@ -167,7 +167,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 
 #if _DEBUG //デバッグ文字表示用
 		ImGuiRender();
-		_debug->display();
+		//_debug->display();
 #endif
 		
         //バックバッファに送信

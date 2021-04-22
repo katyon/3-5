@@ -81,6 +81,10 @@ void SceneGame::Update(float elapsed_time)
         {
             fix_cursor = !fix_cursor;
             SetShowCursor(fix_cursor);
+            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+            center.x = floorf(center.x);
+            center.y = floorf(center.y);
+            SetCursorPos(center.x, center.y);
         }
 
         if (!fix_cursor)
