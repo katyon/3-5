@@ -37,6 +37,8 @@ ButtonPush::ButtonPush()
 	button[4][4].model.load("Data/Buttons/botan25.fbx");
 	base.model.load("Data/Buttons/hako.fbx");
 
+	Audio::load(4, L"./Data/BGM/putting_button.wav");
+
 }
 
 void ButtonPush::init()
@@ -186,6 +188,7 @@ void ButtonPush::update(const Camera& camera)
 			button[0][0].isPush = false;
 			button[0][0].pos.y = DownPos;
 			button[0][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][0].isPush && !button[1][0].Pushflg)
 		{
@@ -193,6 +196,7 @@ void ButtonPush::update(const Camera& camera)
 			button[1][0].isPush = false;
 			button[1][0].pos.y = DownPos;
 			button[1][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][0].isPush && !button[2][0].Pushflg)
 		{
@@ -200,6 +204,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][0].isPush = false;
 			button[2][0].pos.y = DownPos;
 			button[2][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][0].isPush && !button[3][0].Pushflg)
 		{
@@ -207,6 +212,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][0].isPush = false;
 			button[3][0].pos.y = DownPos;
 			button[3][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][0].isPush && !button[4][0].Pushflg)
 		{
@@ -214,6 +220,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][0].isPush = false;
 			button[4][0].pos.y = DownPos;
 			button[4][0].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][1].isPush && !button[0][1].Pushflg)
@@ -222,12 +229,14 @@ void ButtonPush::update(const Camera& camera)
 			button[0][1].isPush = false;
 			button[0][1].pos.y = DownPos;
 			button[0][1].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][1].isPush && !button[1][1].Pushflg)
 		{
 			push_botton(1, 1);
 			button[1][1].isPush = false;
 			button[1][1].pos.y = DownPos;
+			Audio::play(4);
 		}
 		if (button[2][1].isPush && !button[2][1].Pushflg)
 		{
@@ -235,6 +244,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][1].isPush = false;
 			button[2][1].pos.y = DownPos;
 			button[2][1].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][1].isPush && !button[3][1].Pushflg)
 		{
@@ -242,6 +252,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][1].isPush = false;
 			button[3][1].pos.y = DownPos;
 			button[3][1].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][1].isPush && !button[4][1].Pushflg)
 		{
@@ -249,6 +260,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][1].isPush = false;
 			button[4][1].pos.y = DownPos;
 			button[4][1].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][2].isPush && !button[0][2].Pushflg)
@@ -257,6 +269,7 @@ void ButtonPush::update(const Camera& camera)
 			button[0][2].isPush = false;
 			button[0][2].pos.y = DownPos;
 			button[0][2].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][2].isPush && !button[1][2].Pushflg)
 		{
@@ -264,6 +277,7 @@ void ButtonPush::update(const Camera& camera)
 			button[1][2].isPush = false;
 			button[1][2].pos.y = DownPos;
 			button[1][2].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][2].isPush && !button[2][2].Pushflg)
 		{
@@ -271,12 +285,14 @@ void ButtonPush::update(const Camera& camera)
 			button[2][2].isPush = false;
 			button[2][2].pos.y = DownPos;
 			button[2][2].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][2].isPush && !button[3][2].Pushflg)
 		{
 			push_botton(3, 2);
 			button[3][2].isPush = false;
 			button[3][2].pos.y = DownPos;
+			Audio::play(4);
 		}
 		if (button[4][2].isPush && !button[4][2].Pushflg)
 		{
@@ -284,6 +300,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][2].isPush = false;
 			button[4][2].pos.y = DownPos;
 			button[4][2].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][3].isPush && !button[0][3].Pushflg)
@@ -292,6 +309,7 @@ void ButtonPush::update(const Camera& camera)
 			button[0][3].isPush = false;
 			button[0][3].pos.y = DownPos;
 			button[0][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][3].isPush && !button[1][3].Pushflg)
 		{
@@ -299,6 +317,7 @@ void ButtonPush::update(const Camera& camera)
 			button[1][3].isPush = false;
 			button[1][3].pos.y = DownPos;
 			button[1][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][3].isPush && !button[2][3].Pushflg)
 		{
@@ -306,6 +325,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][3].isPush = false;
 			button[2][3].pos.y = DownPos;
 			button[2][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][3].isPush && !button[3][3].Pushflg)
 		{
@@ -313,6 +333,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][3].isPush = false;
 			button[3][3].pos.y = DownPos;
 			button[3][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][3].isPush && !button[4][3].Pushflg)
 		{
@@ -320,6 +341,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][3].isPush = false;
 			button[4][3].pos.y = DownPos;
 			button[4][3].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][4].isPush && !button[0][4].Pushflg)
@@ -328,6 +350,7 @@ void ButtonPush::update(const Camera& camera)
 			button[0][4].isPush = false;
 			button[0][4].pos.y = DownPos;
 			button[0][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][4].isPush && !button[1][4].Pushflg)
 		{
@@ -335,6 +358,7 @@ void ButtonPush::update(const Camera& camera)
 			button[1][4].isPush = false;		
 			button[1][4].pos.y = DownPos;
 			button[1][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][4].isPush && !button[2][4].Pushflg)
 		{
@@ -342,6 +366,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][4].isPush = false;
 			button[2][4].pos.y = DownPos;
 			button[2][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][4].isPush && !button[3][4].Pushflg)
 		{
@@ -349,6 +374,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][4].isPush = false;
 			button[3][4].pos.y = DownPos;
 			button[3][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][4].isPush && !button[4][4].Pushflg)
 		{
@@ -356,6 +382,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][4].isPush = false;
 			button[4][4].pos.y = DownPos;
 			button[4][4].Pushflg = true;
+			Audio::play(4);
 		}
 
 

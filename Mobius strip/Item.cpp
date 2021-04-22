@@ -8,6 +8,8 @@ void ItemObj::init()
     pos = { 0,4,0 };
     scale = { 1,1,1 };
     OBBscale = { 10.0f,10.0f,10.0f };
+    Audio::load(6, L"./Data/BGM/get.wav");
+    Audio::SetVolume(6, 0.3f);
 }
 
 void ItemObj::update(const Camera& camera)
@@ -21,6 +23,7 @@ void ItemObj::update(const Camera& camera)
             if (input::TRG(VK_LBUTTON))
             {
                 arr->get_item(static_cast<ITEM_ID>(i));
+                Audio::play(6);
             }
         }
         break;

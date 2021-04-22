@@ -20,7 +20,7 @@ void SceneTitle::Initialize()
 	ChangeScene(1);
 	Audio::stop(1);
 
-	//Audio::SetVolume(0, 0.5f);
+	Audio::SetVolume(0, 0.5f);
 	Audio::play(0, true);
 }
 
@@ -80,13 +80,10 @@ void SceneTitle::Update(float elapsed_time)
 
 	camera.SetPos(cPos);
 	camera.SetTarget(cTarget);
-}
-{
 	if (input::TRG(input::MOUSE_L))
 	{
 		ChangeScene(S_GAME);
 	}
-
 }
 
 //ƒV[ƒ“‚Ì•`‰æˆ—
@@ -102,5 +99,4 @@ void SceneTitle::Render()
 void SceneTitle::Uninitialize()
 {
 	Audio::stop(0);
-	//Audio::unload(0);
 }
