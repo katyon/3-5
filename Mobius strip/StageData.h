@@ -195,19 +195,19 @@ inline void load_stage_from_file_ex(const std::string& file_pass,
 				if (it != manager->end())
 				{
 					object.ID = filename;
-					if (object.ID != "ColBox.fbx")
+					//if (object.ID != "ColBox.fbx")
 					{
 						object.body.SetModel(&it->second.m);
 					}
-					else
+					if (object.ID == "ColBox.fbx")
 					{
 						switch (object.option)
 						{
 						case -1:
-							ColBoxs.push_back(OBB(object.position, object.scales,object.posture));
+							ColBoxs.push_back(OBB(object.position, object.scales, object.posture));
 							break;
 						default:
-							ItemBoxs.push_back({ object.position, object.scales,object.posture ,object.option});
+							ItemBoxs.push_back({ object.position, object.scales,object.posture ,object.option });
 							break;
 						}
 					}

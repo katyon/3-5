@@ -1,4 +1,5 @@
 #include "player.h"
+#include "StageManager.h"
 
 Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
 {
@@ -16,6 +17,14 @@ void Player::update(const Camera& camera)
 	posture_vec.CreateVector(posture);
 	updateDestVec(camera.GetTarget() - camera.GetPos());
 	move(camera);
+	horizontal_lay_start = pos + FLOAT3(0, 4.5f, 0);
+	horizontal_lay_end = horizontal_lay_start + (Dest.target * 30.0f);
+	vertical_lay_start = pos + FLOAT3(0, 1.0f, 0);
+	vertical_lay_end = vertical_lay_start + FLOAT3(0, 3.0f, 0);
+	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
+	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
+
+	colWall();
 }
 
 void Player::render(const Camera& camera)
@@ -72,6 +81,56 @@ void Player::updateDestVec(VECTOR3D forward)
 	Dest.right = Dest.right.normalize();
 	Dest.left = -Dest.right;
 	Dest.target = { 0,0,0 };
+}
+
+void Player::colWall()
+{
+	// 最小値比較用に初期値を大きく設定
+	float distance = 10.0f;
+	FLOAT3 hitPos[2];
+
+	for (auto& obb : StageManager::getIns()->GetObbs())
+	{
+		Debug->SetString("OBBpos %f %f %f", obb.pos.x, obb.pos.y, obb.pos.z);
+		Debug->SetString("OBBscale %f %f %f", obb.len.x, obb.len.y, obb.len.z);
+		Debug->SetString("OBBpos forward:%f right:%f up:%f", obb.direct.forward, obb.direct.right, obb.direct.up);
+		if (ColLineOBB(horizontal_lay_start, horizontal_lay_end,
+			obb, hitPos[SAVE]))
+		{
+			float dist_temp = horizontal_lay_start.distanceFrom(hitPos[SAVE]);
+
+			// 今回のレイとの接触地点が最小値より小さければ更新
+			if (dist_temp < distance)
+			{
+				hitPos[MINIMUM] = hitPos[SAVE];
+				distance = horizontal_lay_start.distanceFrom(hitPos[MINIMUM]);
+			}
+		}
+	}
+
+	if (distance < 5.0f)
+	{
+		// 押し戻し用ベクトル
+		VECTOR3D vec = horizontal_lay_start - hitPos[MINIMUM];
+		vec = vec.normalize();
+
+		// 押し戻し処理
+		pos = hitPos[MINIMUM] + vec*5.0f;
+		pos.y = 0;
+	}
+}
+
+void Player::colFloor()
+{
+	FLOAT3 hit_pos;
+	for (auto& obb : StageManager::getIns()->GetObbs())
+	{
+		if (ColLineOBB(vertical_lay_start, vertical_lay_end,
+			obb, hit_pos))
+		{
+
+		}
+	}
 }
 
 DirectX::XMMATRIX Player::getPlayerWorldMatrix()
