@@ -9,7 +9,7 @@ struct Buttons
 
 	FLOAT3	pos;
 	Quaternion posture;
-	PostureVector posture_vec;
+	//PostureVector posture_vec;
 
 	bool isPush;
 	bool Pushflg = false;
