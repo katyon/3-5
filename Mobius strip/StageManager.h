@@ -18,7 +18,7 @@ public:
 	{
 		return stages[now_stage].GetObbs();
 	}
-
+	
 	const std::vector<ItemBox>& GetItemBoxs()const
 	{
 		return stages[now_stage].GetItemBoxs();

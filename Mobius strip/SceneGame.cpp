@@ -3,7 +3,7 @@
 #include "menu.h"
 #include "Item.h"
 #include "StageManager.h"
-
+#include "OBBs.h"
 Menu menu;
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
@@ -92,8 +92,9 @@ void SceneGame::Update(float elapsed_time)
                 }
             }
         }
-
-        camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+        {
+         camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+        }
         if (input::TRG(VK_TAB))
         {
             menu.isPause = true;
@@ -144,7 +145,7 @@ void SceneGame::Render()
 
         pipe_puzzle.Render(camera);
         G_Item->draw();
-
+        //cOBB(camera);
         screenR->end();
 
         SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });

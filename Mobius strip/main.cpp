@@ -177,7 +177,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 #endif
 		
         //バックバッファに送信
-        AliceLib::Present(0u, 0u);
+        AliceLib::Present(1u, 0u);
 
     }
 
