@@ -61,6 +61,7 @@ void SceneGame::Initialize()
     Audio::stop(0);
 
     Audio::play(1, true);
+    ClearButoon = false;
     ClearGame = false;
 }
 
@@ -69,11 +70,15 @@ void SceneGame::Initialize()
 void SceneGame::Update(float elapsed_time)
 {
     if (ClearGame)
+    {
+        if (input::TRG(input::MOUSE_L))
+        {
+            ChangeScene(S_TITLE);
+        }
         return;
-    //if (input::TRG(input::TRG('T')))
-    //{
-    //    ClearGame = true;
-    //}
+    }
+    //ClearGame = true;
+
     switch (game_mode)
     {
     case normal:
@@ -151,11 +156,14 @@ void SceneGame::Render()
         //cOBB(camera);
         screenR->end();
 
-        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
-        SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
         if (ClearGame)
         {
             Animation(sprClear, 12, nowdata, 2, 2, { 0,0 }, { 1,1 }, { 0,0 }, { 1920,1080 });
+        }
+        else
+        {
+            SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
+            SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
         }
         break;
 
