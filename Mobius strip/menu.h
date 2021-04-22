@@ -26,6 +26,19 @@ private:
     Sprite menu_ptr;
     FLOAT2 pos;
     FLOAT2 src;
+    int page = 0;
+    int remainder = 0;
+
+    void ScreenShot(int num)
+    {
+        for (int i = 0; i < screenR->max_racord; i++)
+        {
+            if (i % 4 == 0) SpriteRender(screenR->records[num], 257, 220, 0.3f, 0.3f, 0, 0, screenR->ScreenSize.x, screenR->ScreenSize.y, 0, 0, 0, 1, 1, 1, 1);
+            if (i % 4 == 1) SpriteRender(screenR->records[num + 1], 257, 581, 0.3f, 0.3f, 0, 0, screenR->ScreenSize.x, screenR->ScreenSize.y, 0, 0, 0, 1, 1, 1, 1);
+            if (i % 4 == 2) SpriteRender(screenR->records[num + 2], 1060, 220, 0.3f, 0.3f, 0, 0, screenR->ScreenSize.x, screenR->ScreenSize.y, 0, 0, 0, 1, 1, 1, 1);
+            if (i % 4 == 3)SpriteRender(screenR->records[num + 3], 1060, 581, 0.3f, 0.3f, 0, 0, screenR->ScreenSize.x, screenR->ScreenSize.y, 0, 0, 0, 1, 1, 1, 1);
+        }
+    }
 
     void Sele_Option()
     {

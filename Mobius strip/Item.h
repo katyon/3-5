@@ -15,24 +15,24 @@ enum ITEM_ID
 class ItemArr
 {
 public:
+    Sprite item_ptr;
     static constexpr int ITEM_MAX = 8;
     FLOAT2 pos[ITEM_MAX];   // 表示位置
     FLOAT2 scale[ITEM_MAX]; // 表示サイズ
     FLOAT2 src[ITEM_MAX];
-    Sprite item_ptr;
     ITEM_ID items[ITEM_MAX];
     bool isobserve[ITEM_MAX];
+    bool exist[ITEM_MAX];
 
     void init();
-    virtual void update() = 0;
-    virtual void draw() = 0;
     void uninit();
-
-    // ゲーム中にアイテムが選択されたときの処理
-    virtual void isChoice() = 0;
 
     ItemArr()
     {
+        for (int i = 0; i < ITEM_MAX; i++)
+        {
+            exist[i] = true;
+        }
         reset();
     }
     void shorten()
@@ -83,6 +83,7 @@ public:
             {
                 item = id;
                 shorten();
+                exist[item] = false;
                 return true;
             }
         }
@@ -119,6 +120,35 @@ public:
     }
 };
 
+class ItemObj :public ItemArr
+{
+private:
+    SkinnedMesh kami;
+    FLOAT3 pos;
+    FLOAT3 scale;
+
+    FLOAT3 OBBscale;
+
+    FLOAT3 rayStart;
+    FLOAT3 rayEnd;
+
+    FLOAT3 hitPos;
+    Quaternion posture;
+
+public:
+    void init();
+    void update(const Camera& camera);
+    void render(const Camera& camera);
+    void uninit();
+
+    static ItemObj* getInstance()
+    {
+        static ItemObj ins;
+        return &ins;
+    }
+};
+
+#define itemObj ItemObj::getInstance()
 
 class ItemMenu :public ItemArr
 {
@@ -131,7 +161,7 @@ public:
         }
         reset();
     }
-    void isChoice() override;
+    void isChoice();
     void update();
     void draw();
 
@@ -142,9 +172,15 @@ public:
     }
 };
 
+#define M_Item ItemMenu::getInstance()
+
 //class GameItem :public ItemArr
 //{
 //private:
+//  
+//
+//    bool select = false;
+//
 //    GameItem()
 //    {
 //        for (int i = 0; i < ITEM_MAX; i++)
@@ -153,8 +189,10 @@ public:
 //        }
 //        reset();
 //    }
+//    int timer = 0;
 //
 //public:
+//    void init();
 //    void isChoice() override;
 //    void update();
 //    void draw();
@@ -164,7 +202,6 @@ public:
 //        static GameItem ins;
 //        return &ins;
 //    }
-//
 //};
-
-
+//
+//#define G_Item GameItem::getInstance()

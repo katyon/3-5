@@ -65,6 +65,7 @@ void Player::updateDestVec(VECTOR3D forward)
 {
 	//　XZ平面上でのベクトル取得
 	Dest.forward = { forward.x, 0, forward.z };
+	Dest.forward = Dest.forward.normalize();
 	Dest.back = -Dest.forward;
 
 	Dest.right = VECTOR3D::cross(VECTOR3D(0, 1, 0), Dest.forward);

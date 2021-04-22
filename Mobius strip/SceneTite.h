@@ -25,7 +25,5 @@ public:
 
 	void Update(float elapsed_time);
 	void Render();
-
 	void Uninitialize();
 };
-
