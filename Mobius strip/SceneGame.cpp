@@ -110,12 +110,12 @@ void SceneGame::Render()
         break;
 
     case menue:
-        screenR->begin();
+        //screenR->begin();
         if (menu.isPause)
         {
             menu.draw();
         }
-        screenR->end();
+        //screenR->end();
         break;
     case balance:
 
