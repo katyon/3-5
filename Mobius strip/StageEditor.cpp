@@ -330,7 +330,7 @@ StageEditor::StageEditor()
 		{
 			//念のためオブジェクトをロードしなおす
 			load_object();
-			int   isbody, isshow,option;
+			int   isbody, isshow;
 			for (auto& object : objects)
 			{
 				char filename[256] = {};
@@ -352,7 +352,7 @@ StageEditor::StageEditor()
 				fscanf(fp, "%f,", &q.z);
 				fscanf(fp, "%f,", &q.w);
 
-				fscanf(fp, "%d,", &option);
+				fscanf(fp, "%d,", &object.option);
 				//ID
 				fscanf(fp, "%s", filename);
 				fprintf(fp, "\n");
