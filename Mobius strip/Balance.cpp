@@ -156,7 +156,7 @@ namespace Balance
 
 	void Render()
 	{
-		XMMATRIX world = GetWorldMatrix({}, ScalarToFloat3(1.0f), postrue);
+		XMMATRIX world = GetWorldMatrix({0,0,0}, ScalarToFloat3(1.0f), postrue);
 		DirectX::XMStoreFloat3(&pos[0],
 			DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat3(&pos[0]), world));
 		DirectX::XMStoreFloat3(&pos[1],
@@ -172,9 +172,9 @@ namespace Balance
 
 		ModelRenderBegin();
 		ModelRender(balance_model, world);
-		ModelRender(omori_model, pos[0], ScalarToFloat3(0.6f), postrue);
-		if (flgs[0])ModelRender(omori_model, pos[1], ScalarToFloat3(0.45f), postrue);
-		if (flgs[1])ModelRender(omori_model, pos[2], ScalarToFloat3(0.45f), postrue);
+		ModelRender(omori_model, pos[0], ScalarToFloat3(0.6f), {});
+		if (flgs[0])ModelRender(omori_model, pos[1], ScalarToFloat3(0.45f), {});
+		if (flgs[1])ModelRender(omori_model, pos[2], ScalarToFloat3(0.45f), {});
 		ModelRenderEnd();
 	}
 

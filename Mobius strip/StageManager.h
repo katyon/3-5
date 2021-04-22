@@ -13,6 +13,10 @@ private:
 	void LoadModels();
 public:
 
+	const std::vector<OBB>& GetObbs()const
+	{
+		return stages[now_stage].GetObbs();
+	}
 
 	template<size_t size>
 	void LoadStages(std::string (&file_names)[size])
@@ -50,3 +54,9 @@ public:
 
 };
 
+//std::string fill_pass[] =
+//{
+//	"Data\\StageData\\stage_data.csv",
+//};
+//
+//StageManager::getIns()->LoadStages(fill_pass);

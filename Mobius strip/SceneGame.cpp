@@ -16,7 +16,7 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     //camera.SetPos({ 0,200,-10 });
     //camera.SetTarget({ 0,0,0 });
 
-    //ButtonPush::getInstance()->init();
+    ButtonPush::getInstance()->init();
     // ボタンプッシュ　ここまで
     camera.SetPos({ 0, 0, -30 });
 
@@ -136,5 +136,5 @@ void SceneGame::Render()
 //シーンが切り替わるタイミングで呼ばれる処理
 void SceneGame::Uninitialize()
 {
-    pipe_puzzle.Release();
+    //pipe_puzzle.Release();
 }
