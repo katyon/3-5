@@ -13,7 +13,7 @@ SceneTitle::SceneTitle()
 //シーン変更された瞬間に実行される処理
 void SceneTitle::Initialize()
 {
-
+	ChangeScene(1);
 }
 
 //シーン全体の更新処理

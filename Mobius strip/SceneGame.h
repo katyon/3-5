@@ -12,6 +12,8 @@ private:
 	Player player;
 	SkinnedMesh stage;
 
+	AmbientLight ambient;
+
 	SceneGame();
 
 	PipePuzzle pipe_puzzle;

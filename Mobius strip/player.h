@@ -13,6 +13,14 @@ private:
 	Quaternion posture;
 	PostureVector posture_vec;
 
+	static const float collision_distance;
+
+	FLOAT3 horizontal_lay_start;
+	FLOAT3 horizontal_lay_end;
+	FLOAT3 vertical_lay_start;
+	FLOAT3 vertical_lay_end;
+	enum HitPointOp { SAVE, MINIMUM };
+
 	struct DestVec
 	{
 		VECTOR3D right;
@@ -33,6 +41,9 @@ public:
 
 	void move(const Camera& camera);
 	void updateDestVec(VECTOR3D forward);
+
+	void colWall();
+	void colFloor();
 
 	FLOAT3& getPos() { return pos; }
 	DirectX::XMMATRIX getPlayerWorldMatrix();

@@ -2,6 +2,8 @@
 #include "ButtonPush.h"
 #include "menu.h"
 #include "Item.h"
+#include "StageManager.h"
+
 Menu menu;
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
@@ -21,6 +23,14 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     camera.SetPos({ 0, 0, -30 });
 
     game_mode = normal;
+
+    std::string fill_pass[] =
+    {
+        "Data/StageData/stage_data.csv",
+    };
+
+    StageManager::getIns()->LoadStages(fill_pass);
+
     //コンストラクタの最後で念のための初期化を行う
     SceneGame::Initialize();
 }
@@ -102,7 +112,12 @@ void SceneGame::Render()
     case normal:
         screenR->begin();
         player.render(camera);
-        SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
+        //SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
+
+        camera.Active();
+        //ambient->direction = camera.LightFloamCamera();
+        ambient.Active();
+        StageManager::getIns()->Render();
 
         // ボタンプッシュ
         ButtonPush::getInstance()->Render(camera);
