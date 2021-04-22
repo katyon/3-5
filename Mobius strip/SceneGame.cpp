@@ -31,8 +31,11 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 
     StageManager::getIns()->LoadStages(fill_pass);
 
+
+    Audio::load(1, L"Data/BGM/Waltz.wav");
+    Audio::SetVolume(1, 0.4f);
     //コンストラクタの最後で念のための初期化を行う
-    SceneGame::Initialize();
+    //SceneGame::Initialize();
 }
 
 //シーン変更された瞬間に実行される処理
@@ -50,6 +53,10 @@ void SceneGame::Initialize()
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
     player.init();
+
+    Audio::stop(0);
+
+    Audio::play(1, true);
 
 }
 
@@ -155,4 +162,5 @@ void SceneGame::Render()
 void SceneGame::Uninitialize()
 {
     pipe_puzzle.Release();
+    //Audio::unload(1);
 }
