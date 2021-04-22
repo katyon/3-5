@@ -14,10 +14,10 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     SpriteLoad(1, L"Data/Sprite/center.png");
 
     // ボタンプッシュ ここから
-    //camera.SetPos({ 0,200,-10 });
-    //camera.SetTarget({ 0,0,0 });
+    camera.SetPos({ 0,200,-10 });
+    camera.SetTarget({ 0,0,0 });
 
-    //ButtonPush::getInstance()->init();
+    ButtonPush::getInstance()->init();
     // ボタンプッシュ　ここまで
     camera.SetPos({ 0, 0, -30 });
 
@@ -48,7 +48,7 @@ void SceneGame::Update(float elapsed_time)
     {
     case normal:
         // ボタンプッシュ
-        //ButtonPush::getInstance()->update(camera);
+        ButtonPush::getInstance()->update(camera);
         //pipe_puzzle.Update();
         //if (input::TRG('P'))
         //{
@@ -89,7 +89,7 @@ void SceneGame::Update(float elapsed_time)
 void SceneGame::Render()
 {
     // ボタンプッシュ
-    //ButtonPush::getInstance()->Render(camera);
+    ButtonPush::getInstance()->Render(camera);
     //pipe_puzzle.Render(camera);
    // screenR->begin();
    // Debug->SetString("マウスカーソル.x::%f", input::GetMousePos().x);
@@ -102,7 +102,7 @@ void SceneGame::Render()
     player.render(camera);
     SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
     Geometric::Board(GetWorldMatrix({ 0,-1,3 }, { 1,1,1 }, { 0,0,0 }));
-    SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
+    //SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
 }
 
 
