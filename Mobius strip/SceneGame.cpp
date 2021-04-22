@@ -12,7 +12,8 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     //Todo::ここにソースを記入する
     player.init();
     stage.load("Data/Objects/stage.fbx");
-    SpriteLoad(1, L"Data/Sprite/center.png");
+    SpriteLoad(1, L"Data/Sprite/reticle.png");
+    SpriteLoad(2, L"Data/Sprite/TAB.png");
     itemObj->init();
     // ボタンプッシュ ここから
     camera.SetPos({ 0,200,-10 });
@@ -139,7 +140,8 @@ void SceneGame::Render()
 
         screenR->end();
 
-        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.2f, 0.2f }, { 0, 0 }, { 0, 0 }, { 300.0f, 400.0f });
+        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
+        SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f }, { 0.0f, 0.0f });
         break;
 
     case menue:
