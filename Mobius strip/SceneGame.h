@@ -18,15 +18,16 @@ private:
 
 	PipePuzzle pipe_puzzle;
 
-	enum GameMode
-	{
-		normal = 0,
-		menue,
-		balance,
-	};
-	int game_mode = 0;
+
 
 public:
+    enum GameMode
+    {
+        normal = 0,
+        menue,
+        balance,
+    };
+	int game_mode = 0;
 	// ’Ç‰Á@ƒ{ƒ^ƒ“‰Ÿ‚µ‚İ
 	//Camera camera;
 	//Camera camera;

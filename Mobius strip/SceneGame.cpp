@@ -32,7 +32,6 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 
     StageManager::getIns()->LoadStages(fill_pass);
 
-
     Audio::load(1, L"Data/BGM/Waltz.wav");
     Audio::SetVolume(1, 0.4f);
     //コンストラクタの最後で念のための初期化を行う
@@ -47,7 +46,7 @@ void SceneGame::Initialize()
     pipe_puzzle.Init();
     itemObj->init();
     M_Item->init();
-    G_Item->init();
+   // G_Item->init();
 
     menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -72,7 +71,7 @@ void SceneGame::Update(float elapsed_time)
         ButtonPush::getInstance()->update(camera);
         pipe_puzzle.Update();
         itemObj->update(camera);
-        G_Item->update();
+       // G_Item->update();
 
         if (input::TRG('P'))
         {
@@ -89,21 +88,14 @@ void SceneGame::Update(float elapsed_time)
         camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
         if (input::TRG(VK_TAB))
         {
-            menu.isPause = true;
             menu.tab = MenuTab::Item;
             game_mode = menue;
         }
         break;
 
     case menue:
-        if (input::TRG(VK_TAB))
-        {
-            game_mode = normal;
-        }
-        if (menu.isPause)
-        {
-            menu.update();
-        }
+        if (input::TRG(VK_TAB)) { game_mode = normal; }
+        menu.update();
         break;
     case balance:
 
@@ -136,23 +128,20 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         pipe_puzzle.Render(camera);
-        G_Item->draw();
+       // G_Item->draw();
 
         screenR->end();
 
         SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
         SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f }, { 0.0f, 0.0f });
         break;
-
+        
     case menue:
-
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
-        if (menu.isPause)
-        {
-            menu.draw();
-        }
+        menu.draw();
         break;
+
     case balance:
 
         break;
