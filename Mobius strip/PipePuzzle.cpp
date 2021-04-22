@@ -19,13 +19,22 @@ enum MapChipName
 #define GOAL_POS_X 4
 #define GOAL_POS_Y 4
 
-int Pipes[5][5] =
+int first_pipes[5][5] =
 {
     9, 1, 5, 1, 2,
     5, 2, 6, 2, 6,
     2, 1, 3, 6, 4,
     4, 3, 4, 6, 1,
     1, 5, 2, 3, 10
+};
+
+int Pipes[5][5] =
+{
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0
 };
 
 int wateres[5][5] =
@@ -64,6 +73,16 @@ void PipePuzzle::Init()
     //scale = ScalarToFloat3(0.165f);
     scale = ScalarToFloat3(0.3f);
     OBBscale = ScalarToFloat3(4.8f);
+
+    clearFlg = false;
+
+    for (int y = 0; y < 5; y++)
+    {
+        for (int x = 0; x < 5; x++)
+        {
+            Pipes[y][x] = first_pipes[y][x];
+        }
+    }
 }
 
 void PipePuzzle::Update()
