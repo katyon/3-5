@@ -24,6 +24,7 @@ void SceneTitle::Initialize()
 
     //Audio::SetVolume(0, 0.5f);
     Audio::play(0, true);
+    title.ChangeAnimation(0, 1);
 }
 
 //シーン全体の更新処理
@@ -87,7 +88,7 @@ void SceneTitle::Update(float elapsed_time)
     {
         ChangeScene(S_GAME);
     }
-    
+    title.UpdateAnimation(elapsed_time);
 }
 
 //シーンの描画処理
