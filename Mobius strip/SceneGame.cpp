@@ -33,6 +33,8 @@ void SceneGame::Initialize()
     pipe_puzzle.Init();
     itemObj->init();
     M_Item->init();
+    G_Item->init();
+
     menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
     camera.initPos();
@@ -52,6 +54,8 @@ void SceneGame::Update(float elapsed_time)
         ButtonPush::getInstance()->update(camera);
         pipe_puzzle.Update();
         itemObj->update(camera);
+        G_Item->update();
+
         if (input::TRG('P'))
         {
             for (int i = 0; i < screenR->max_racord; i++)
@@ -109,6 +113,7 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         pipe_puzzle.Render(camera);
+        G_Item->draw();
 
         screenR->end();
 
