@@ -9,6 +9,10 @@ bool ColLineOBB(const FLOAT3& start, const FLOAT3& end, const OBB& obb, FLOAT3& 
 //代わりを用意しました
 _NODISCARD FLOAT3 screen_to_world(const Camera& eye,const FLOAT3& screen_pos);
 
+/*マウスからのレイを取得*/
+void getMouseRay(const Camera& eye, 
+	FLOAT3& start, FLOAT3& end);
+
 class Shelter
 {
 private://5*5

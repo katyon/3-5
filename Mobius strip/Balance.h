@@ -26,6 +26,15 @@ namespace Balance
 	//complementary→補完率0~１の範囲で０に近づくほど滑らかに動く
 	void makeAnAngle(Quaternion& posture,const Quaternion& tile,float complementary = 0.3f);
 
+	void makeAnAngle(int& frame, const float& rate);
+
+	void Init();
+
+	bool Update();
+	bool Set();
+	void Render();
+
+
 	//テスト用
 	void demoPlay();
 }

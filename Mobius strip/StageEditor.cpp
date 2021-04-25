@@ -268,17 +268,17 @@ void StageEditor::Update()
 					//ImGui::SameLine();
 					//if (ImGui::Button("Z - 90°")) { object.posture.RotationPitch(n90); }
 					//ImGui::SameLine();
-					if (ImGui::Button("Z - 30°")) { object.posture.RotationPitch(n30); }
+					if (ImGui::Button("Z - 30°")) { object.posture.RotationRoll(n30); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z - 15°")) { object.posture.RotationPitch(n15); }
+					if (ImGui::Button("Z - 15°")) { object.posture.RotationRoll(n15); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z - 1°")) { object.posture.RotationPitch(-OnceInRadians); }
+					if (ImGui::Button("Z - 1°")) { object.posture.RotationRoll(-OnceInRadians); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z + 1°")) { object.posture.RotationPitch(OnceInRadians); }
+					if (ImGui::Button("Z + 1°")) { object.posture.RotationRoll(OnceInRadians); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z + 15°")) { object.posture.RotationPitch(p15); }
+					if (ImGui::Button("Z + 15°")) { object.posture.RotationRoll(p15); }
 					ImGui::SameLine();
-					if (ImGui::Button("Z + 30°")) { object.posture.RotationPitch(p30); }
+					if (ImGui::Button("Z + 30°")) { object.posture.RotationRoll(p30); }
 					//ImGui::SameLine();
 					//if (ImGui::Button("Z + 90°")) { object.posture.RotationPitch(p90); }
 					//ImGui::SameLine();
@@ -330,7 +330,7 @@ StageEditor::StageEditor()
 		{
 			//念のためオブジェクトをロードしなおす
 			load_object();
-			int   isbody, isshow,option;
+			int   isbody, isshow;
 			for (auto& object : objects)
 			{
 				char filename[256] = {};
@@ -352,7 +352,7 @@ StageEditor::StageEditor()
 				fscanf(fp, "%f,", &q.z);
 				fscanf(fp, "%f,", &q.w);
 
-				fscanf(fp, "%d,", &option);
+				fscanf(fp, "%d,", &object.option);
 				//ID
 				fscanf(fp, "%s", filename);
 				fprintf(fp, "\n");
