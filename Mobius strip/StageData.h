@@ -50,12 +50,17 @@ struct StageObject
 	}
 };
 
-struct ItemBox
+struct ColBox
 {
 	int option;
 	OBB obb;
-	ItemBox(const FLOAT3& pos, const FLOAT3& len, const Quaternion& angle, int o)
+	ColBox(const FLOAT3& pos,
+		const FLOAT3& len, 
+		const Quaternion& angle,
+		int o)
 		:obb(pos,len,angle),option(o) {}
+	ColBox(const OBB& b,
+		int o):obb(b), option(o) {}
 };
 
 /*
@@ -148,8 +153,7 @@ inline void load_stage_from_file(const std::string& file_pass,
 template<size_t arr_size>
 inline void load_stage_from_file_ex(const std::string& file_pass,
 	StageObject(&objects)[arr_size], 
-	std::vector<OBB>& ColBoxs, 
-	std::vector<ItemBox> ItemBoxs, 
+	std::vector<ColBox>& ColBoxs, 
 	std::map<std::string, cStageModel>* manager)
 {
 	//ファイルがないならロードしない
@@ -228,30 +232,18 @@ public:
 protected:
 	//ステージ内に設置するオブジェクト
 	StageObject	objects[StageData::MaxObjects];
-	
-	std::vector<OBB>			ColBoxs;
-	std::vector<ItemBox>			ItemBoxs;
-
 public:
 	StageData() {}
 	StageData(const StageData&) {}
 	void Load(std::string file_name, std::map<std::string, cStageModel>* manager)
 	{
-		load_stage_from_file_ex(file_name, objects, ColBoxs,ItemBoxs, manager);
+		load_stage_from_file(file_name, objects, manager);
 	}
 	StageObject* getObdects()
 	{
 		return objects;
 	}
-	const std::vector<OBB>& GetObbs()const
-	{
-		return ColBoxs;
-	}
-
-	const std::vector<ItemBox>& GetItemBoxs()const
-	{
-		return ItemBoxs;
-	}
+	
 	void Render()
 	{
 		ModelRenderBegin();

@@ -14,16 +14,6 @@ private:
 	void LoadModels();
 public:
 
-	const std::vector<OBB>& GetObbs()const
-	{
-		return stages[now_stage].GetObbs();
-	}
-	
-	const std::vector<ItemBox>& GetItemBoxs()const
-	{
-		return stages[now_stage].GetItemBoxs();
-	}
-
 	template<size_t size>
 	void LoadStages(std::string (&file_names)[size])
 	{
