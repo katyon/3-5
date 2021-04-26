@@ -6,48 +6,55 @@
 inline void LoadColBoxs(const std::string& file_pass, 
 	std::vector<ColBox>& data)
 {
+	//ファイルが無ければ終了
+	if (!checkFileExistence(file_pass))return;
+	//ファイルポインタを取得
 	FILE* fp = fopen(file_pass.c_str(), "r");
 	if (fp)
 	{
+		//データを空にしておく
 		data.clear();
-		OBB obb;
-		int option = -1;
-		int loop_end = 0;
-		//OBBのデータ数を取得
-		fscanf(fp, "%d", &loop_end);
+		int data_size = 0;
+		//データ数を取得
+		fscanf(fp, "%d", &data_size);
 		fprintf(fp, "\n");
+		//データが0に満たない場合終了
+		if (data_size <= 0)
+		{
+			fclose(fp);
+			return;
+		}
+		//データ数分だけコンテナを作成する
+		data.resize(static_cast<size_t>(data_size));
 		//データ数ループする
-		for (int i = 0; i < loop_end; i++)
+		for (auto& d: data)
 		{
 			//座標データ
-			fscanf(fp, "%f,", &obb.pos.x);
-			fscanf(fp, "%f,", &obb.pos.y);
-			fscanf(fp, "%f,", &obb.pos.z);
+			fscanf(fp, "%f,", &d.obb.pos.x);
+			fscanf(fp, "%f,", &d.obb.pos.y);
+			fscanf(fp, "%f,", &d.obb.pos.z);
 
 			//スケール値のデータ
-			fscanf(fp, "%f,", &obb.len.x);
-			fscanf(fp, "%f,", &obb.len.y);
-			fscanf(fp, "%f,", &obb.len.z);
+			fscanf(fp, "%f,", &d.obb.len.x);
+			fscanf(fp, "%f,", &d.obb.len.y);
+			fscanf(fp, "%f,", &d.obb.len.z);
 
 			//方向ベクトルの成分データ
 			//Right
-			fscanf(fp, "%f,", &obb.direct.right.x);
-			fscanf(fp, "%f,", &obb.direct.right.y);
-			fscanf(fp, "%f,", &obb.direct.right.z);
+			fscanf(fp, "%f,", &d.obb.direct.right.x);
+			fscanf(fp, "%f,", &d.obb.direct.right.y);
+			fscanf(fp, "%f,", &d.obb.direct.right.z);
 			//Up
-			fscanf(fp, "%f,", &obb.direct.up.x);
-			fscanf(fp, "%f,", &obb.direct.up.y);
-			fscanf(fp, "%f,", &obb.direct.up.z);
+			fscanf(fp, "%f,", &d.obb.direct.up.x);
+			fscanf(fp, "%f,", &d.obb.direct.up.y);
+			fscanf(fp, "%f,", &d.obb.direct.up.z);
 			//Forward
-			fscanf(fp, "%f,", &obb.direct.forward.x);
-			fscanf(fp, "%f,", &obb.direct.forward.y);
-			fscanf(fp, "%f,", &obb.direct.forward.z);
+			fscanf(fp, "%f,", &d.obb.direct.forward.x);
+			fscanf(fp, "%f,", &d.obb.direct.forward.y);
+			fscanf(fp, "%f,", &d.obb.direct.forward.z);
 
 			//オプション(判定用のオプション)
-			fscanf(fp, "%d,", &option);
-
-			//データを保存
-			data.emplace_back(ColBox(obb, option));
+			fscanf(fp, "%d,", &d.option);
 
 			fprintf(fp, "\n");
 		}

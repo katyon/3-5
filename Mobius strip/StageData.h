@@ -54,6 +54,7 @@ struct ColBox
 {
 	int option;
 	OBB obb;
+	ColBox() {};
 	ColBox(const FLOAT3& pos,
 		const FLOAT3& len, 
 		const Quaternion& angle,
