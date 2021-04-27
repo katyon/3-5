@@ -98,24 +98,24 @@ void Player::colWall()
 	float distance = 10.0f;
 	FLOAT3 hitPos[2];
 
-	for (auto& obb : StageManager::getIns()->GetObbs())
-	{
-		Debug->SetString("OBBpos %f %f %f", obb.pos.x, obb.pos.y, obb.pos.z);
-		Debug->SetString("OBBscale %f %f %f", obb.len.x, obb.len.y, obb.len.z);
-		Debug->SetString("OBBpos forward:%f right:%f up:%f", obb.direct.forward, obb.direct.right, obb.direct.up);
-		if (ColLineOBB(horizontal_lay_start, horizontal_lay_end,
-			obb, hitPos[SAVE]))
-		{
-			float dist_temp = horizontal_lay_start.distanceFrom(hitPos[SAVE]);
-
-			// 今回のレイとの接触地点が最小値より小さければ更新
-			if (dist_temp < distance)
-			{
-				hitPos[MINIMUM] = hitPos[SAVE];
-				distance = horizontal_lay_start.distanceFrom(hitPos[MINIMUM]);
-			}
-		}
-	}
+	//for (auto& obb : StageManager::getIns()->GetObbs())
+	//{
+	//	Debug->SetString("OBBpos %f %f %f", obb.pos.x, obb.pos.y, obb.pos.z);
+	//	Debug->SetString("OBBscale %f %f %f", obb.len.x, obb.len.y, obb.len.z);
+	//	Debug->SetString("OBBpos forward:%f right:%f up:%f", obb.direct.forward, obb.direct.right, obb.direct.up);
+	//	if (ColLineOBB(horizontal_lay_start, horizontal_lay_end,
+	//		obb, hitPos[SAVE]))
+	//	{
+	//		float dist_temp = horizontal_lay_start.distanceFrom(hitPos[SAVE]);
+	//
+	//		// 今回のレイとの接触地点が最小値より小さければ更新
+	//		if (dist_temp < distance)
+	//		{
+	//			hitPos[MINIMUM] = hitPos[SAVE];
+	//			distance = horizontal_lay_start.distanceFrom(hitPos[MINIMUM]);
+	//		}
+	//	}
+	//}
 
 	if (distance < 5.0f)
 	{
@@ -131,15 +131,15 @@ void Player::colWall()
 
 void Player::colFloor()
 {
-	FLOAT3 hit_pos;
-	for (auto& obb : StageManager::getIns()->GetObbs())
-	{
-		if (ColLineOBB(vertical_lay_start, vertical_lay_end,
-			obb, hit_pos))
-		{
-
-		}
-	}
+	//FLOAT3 hit_pos;
+	//for (auto& obb : StageManager::getIns()->GetObbs())
+	//{
+	//	if (ColLineOBB(vertical_lay_start, vertical_lay_end,
+	//		obb, hit_pos))
+	//	{
+	//
+	//	}
+	//}
 }
 
 DirectX::XMMATRIX Player::getPlayerWorldMatrix()

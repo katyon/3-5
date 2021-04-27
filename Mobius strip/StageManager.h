@@ -52,43 +52,6 @@ public:
 
 void getMouseRay(const Camera& eye, FLOAT3& start, FLOAT3& end);
 
-inline bool ItemisClick(const Camera& eye,int& operation)
-{
-	bool result = false;
-	operation = -1;
-	float dis = 0.0f;
-	FLOAT3 hitPos[2] = {};
-	static FLOAT3 s, e;
-	getMouseRay(eye, s, e);
-	for (const auto& item : StageManager::getIns()->GetItemBoxs())
-	{
-		if (ColLineOBB(s, e, 
-			item.obb, 
-			hitPos[0]))
-		{
-			if (!result)
-			{
-				hitPos[1] = hitPos[0];
-				dis = s.distanceFrom(hitPos[1]);
-				operation = item.option;
-				result = true;
-			}
-			else
-			{
-				float s_h = s.distanceFrom(hitPos[0]);
-				if (s_h < dis)
-				{
-					operation = item.option;
-					hitPos[1] = hitPos[0];
-					dis = s.distanceFrom(hitPos[1]);
-				}
-			}
-		}
-	}
-	return result;
-}
-
-
 //std::string fill_pass[] =
 //{
 //	"Data\\StageData\\stage_data.csv",
