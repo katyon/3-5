@@ -183,36 +183,36 @@ public:
 #define M_Item ItemMenu::getInstance()
 
 
-// ゲーム中にホイール操作で使用したりするアイテム
-class GameItem :public ItemArr
-{
-private:
-    // int item_num[ITEM_MAX]; 
-    bool select = false;    // 選べる状態ですよ
-
-
-    GameItem()
-    {
-        for (int i = 0; i < ITEM_MAX; i++)
-        {
-            pos[i] = { 128.0f,256.0f * i + 128.0f };
-            scale[i] = { 0.3f,0.3f };
-        }
-        reset();
-    }
-    int timer = 0;
-
-public:
-    void init();
-    void isChoice();
-    void update();
-    void draw();
-
-    static GameItem* getInstance()
-    {
-        static GameItem ins;
-        return &ins;
-    }
-};
-
-#define G_Item GameItem::getInstance()
+//// ゲーム中にホイール操作で使用したりするアイテム
+//class GameItem :public ItemArr
+//{
+//private:
+//    // int item_num[ITEM_MAX]; 
+//    bool select = false;    // 選べる状態ですよ
+//
+//
+//    GameItem()
+//    {
+//        for (int i = 0; i < ITEM_MAX; i++)
+//        {
+//            pos[i] = { 128.0f,256.0f * i + 128.0f };
+//            scale[i] = { 0.3f,0.3f };
+//        }
+//        reset();
+//    }
+//    int timer = 0;
+//
+//public:
+//    void init();
+//    void isChoice();
+//    void update();
+//    void draw();
+//
+//    static GameItem* getInstance()
+//    {
+//        static GameItem ins;
+//        return &ins;
+//    }
+//};
+//
+//#define G_Item GameItem::getInstance()

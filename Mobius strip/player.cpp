@@ -1,6 +1,10 @@
 #include "player.h"
 #include "StageManager.h"
 
+#include <cassert>
+#include <cmath>
+#include <limits>
+
 Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
@@ -19,14 +23,17 @@ void Player::update(const Camera& camera)
 	posture_vec.CreateVector(posture);
 	updateDestVec(camera.GetTarget() - camera.GetPos());
 	move(camera);
-	horizontal_lay_start = pos + FLOAT3(0, 4.5f, 0);
+	horizontal_lay_start = pos + FLOAT3(0, 1.0f, 0);
 	horizontal_lay_end = horizontal_lay_start + (Dest.target * 30.0f);
 	vertical_lay_start = pos + FLOAT3(0, 1.0f, 0);
-	vertical_lay_end = vertical_lay_start + FLOAT3(0, 3.0f, 0);
+	vertical_lay_end = vertical_lay_start + FLOAT3(0, -50.0f, 0);
+	Debug->SetString("プレイヤー座標 x:%f,z:%f", pos.x, pos.z);
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
+	restrict_area();
 	colWall();
+	colFloor();
 }
 
 void Player::render(const Camera& camera)
@@ -56,15 +63,6 @@ void Player::move(const Camera& camera)
 	{
 		if (posture.TurnToTheFront(pos, pos + FLOAT3(camera.GetTarget().x - camera.GetPos().x, 0, camera.GetTarget().z - camera.GetPos().z), 0.2f) == -1) { posture.RotationYaw(toAngle(1)); }
 		Dest.target += Dest.back;
-	}
-
-	if (input::STATE('E'))
-	{
-		pos.y += 0.5f;
-	}
-	if (input::STATE('Q'))
-	{
-		pos.y -= 0.5f;
 	}
 
 	if (Dest.target.length() <= 0.000001)
@@ -113,11 +111,8 @@ void Player::colWall()
 	float distance = 10.0f;
 	FLOAT3 hitPos[2];
 
-	for (auto& obb : StageManager::getIns()->GetObbs())
+	for (auto& obb : colbox_w)
 	{
-		Debug->SetString("OBBpos %f %f %f", obb.pos.x, obb.pos.y, obb.pos.z);
-		Debug->SetString("OBBscale %f %f %f", obb.len.x, obb.len.y, obb.len.z);
-		Debug->SetString("OBBpos forward:%f right:%f up:%f", obb.direct.forward, obb.direct.right, obb.direct.up);
 		if (ColLineOBB(horizontal_lay_start, horizontal_lay_end,
 			obb, hitPos[SAVE]))
 		{
@@ -135,26 +130,44 @@ void Player::colWall()
 	if (distance < 5.0f)
 	{
 		// 押し戻し用ベクトル
-		VECTOR3D vec = horizontal_lay_start - hitPos[MINIMUM];
-		vec = vec.normalize();
+		VECTOR3D vec = horizontal_lay_start - horizontal_lay_end;
+		
+		if(distance != 0)vec = vec.normalize();
 
 		// 押し戻し処理
 		pos = hitPos[MINIMUM] + vec*5.0f;
 		pos.y = 0;
+		if (isnan(pos.x))
+		{
+			int hoge = 0;
+		}
 	}
+}
+
+void Player::restrict_area()
+{
+	if (pos.x > 50) { pos.x = 50; }
+	if (pos.x < -50) { pos.x = -50; }
+	if (pos.z > 50) { pos.z = 50; }
+	if (pos.z < -50) { pos.z = -50; }
 }
 
 void Player::colFloor()
 {
-	FLOAT3 hit_pos;
-	for (auto& obb : StageManager::getIns()->GetObbs())
+	FLOAT3 hit_pos[2];
+	float distance = 100.0f;
+
+	for (auto& obb : colbox_f)
 	{
 		if (ColLineOBB(vertical_lay_start, vertical_lay_end,
-			obb, hit_pos))
+			obb, hit_pos[SAVE]))
 		{
-
+			float dist_temp = vertical_lay_start.distanceFrom(hit_pos[SAVE]);
+			if (dist_temp < distance) { hit_pos[MINIMUM] = hit_pos[SAVE]; }
 		}
 	}
+
+	pos.y = hit_pos[MINIMUM].y;
 }
 
 DirectX::XMMATRIX Player::getPlayerWorldMatrix()
