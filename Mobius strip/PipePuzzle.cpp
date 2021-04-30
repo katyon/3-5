@@ -68,7 +68,6 @@ PipePuzzle::PipePuzzle()
     goal_pipe.load("Data\\Objects\\GoalPipe.fbx");
 
     Audio::load(2, L"Data/BGM/pipe.wav");
-
 }
 
 void PipePuzzle::Init()

@@ -184,7 +184,7 @@ void Menu::update()
                 content = HelpContent::Exit;
             }
 
-            if (content== HelpContent::Exit)
+            if (content == HelpContent::Exit)
             {
                 if (ColRects(366, 470, 1248, 1498, input::GetMousePos()))
                 {
@@ -199,7 +199,7 @@ void Menu::update()
         }
         break;
     }
-    
+
 }
 
 

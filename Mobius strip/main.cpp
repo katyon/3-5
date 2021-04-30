@@ -1,4 +1,4 @@
-﻿/*******************************************************************/
+﻿/********************************************************************/
 /*							インクルード							*/
 /********************************************************************/
 #include "./AliceLib/AliceLib.h"
@@ -70,6 +70,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	//};
 	//
 	//StageManager::getIns()->LoadStages(fill_pass);
+	
     //複数箇所で使うため用意しておいたほうがいい
     int scene = AliceLib::GetNowScene();
 
@@ -88,6 +89,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	{
 
 		//現在のシーンを取得する
+		scene = AliceLib::GetNowScene();
 		elapsed_time = DeltaTime();
 #if _DEBUG
 		ImGuiNewFrame();

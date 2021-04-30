@@ -42,7 +42,7 @@ CollisionEditer::CollisionEditer()
 
 		//ファイルが無ければ終了
 		if (!checkFileExistence(pass))return;
-		
+
 		//ファイルポインタを取得
 		FILE* fp = fopen(pass.c_str(), "r");
 		if (fp)
@@ -113,9 +113,9 @@ CollisionEditer::~CollisionEditer()
 	if (fp)
 	{
 		//データ数を保存
-		fprintf(fp, "%d,%s\n", 
-			static_cast<int>(ColDataList.size()), 
-			storage.empty() ? "empty":storage.c_str());
+		fprintf(fp, "%d,%s\n",
+			static_cast<int>(ColDataList.size()),
+			storage.empty() ? "empty" : storage.c_str());
 		FLOAT4 q;
 		for (const auto& d : ColDataList)
 		{
@@ -136,7 +136,7 @@ void CollisionEditer::GUI()
 {
 	if (isShow)
 	{
-		ImGui::Begin(u8"操作方法",&isShow);
+		ImGui::Begin(u8"操作方法", &isShow);
 		ImGui::TextColored({ 1,0,0,1 }, u8"＠カメラの操作方法");
 		ImGui::Text(u8"右クリックした状態で【W】【A】【S】【D】【E】【Q】で移動。");
 		ImGui::Text(u8"左クリックした状態で【W】【A】【S】【D】で視線移動。");
@@ -154,19 +154,19 @@ void CollisionEditer::GUI()
 	if (ImGui::Button(u8"データをロードする"))
 	{
 		this->storage = stage_name;
-		LoadColBoxs(); 
+		LoadColBoxs();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button(u8"データをセーブする")) 
+	if (ImGui::Button(u8"データをセーブする"))
 	{
 		if (storage.empty())return;
-		SaveColBoxs(); 
+		SaveColBoxs();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button(u8"データをクリアする")) { ColDataList.clear(); }
 
-	if (ImGui::Button(u8"OBBを追加する")) 
-	{ 
+	if (ImGui::Button(u8"OBBを追加する"))
+	{
 		CBD box;
 		box.d.obb.pos = {};
 		box.d.obb.len = ScalarToFloat3(1.0f);
@@ -183,12 +183,12 @@ void CollisionEditer::GUI()
 		camera_q.reset();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button(isShow? u8"操作方法を非表示":u8"操作方法を表示"))
+	if (ImGui::Button(isShow ? u8"操作方法を非表示" : u8"操作方法を表示"))
 	{
 		isShow = !isShow;
 	}
-	storage.empty()?ImGui::NewLine():
-	ImGui::Text(u8"%sを編集中", storage.c_str());
+	storage.empty() ? ImGui::NewLine() :
+		ImGui::Text(u8"%sを編集中", storage.c_str());
 	ImGui::InputFloat(u8"カメラの移動速度", &speed, 1.0f, -1.0f);
 
 	ImGui::End();
@@ -209,7 +209,7 @@ void CollisionEditer::GUI()
 
 			ImGui::InputInt(u8"オプション", &it->d.option, 1, -1);
 
-			
+
 			ImGui::Text(u8"座標");
 			ImGui::InputFloat(u8"座標::X", &it->d.obb.pos.x, 0.5f, -0.5f);
 			ImGui::InputFloat(u8"座標::Y", &it->d.obb.pos.y, 0.5f, -0.5f);
@@ -260,7 +260,7 @@ void CollisionEditer::GUI()
 				ImGui::SameLine();
 				if (ImGui::Button("Z + 30°")) { it->q.RotationRoll(p30); }
 			}
-			
+
 			ImGui::TreePop();
 		}
 		++it;

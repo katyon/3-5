@@ -3,7 +3,7 @@
 #include <list>
 
 using ColBoxs = std::list<ColBox>;
-inline void LoadColBoxs(const std::string& file_pass, 
+inline void LoadColBoxs(const std::string& file_pass,
 	ColBoxs& data)
 {
 	//ファイルが無ければ終了
@@ -29,7 +29,7 @@ inline void LoadColBoxs(const std::string& file_pass,
 		//データ数分だけコンテナを作成する
 		data.resize(static_cast<size_t>(data_size));
 		//データ数ループする
-		for (auto& d: data)
+		for (auto& d : data)
 		{
 			//座標データ
 			fscanf(fp, "%f,", &d.obb.pos.x);
@@ -46,7 +46,7 @@ inline void LoadColBoxs(const std::string& file_pass,
 			fscanf(fp, "%f,", &_Qu.y);
 			fscanf(fp, "%f,", &_Qu.z);
 			fscanf(fp, "%f,", &_Qu.w);
-		
+
 			Qu.SetQuaternion(_Qu);
 			d.obb.setVector(Qu);
 
@@ -64,7 +64,7 @@ class CollisionEditer
 {
 private:
 	std::map<std::string, SE_Model>	manager;
-	
+
 	struct CBD
 	{
 		ColBox		d;
@@ -117,10 +117,10 @@ private:
 				MessageBoxW(nullptr, L"ファイルのパスを確認してください", L"ファイルが存在しません", MB_OK);
 				return;
 			}
-			stage.Load(pass,&manager);
+			stage.Load(pass, &manager);
 		}
 		{
-			
+
 			std::string pass = "Data\\ColData\\";
 			pass += storage;
 			pass += "_CD.csv";

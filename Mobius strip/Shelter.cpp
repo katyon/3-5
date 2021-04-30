@@ -602,6 +602,3 @@ void ShDemoPlay()
 		font::OutPut(L"ÉNÉäÉA", 0, 0);
 	}
 }
-
-
-

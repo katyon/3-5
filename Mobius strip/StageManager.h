@@ -1,5 +1,4 @@
 #pragma once
-
 #include "StageData.h"
 #include "Shelter.h"
 
@@ -9,20 +8,20 @@ private:
 	std::map<std::string, cStageModel>  model_manager;
 	std::vector<StageData>				stages;
 	UINT								now_stage = 0;
-	
+
 	//ƒ‚ƒfƒ‹‚ğƒ[ƒh
 	void LoadModels();
 public:
 
 	template<size_t size>
-	void LoadStages(std::string (&file_names)[size])
+	void LoadStages(std::string(&file_names)[size])
 	{
 		if (!stages.empty())return;
 		LoadModels();
 		stages.resize(size);
 		for (int i = 0; i < size; i++)
 		{
-			stages[i].Load(file_names[i],&model_manager);
+			stages[i].Load(file_names[i], &model_manager);
 		}
 	}
 

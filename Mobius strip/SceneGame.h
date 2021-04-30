@@ -17,11 +17,12 @@ private:
 
 	SceneGame();
 
+	bool fix_cursor;
+
 	PipePuzzle pipe_puzzle;
 
 	Sprite sprClear;
 	AnimaData nowdata;
-
 
 	bool ClearGame = false;
 public:

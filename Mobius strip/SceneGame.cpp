@@ -15,6 +15,11 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
+
+    Audio::load(1, L"Data/BGM/Waltz.wav");
+    Audio::SetVolume(1, 0.4f);
+    Audio::load(5, L"Data/BGM/menu.wav");
+    Audio::SetVolume(5, 0.7f);
     itemObj->init();
     // ボタンプッシュ ここから
     camera.SetPos({ 0,200,-10 });
@@ -32,13 +37,8 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     };
 
     StageManager::getIns()->LoadStages(fill_pass);
-
-    Audio::load(1, L"Data/BGM/Waltz.wav");
-    Audio::SetVolume(1, 0.4f);
-    Audio::load(5, L"Data/BGM/menu.wav");
-    Audio::SetVolume(5, 0.7f);
     //コンストラクタの最後で念のための初期化を行う
-    //SceneGame::Initialize();
+    SceneGame::Initialize();
 }
 
 //シーン変更された瞬間に実行される処理
@@ -49,7 +49,7 @@ void SceneGame::Initialize()
     pipe_puzzle.Init();
     itemObj->init();
     M_Item->init();
-   // G_Item->init();
+    //G_Item->init();
 
     menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -58,10 +58,10 @@ void SceneGame::Initialize()
     player.init();
 
     Audio::stop(0);
-
     Audio::play(1, true);
     ClearButoon = false;
     ClearGame = false;
+    fix_cursor = false;
 }
 
 //シーン全体の更新処理
@@ -85,7 +85,7 @@ void SceneGame::Update(float elapsed_time)
         ButtonPush::getInstance()->update(camera);
         pipe_puzzle.Update();
         itemObj->update(camera);
-       // G_Item->update();
+        //G_Item->update();
 
         if (input::TRG('P'))
         {
@@ -98,14 +98,25 @@ void SceneGame::Update(float elapsed_time)
                 }
             }
         }
+        if (input::TRG(input::MOUSE_R))
         {
-         camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+            fix_cursor = !fix_cursor;
+            SetShowCursor(fix_cursor);
+            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+            center.x = floorf(center.x);
+            center.y = floorf(center.y);
+            SetCursorPos(center.x, center.y);
+        }
+
+        if (!fix_cursor)
+        {
+            camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
         }
         if (input::TRG(VK_TAB))
         {
+            menu.isPause = true;
             menu.tab = MenuTab::Item;
             game_mode = menue;
-            SetShowCursor(true);
         }
         break;
 
@@ -162,13 +173,12 @@ void SceneGame::Render()
             SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
         }
         break;
-        
+
     case menue:
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
         menu.draw();
         break;
-
     case balance:
 
         break;
