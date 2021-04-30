@@ -1,4 +1,5 @@
 #pragma once
+#define	_CRT_SECURE_NO_WARNINGS
 #include "AliceLib\AliceLib.h"
 #include "StageData.h"
 #include "Shelter.h"
@@ -45,13 +46,14 @@ static const OBB colbox_f[] =
 	{{-31.0f,34.0f,-24.0f},{53.0f,4.0f,72.3f},{}},
 };
 //アイテム
-static const ItemBox colbox_i[] =
+static const ColBox colbox_i[] =
 {
 	//{{/*pos*/},{/*scale*/},{/*toRadian(angle)*/},-1},
 	{{-44.0f,13.0f,-38.0f},{9.3f,4.9f,4.6f},{},0},//紙
 	{{-44.0f,15.0f,-19.0f},{9.3f,11.4f,14.4f},{},1},//天秤
 	{{-53.0f,13.0f, 0.0f},{9.0f,24.0f,12.6f},{},2},//出口
 };
+void getMouseRay(const Camera& eye, FLOAT3& start, FLOAT3& end);
 
 //アイテムなどの当たり判定
 inline bool ItemisClick2(const Camera& eye, int& operation)

@@ -1,5 +1,6 @@
 #pragma once
 #include "AliceLib\AliceLib.h"
+#include "AliceLib\Animation.h"
 #include "fps_camera.h"
 #include "tps_camera.h"
 #include "player.h"
@@ -15,6 +16,9 @@ private:
 
 	FLOAT3 cPos;
 	FLOAT3 cTarget;
+
+	Sprite sprTitle;
+	AnimaData nowdata;
 
 	SceneTitle();
 public:

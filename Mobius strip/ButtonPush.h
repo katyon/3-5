@@ -32,6 +32,7 @@ public:
 	bool final_judge;
 	bool provisional_judge;
 	//int timer = 60;
+	bool isPlay = true;
 
 	void init();
 	bool judge_answer();

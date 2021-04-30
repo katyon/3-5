@@ -1,5 +1,6 @@
 #pragma once
 #include "AliceLib\AliceLib.h"
+#include "AliceLib\Animation.h"
 #include "PipePuzzle.h"
 #include "fps_camera.h"
 #include "tps_camera.h"
@@ -20,6 +21,11 @@ private:
 
 	PipePuzzle pipe_puzzle;
 
+	Sprite sprClear;
+	AnimaData nowdata;
+
+	bool ClearGame = false;
+public:
 	enum GameMode
 	{
 		normal = 0,
@@ -28,10 +34,10 @@ private:
 	};
 	int game_mode = 0;
 
-public:
 	// í«â¡Å@É{É^ÉìâüÇµçûÇ›
 	//Camera camera;
 	//Camera camera;
+	bool ClearButoon = false;
 
 	static SceneGame* getInstance()
 	{

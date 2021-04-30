@@ -239,6 +239,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionEditer.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -464,6 +467,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="OBBs.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEditer.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,6 +11,7 @@
 #include "SceneTite.h"
 #include "SceneGame.h"
 #include "common.h"
+#include "StageManager.h"
 
 /********************************************************************/
 
@@ -46,7 +47,7 @@ void AllInitializes()
 		flame_constant.Active(0, 0, 1);
 		flame.SetPSSharders();
 		FullScreenQuadBlit();
-		font::OutPut(L"なうろーでぃんぐ(仮)",0,0);
+		font::OutPut(L"Loading...",0,0);
 
 		AliceLib::Present(1, 0);
 	}
@@ -63,7 +64,13 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 
 	AllInitializes();
 	SetShowCursor(false);
-
+	//std::string fill_pass[] =
+	//{
+	//	"Data\StageData\stage_data.csv",
+	//};
+	//
+	//StageManager::getIns()->LoadStages(fill_pass);
+	
     //複数箇所で使うため用意しておいたほうがいい
     int scene = AliceLib::GetNowScene();
 
@@ -113,6 +120,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 			}
 		}
 #endif
+		scene = AliceLib::GetNowScene();
 		//前のシーンと現在のシーンが違うとき
 		if (AliceLib::InitFlg())
 		{
@@ -167,11 +175,11 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 
 #if _DEBUG //デバッグ文字表示用
 		ImGuiRender();
-		//_debug->display();
+		_debug->display();
 #endif
 		
         //バックバッファに送信
-        AliceLib::Present(0u, 0u);
+        AliceLib::Present(1u, 0u);
 
     }
 

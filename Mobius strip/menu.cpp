@@ -1,15 +1,15 @@
 #include "menu.h"
+#include "SceneGame.h"
 /*************************************************/
 /*                      ‰Šú‰»                   */
 /*************************************************/
-ItemArr itemarr;
 void ItemArr::init()
 {
-    SpriteLoad(item_ptr, L"Data/Sprite/item.png");
+    SpriteLoad(item_ptr, L"Data/Sprite/ward.png");
     reset();
 
-    pos[0].x = 315.0f;
-    pos[0].y = 286.0f;
+    pos[0].x = 318.0f;
+    pos[0].y = 290.0f;
     pos[1].x = 480.0f;
     pos[1].y = 286.0;
     pos[2].x = 645.0f;
@@ -21,9 +21,6 @@ void Menu::init()
     SpriteLoad(menu_ptr, L"Data/Sprite/menu.png");
     tab = MenuTab::Item;
     content = HelpContent::None;
-    isPause = false;
-
-
 }
 
 /*************************************************/
@@ -174,7 +171,6 @@ void Menu::update()
             {
                 tab = MenuTab::Memo;
             }
-
             else if (ColRects(300, 390, 300, 780, input::GetMousePos()))
             {
                 content = HelpContent::Option;
@@ -187,24 +183,23 @@ void Menu::update()
             {
                 content = HelpContent::Exit;
             }
+
+            if (content == HelpContent::Exit)
+            {
+                if (ColRects(366, 470, 1248, 1498, input::GetMousePos()))
+                {
+                    ChangeScene(S_TITLE);
+                    SceneGame::getInstance()->game_mode = SceneGame::getInstance()->normal;
+                }
+                if (ColRects(669, 775, 1248, 1418, input::GetMousePos()))
+                {
+                    content = HelpContent::None;
+                }
+            }
         }
         break;
     }
-    if (input::TRG(VK_LBUTTON))
-    {
-        if (ColRects(50, 140, 100, 190, input::GetMousePos()))
-        {
-            isPause = false;
-        }
-        if (ColRects(366, 470, 1248, 1498, input::GetMousePos()))
-        {
-            ChangeScene(S_TITLE);
-        }
-        if (ColRects(669, 775, 1248, 1418, input::GetMousePos()))
-        {
-            content = HelpContent::None;
-        }
-    }
+
 }
 
 
@@ -214,7 +209,6 @@ void Menu::update()
 void ItemMenu::draw()
 {
     Debug->SetString("‘¶Ý[0]:%d", arr->exist[0]);
-
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
         if (!arr->exist[i])
@@ -222,10 +216,10 @@ void ItemMenu::draw()
             switch (arr->items[i])
             {
             case ID_ITEM1:
-                SpriteRender(arr->item_ptr, arr->pos[0].x, arr->pos[0].y, 0.4f, 0.5f, 0, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                SpriteRender(arr->item_ptr, arr->pos[0].x, arr->pos[0].y, 0.05f, 0.06f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
                 if (arr->isobserve[ID_ITEM1])
                 {
-                    SpriteRender(arr->item_ptr, 900, 286, 3, 3, 0, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                    SpriteRender(arr->item_ptr, 1190, 310, 0.18f, 0.24f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
                 }
                 break;
 
@@ -251,12 +245,10 @@ void ItemMenu::draw()
         }
         break;
     }
-           
 }
 
 void Menu::draw()
 {
-    Debug->SetString("isPause:%d", isPause);
     Debug->SetString("page:%d", page);
     switch (tab)
     {
@@ -343,14 +335,6 @@ void Menu::draw()
         }
         Selected();
         break;
-    }
-    if (ColRects(50, 140, 100, 190, input::GetMousePos()))
-    {
-        SpriteRender(menu_ptr, 98, 51, 0.5f, 0.5f, 195, 2266, 205, 192, 0, 0, 0, 1, 1, 1, 1);
-    }
-    else
-    {
-        SpriteRender(menu_ptr, 100, 50, 0.5f, 0.5f, 0, 2266, 192, 192, 0, 0, 0, 1, 1, 1, 1);
     }
 }
 

@@ -1,11 +1,15 @@
+#include "AliceLib/AliceLib.h"
 #include <stdio.h>
 #include "ButtonPush.h"
-#include "AliceLib/AliceLib.h"
 #include "Shelter.h"
+#include "SceneGame.h"
 //#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
-#define DownPos 2.5
+#define ButtonPosX -40.0f
+#define ButtonPosY 44.0f
+#define ButtonPosZ -8.0f
+#define DownPos ButtonPosY-0.5f
 
 ButtonPush::ButtonPush()
 {
@@ -37,42 +41,44 @@ ButtonPush::ButtonPush()
 	button[4][4].model.load("Data/Buttons/botan25.fbx");
 	base.model.load("Data/Buttons/hako.fbx");
 
+	Audio::load(4, L"./Data/BGM/putting_button.wav");
+
 }
 
 void ButtonPush::init()
 {
 	// 初期座標
-	base.pos = { 10,2,0 };
+	base.pos = { -40,43,-8 };
 
-	button[0][0].pos = {10+ -2.6,3,2.8 };
-	button[0][1].pos = {10+ -1.3,3,2.8 };
-	button[0][2].pos = {10+ 0,3,2.8 };
-	button[0][3].pos = {10+ 1.3,3,2.8 };
-	button[0][4].pos = {10+ 2.6,3,2.8 };
+	button[0][0].pos = { ButtonPosX + -2.6f,ButtonPosY,ButtonPosZ + 2.8f };
+	button[0][1].pos = { ButtonPosX + -1.3f,ButtonPosY,ButtonPosZ + 2.8f };
+	button[0][2].pos = { ButtonPosX + 0.0f,ButtonPosY,ButtonPosZ + 2.8f };
+	button[0][3].pos = { ButtonPosX + 1.3f,ButtonPosY,ButtonPosZ + 2.8f };
+	button[0][4].pos = { ButtonPosX + 2.6f,ButtonPosY,ButtonPosZ + 2.8f };
 
-	button[1][0].pos = {10 + -2.6,3,1.4 };
-	button[1][1].pos = {10 + -1.3,3,1.4 };
-	button[1][2].pos = {10 + 0,3,1.4 };
-	button[1][3].pos = {10 + 1.3,3,1.4 };
-	button[1][4].pos = {10 + 2.6,3,1.4 };
+	button[1][0].pos = { ButtonPosX + -2.6f,ButtonPosY,ButtonPosZ + 1.4f };
+	button[1][1].pos = { ButtonPosX + -1.3f,ButtonPosY,ButtonPosZ + 1.4f };
+	button[1][2].pos = { ButtonPosX + 0.0f,ButtonPosY,ButtonPosZ + 1.4f };
+	button[1][3].pos = { ButtonPosX + 1.3f,ButtonPosY,ButtonPosZ + 1.4f };
+	button[1][4].pos = { ButtonPosX + 2.6f,ButtonPosY,ButtonPosZ + 1.4f };
 
-	button[2][0].pos = {10 + -2.6,3,0 };
-	button[2][1].pos = {10 + -1.3,3,0 };
-	button[2][2].pos = {10 + 0,3,0 };
-	button[2][3].pos = {10 + 1.3,3,0 };
-	button[2][4].pos = {10 + 2.6,3,0 };
+	button[2][0].pos = { ButtonPosX + -2.6f,ButtonPosY,ButtonPosZ + 0.0f };
+	button[2][1].pos = { ButtonPosX + -1.3f,ButtonPosY,ButtonPosZ + 0.0f };
+	button[2][2].pos = { ButtonPosX + 0.0f,ButtonPosY,ButtonPosZ + 0.0f };
+	button[2][3].pos = { ButtonPosX + 1.3f,ButtonPosY,ButtonPosZ + 0.0f };
+	button[2][4].pos = { ButtonPosX + 2.6f,ButtonPosY,ButtonPosZ + 0.0f };
 
-	button[3][0].pos = { 10 + -2.6,3,-1.4 };
-	button[3][1].pos = { 10 + -1.3,3,-1.4 };
-	button[3][2].pos = { 10 + 0,3,-1.4 };
-	button[3][3].pos = { 10 + 1.3,3,-1.4 };
-	button[3][4].pos = { 10 + 2.6,3,-1.4 };
+	button[3][0].pos = { ButtonPosX + -2.6f,ButtonPosY,ButtonPosZ + -1.4f };
+	button[3][1].pos = { ButtonPosX + -1.3f,ButtonPosY,ButtonPosZ + -1.4f };
+	button[3][2].pos = { ButtonPosX + 0.0f,ButtonPosY,ButtonPosZ + -1.4f };
+	button[3][3].pos = { ButtonPosX + 1.3f,ButtonPosY,ButtonPosZ + -1.4f };
+	button[3][4].pos = { ButtonPosX + 2.6f,ButtonPosY,ButtonPosZ + -1.4f };
 
-	button[4][0].pos = {10+ -2.6,3,-2.8 };
-	button[4][1].pos = {10+ -1.3,3,-2.8 };
-	button[4][2].pos = {10+ 0,3,-2.8 };
-	button[4][3].pos = {10+ 1.3,3,-2.8 };
-	button[4][4].pos = {10+ 2.6,3,-2.8 };
+	button[4][0].pos = { ButtonPosX + -2.6f,ButtonPosY,ButtonPosZ + -2.8f };
+	button[4][1].pos = { ButtonPosX + -1.3f,ButtonPosY,ButtonPosZ + -2.8f };
+	button[4][2].pos = { ButtonPosX + 0.0f,ButtonPosY,ButtonPosZ + -2.8f };
+	button[4][3].pos = { ButtonPosX + 1.3f,ButtonPosY,ButtonPosZ + -2.8f };
+	button[4][4].pos = { ButtonPosX + 2.6f,ButtonPosY,ButtonPosZ + -2.8f };
 
 	// 石板の識別番号設定
 	// 11 12 13 14 15
@@ -85,18 +91,24 @@ void ButtonPush::init()
 		for (int j = 0; j < 5; j++)
 		{
 			stone_board[i][j] = ((i + 1) * 10) + (j + 1);
+			button[i][j].isPush = false;
+			button[i][j].Pushflg = false;
 		}
 	}
-
+	for (int i = 0; i < 5; i++)
+	{
+		storage_board[i] = 0;
+	}
 	// 答えの数字を入れる
-	answer_board[0] = 11;
-	answer_board[1] = 12;
-	answer_board[2] = 13;
+	answer_board[0] = 31;
+	answer_board[1] = 53;
+	answer_board[2] = 45;
 	answer_board[3] = 14;
-	answer_board[4] = 15;
+	answer_board[4] = 22;
 
 	final_judge = false;
 	provisional_judge = false;
+	isPlay = true;
 }
 
 bool ButtonPush::judge_answer()
@@ -114,10 +126,10 @@ bool ButtonPush::judge_answer()
 			//provisional_judge = false;
 			// 1つでも間違っていたらstorage_boardをすべて0に戻す
 			for (int i = 0; i < 5; i++)
-			{			
+			{
 				int tens = storage_board[i] / 10 % 10 - 1;
 				int ones = storage_board[i] % 10 - 1;
-				button[tens][ones].pos.y = 3;
+				button[tens][ones].pos.y = ButtonPosY;
 				button[tens][ones].Pushflg = false;
 
 				storage_board[i] = 0;
@@ -133,10 +145,18 @@ bool ButtonPush::judge_answer()
 			return true;
 		}
 	}
+	return false;
 }
 
 void ButtonPush::update(const Camera& camera)
 {
+	// デバッグ用
+	//if (input::TRG('R'))
+	//{
+	//	init();
+	//}
+	if (!isPlay) { return; }
+
 	FLOAT3 start, end;
 	FLOAT3 HitPos[2];
 	bool result = false;
@@ -145,16 +165,16 @@ void ButtonPush::update(const Camera& camera)
 	int operation_y = -1;
 
 	// ここにキー操作
-	if (input::TRG(input::MOUSE_L)&& !final_judge) {
-		
+	if (input::TRG(input::MOUSE_L) && !final_judge) {
+
 		getMouseRay(camera, start, end);
-		
-		for (int i = 0; i < 5; i++) 
+
+		for (int i = 0; i < 5; i++)
 		{
-			for (int j = 0; j < 5; j++) 
+			for (int j = 0; j < 5; j++)
 			{
 				button[i][j].isPush = false;
-				if (ColLineOBB(start, end, { button[i][j].pos,FLOAT3(1, 1, 1),button[i][j].posture }, HitPos[0])) 
+				if (ColLineOBB(start, end, { button[i][j].pos,FLOAT3(1, 1, 1),button[i][j].posture }, HitPos[0]))
 				{
 					if (!result)
 					{
@@ -179,13 +199,14 @@ void ButtonPush::update(const Camera& camera)
 			}
 		}
 		button[operation_y][operation_x].isPush = true;
-		
+
 		if (button[0][0].isPush && !button[0][0].Pushflg)
 		{
 			push_botton(0, 0);
 			button[0][0].isPush = false;
 			button[0][0].pos.y = DownPos;
 			button[0][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][0].isPush && !button[1][0].Pushflg)
 		{
@@ -193,6 +214,7 @@ void ButtonPush::update(const Camera& camera)
 			button[1][0].isPush = false;
 			button[1][0].pos.y = DownPos;
 			button[1][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][0].isPush && !button[2][0].Pushflg)
 		{
@@ -200,6 +222,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][0].isPush = false;
 			button[2][0].pos.y = DownPos;
 			button[2][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][0].isPush && !button[3][0].Pushflg)
 		{
@@ -207,6 +230,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][0].isPush = false;
 			button[3][0].pos.y = DownPos;
 			button[3][0].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][0].isPush && !button[4][0].Pushflg)
 		{
@@ -214,6 +238,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][0].isPush = false;
 			button[4][0].pos.y = DownPos;
 			button[4][0].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][1].isPush && !button[0][1].Pushflg)
@@ -222,12 +247,14 @@ void ButtonPush::update(const Camera& camera)
 			button[0][1].isPush = false;
 			button[0][1].pos.y = DownPos;
 			button[0][1].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][1].isPush && !button[1][1].Pushflg)
 		{
 			push_botton(1, 1);
 			button[1][1].isPush = false;
 			button[1][1].pos.y = DownPos;
+			Audio::play(4);
 		}
 		if (button[2][1].isPush && !button[2][1].Pushflg)
 		{
@@ -235,6 +262,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][1].isPush = false;
 			button[2][1].pos.y = DownPos;
 			button[2][1].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][1].isPush && !button[3][1].Pushflg)
 		{
@@ -242,6 +270,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][1].isPush = false;
 			button[3][1].pos.y = DownPos;
 			button[3][1].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][1].isPush && !button[4][1].Pushflg)
 		{
@@ -249,6 +278,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][1].isPush = false;
 			button[4][1].pos.y = DownPos;
 			button[4][1].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][2].isPush && !button[0][2].Pushflg)
@@ -257,6 +287,7 @@ void ButtonPush::update(const Camera& camera)
 			button[0][2].isPush = false;
 			button[0][2].pos.y = DownPos;
 			button[0][2].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][2].isPush && !button[1][2].Pushflg)
 		{
@@ -264,6 +295,7 @@ void ButtonPush::update(const Camera& camera)
 			button[1][2].isPush = false;
 			button[1][2].pos.y = DownPos;
 			button[1][2].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][2].isPush && !button[2][2].Pushflg)
 		{
@@ -271,12 +303,14 @@ void ButtonPush::update(const Camera& camera)
 			button[2][2].isPush = false;
 			button[2][2].pos.y = DownPos;
 			button[2][2].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][2].isPush && !button[3][2].Pushflg)
 		{
 			push_botton(3, 2);
 			button[3][2].isPush = false;
 			button[3][2].pos.y = DownPos;
+			Audio::play(4);
 		}
 		if (button[4][2].isPush && !button[4][2].Pushflg)
 		{
@@ -284,6 +318,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][2].isPush = false;
 			button[4][2].pos.y = DownPos;
 			button[4][2].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][3].isPush && !button[0][3].Pushflg)
@@ -292,6 +327,7 @@ void ButtonPush::update(const Camera& camera)
 			button[0][3].isPush = false;
 			button[0][3].pos.y = DownPos;
 			button[0][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][3].isPush && !button[1][3].Pushflg)
 		{
@@ -299,6 +335,7 @@ void ButtonPush::update(const Camera& camera)
 			button[1][3].isPush = false;
 			button[1][3].pos.y = DownPos;
 			button[1][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][3].isPush && !button[2][3].Pushflg)
 		{
@@ -306,6 +343,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][3].isPush = false;
 			button[2][3].pos.y = DownPos;
 			button[2][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][3].isPush && !button[3][3].Pushflg)
 		{
@@ -313,6 +351,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][3].isPush = false;
 			button[3][3].pos.y = DownPos;
 			button[3][3].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][3].isPush && !button[4][3].Pushflg)
 		{
@@ -320,6 +359,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][3].isPush = false;
 			button[4][3].pos.y = DownPos;
 			button[4][3].Pushflg = true;
+			Audio::play(4);
 		}
 
 		if (button[0][4].isPush && !button[0][4].Pushflg)
@@ -328,13 +368,15 @@ void ButtonPush::update(const Camera& camera)
 			button[0][4].isPush = false;
 			button[0][4].pos.y = DownPos;
 			button[0][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[1][4].isPush && !button[1][4].Pushflg)
 		{
 			push_botton(1, 4);
-			button[1][4].isPush = false;		
+			button[1][4].isPush = false;
 			button[1][4].pos.y = DownPos;
 			button[1][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[2][4].isPush && !button[2][4].Pushflg)
 		{
@@ -342,6 +384,7 @@ void ButtonPush::update(const Camera& camera)
 			button[2][4].isPush = false;
 			button[2][4].pos.y = DownPos;
 			button[2][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[3][4].isPush && !button[3][4].Pushflg)
 		{
@@ -349,6 +392,7 @@ void ButtonPush::update(const Camera& camera)
 			button[3][4].isPush = false;
 			button[3][4].pos.y = DownPos;
 			button[3][4].Pushflg = true;
+			Audio::play(4);
 		}
 		if (button[4][4].isPush && !button[4][4].Pushflg)
 		{
@@ -356,6 +400,7 @@ void ButtonPush::update(const Camera& camera)
 			button[4][4].isPush = false;
 			button[4][4].pos.y = DownPos;
 			button[4][4].Pushflg = true;
+			Audio::play(4);
 		}
 
 
@@ -363,7 +408,7 @@ void ButtonPush::update(const Camera& camera)
 	}
 	// 5つすべて押したら判定
 	if (storage_board[4] != 0) {
-		 //falseの場合はjudge_answe内でstorage_boardが初期化されます
+		// falseの場合はjudge_answe内でstorage_boardが初期化されます
 		final_judge = judge_answer();
 	}
 
@@ -372,19 +417,51 @@ void ButtonPush::update(const Camera& camera)
 	{
 		//font::OutPut(L"clear", { 100,100 }, { 10,10 }, { 1,1,0,1 });
 		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) 
+			for (int j = 0; j < 5; j++)
 			{
 				if (button[i][j].pos.y > DownPos) {
-					button[i][j].pos.y -= 0.05;
+					button[i][j].pos.y -= 0.05f;
+				}
+				else if (i == 4 && j == 4)
+				{
+					isPlay = false;
+					SceneGame::getInstance()->ClearButoon = true;
 				}
 			}
 		}
 
-	}else
+
+	}
+	else
 	{
 
 	}
-	font::OutPut(L"ButtonPush", { 0,0 }, { 1,1 }, { 1,0,0,1 });
+
+	//// 土台のポジション調節用
+	//if (input::STATE('U'))
+	//{
+	//	base.pos.y += 0.5f;
+	//}
+	//if (input::STATE('O'))
+	//{
+	//	base.pos.y -= 0.5f;
+	//}
+	//if (input::STATE('I'))
+	//{
+	//	base.pos.x += 0.5f;
+	//}
+	//if (input::STATE('K'))
+	//{
+	//	base.pos.x -= 0.5f;
+	//}	
+	//if (input::STATE('L'))
+	//{
+	//	base.pos.z += 0.5f;
+	//}
+	//if (input::STATE('J'))
+	//{
+	//	base.pos.z -= 0.5f;
+	//}
 
 }
 
@@ -404,11 +481,14 @@ void ButtonPush::push_botton(int height, int width)
 
 void ButtonPush::Render(const Camera& camera)
 {
-	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(0.1, 0.1, 0.1), base.posture, camera.LightFloamCamera());
+	//Debug->SetString("Base  X:%f  Y:%f  Z:%f", base.pos.x, base.pos.y, base.pos.z);
+	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(0.1f, 0.1f, 0.1f), base.posture, camera.LightFloamCamera());
 
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5; j++) {
-			SkinnedMeshRender(button[i][j].model, camera, button[i][j].pos, FLOAT3(0.1, 0.1, 0.1), button[i][j].posture, camera.LightFloamCamera());
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			SkinnedMeshRender(button[i][j].model, camera, button[i][j].pos, FLOAT3(0.1f, 0.1f, 0.1f), button[i][j].posture, camera.LightFloamCamera());
 		}
 	}
 }
