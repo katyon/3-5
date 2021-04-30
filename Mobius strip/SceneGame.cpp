@@ -33,7 +33,6 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 
     StageManager::getIns()->LoadStages(fill_pass);
 
-
     Audio::load(1, L"Data/BGM/Waltz.wav");
     Audio::SetVolume(1, 0.4f);
     Audio::load(5, L"Data/BGM/menu.wav");
@@ -50,7 +49,7 @@ void SceneGame::Initialize()
     pipe_puzzle.Init();
     itemObj->init();
     M_Item->init();
-    G_Item->init();
+   // G_Item->init();
 
     menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -86,7 +85,7 @@ void SceneGame::Update(float elapsed_time)
         ButtonPush::getInstance()->update(camera);
         pipe_puzzle.Update();
         itemObj->update(camera);
-        G_Item->update();
+       // G_Item->update();
 
         if (input::TRG('P'))
         {
@@ -104,7 +103,6 @@ void SceneGame::Update(float elapsed_time)
         }
         if (input::TRG(VK_TAB))
         {
-            menu.isPause = true;
             menu.tab = MenuTab::Item;
             game_mode = menue;
         }
@@ -116,10 +114,7 @@ void SceneGame::Update(float elapsed_time)
             game_mode = normal;
             Audio::play(5);
         }
-        if (menu.isPause)
-        {
-            menu.update();
-        }
+        menu.update();
         break;
     case balance:
 
@@ -152,7 +147,7 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         pipe_puzzle.Render(camera);
-        G_Item->draw();
+        //G_Item->draw();
         //cOBB(camera);
         screenR->end();
 
@@ -166,16 +161,13 @@ void SceneGame::Render()
             SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
         }
         break;
-
+        
     case menue:
-
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
-        if (menu.isPause)
-        {
-            menu.draw();
-        }
+        menu.draw();
         break;
+
     case balance:
 
         break;

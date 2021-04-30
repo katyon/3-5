@@ -94,7 +94,6 @@ private:
     }
 
 public:
-    bool isPause;
     int tab;
     int content;
     void init();
