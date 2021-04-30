@@ -17,11 +17,15 @@ private:
 
 	SceneGame();
 
+	bool fix_cursor;
+
 	PipePuzzle pipe_puzzle;
 
 	Sprite sprClear;
 	AnimaData nowdata;
 
+	bool ClearGame = false;
+public:
 	enum GameMode
 	{
 		normal = 0,
@@ -30,8 +34,6 @@ private:
 	};
 	int game_mode = 0;
 
-	bool ClearGame = false;
-public:
 	// í«â¡Å@É{É^ÉìâüÇµçûÇ›
 	//Camera camera;
 	//Camera camera;

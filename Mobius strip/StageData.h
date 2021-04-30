@@ -56,12 +56,12 @@ struct ColBox
 	OBB obb;
 	ColBox() {};
 	ColBox(const FLOAT3& pos,
-		const FLOAT3& len, 
+		const FLOAT3& len,
 		const Quaternion& angle,
 		int o)
-		:obb(pos,len,angle),option(o) {}
+		:obb(pos, len, angle), option(o) {}
 	ColBox(const OBB& b,
-		int o):obb(b), option(o) {}
+		int o) :obb(b), option(o) {}
 };
 
 /*
@@ -153,8 +153,8 @@ inline void load_stage_from_file(const std::string& file_pass,
 */
 template<size_t arr_size>
 inline void load_stage_from_file_ex(const std::string& file_pass,
-	StageObject(&objects)[arr_size], 
-	std::vector<ColBox>& ColBoxs, 
+	StageObject(&objects)[arr_size],
+	std::vector<ColBox>& ColBoxs,
 	std::map<std::string, cStageModel>* manager)
 {
 	//ファイルがないならロードしない
@@ -244,7 +244,7 @@ public:
 	{
 		return objects;
 	}
-	
+
 	void Render()
 	{
 		ModelRenderBegin();
