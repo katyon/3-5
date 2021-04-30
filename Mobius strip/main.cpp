@@ -47,7 +47,7 @@ void AllInitializes()
 		flame_constant.Active(0, 0, 1);
 		flame.SetPSSharders();
 		FullScreenQuadBlit();
-		font::OutPut(L"なうろーでぃんぐ(仮)",0,0);
+		font::OutPut(L"Loading...",0,0);
 
 		AliceLib::Present(1, 0);
 	}
@@ -70,6 +70,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	//};
 	//
 	//StageManager::getIns()->LoadStages(fill_pass);
+	
     //複数箇所で使うため用意しておいたほうがいい
     int scene = AliceLib::GetNowScene();
 
@@ -88,6 +89,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	{
 
 		//現在のシーンを取得する
+		scene = AliceLib::GetNowScene();
 		elapsed_time = DeltaTime();
 #if _DEBUG
 		ImGuiNewFrame();
@@ -177,7 +179,7 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 #endif
 		
         //バックバッファに送信
-        AliceLib::Present(0u, 0u);
+        AliceLib::Present(1u, 0u);
 
     }
 

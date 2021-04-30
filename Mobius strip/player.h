@@ -1,5 +1,6 @@
 #pragma once
 #include "AliceLib/AliceLib.h"
+#include "OBBs.h"
 
 class Player
 {
@@ -41,6 +42,7 @@ public:
 
 	void move(const Camera& camera);
 	void updateDestVec(VECTOR3D forward);
+	void restrict_area();
 
 	void colWall();
 	void colFloor();

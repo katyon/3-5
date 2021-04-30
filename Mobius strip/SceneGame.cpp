@@ -3,7 +3,7 @@
 #include "menu.h"
 #include "Item.h"
 #include "StageManager.h"
-
+#include "OBBs.h"
 Menu menu;
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
@@ -14,7 +14,12 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     stage.load("Data/Objects/stage.fbx");
     SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
-    SpriteLoad(3, L"Data/Sprite/CLEAR.png");
+    SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
+
+    Audio::load(1, L"Data/BGM/Waltz.wav");
+    Audio::SetVolume(1, 0.4f);
+    Audio::load(5, L"Data/BGM/menu.wav");
+    Audio::SetVolume(5, 0.7f);
     itemObj->init();
     // ボタンプッシュ ここから
     camera.SetPos({ 0,200,-10 });
@@ -32,12 +37,8 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     };
 
     StageManager::getIns()->LoadStages(fill_pass);
-
-
-    Audio::load(1, L"Data/BGM/Waltz.wav");
-    Audio::SetVolume(1, 0.4f);
     //コンストラクタの最後で念のための初期化を行う
-    //SceneGame::Initialize();
+    SceneGame::Initialize();
 }
 
 //シーン変更された瞬間に実行される処理
@@ -48,7 +49,7 @@ void SceneGame::Initialize()
     pipe_puzzle.Init();
     itemObj->init();
     M_Item->init();
-    G_Item->init();
+    //G_Item->init();
 
     menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -57,15 +58,26 @@ void SceneGame::Initialize()
     player.init();
 
     Audio::stop(0);
-
     Audio::play(1, true);
+    ClearButoon = false;
     ClearGame = false;
+    fix_cursor = false;
 }
 
 //シーン全体の更新処理
 //経過時間が渡されます
 void SceneGame::Update(float elapsed_time)
 {
+    if (ClearGame)
+    {
+        if (input::TRG(input::MOUSE_L))
+        {
+            ChangeScene(S_TITLE);
+        }
+        return;
+    }
+    //ClearGame = true;
+
     switch (game_mode)
     {
     case normal:
@@ -73,7 +85,7 @@ void SceneGame::Update(float elapsed_time)
         ButtonPush::getInstance()->update(camera);
         pipe_puzzle.Update();
         itemObj->update(camera);
-        G_Item->update();
+        //G_Item->update();
 
         if (input::TRG('P'))
         {
@@ -86,8 +98,20 @@ void SceneGame::Update(float elapsed_time)
                 }
             }
         }
+        if (input::TRG(input::MOUSE_R))
+        {
+            fix_cursor = !fix_cursor;
+            SetShowCursor(fix_cursor);
+            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+            center.x = floorf(center.x);
+            center.y = floorf(center.y);
+            SetCursorPos(center.x, center.y);
+        }
 
-        camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+        if (!fix_cursor)
+        {
+            camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+        }
         if (input::TRG(VK_TAB))
         {
             menu.isPause = true;
@@ -100,17 +124,14 @@ void SceneGame::Update(float elapsed_time)
         if (input::TRG(VK_TAB))
         {
             game_mode = normal;
+            Audio::play(5);
         }
-        if (menu.isPause)
-        {
-            menu.update();
-        }
+        menu.update();
         break;
     case balance:
 
         break;
     }
-    ClearGame = true;
 
     player.update(camera);
     Debug->SetString("カメラ回転中心座標 %f %f %f", player.getPos().x, player.getPos().y + 12.5f, player.getPos().z);
@@ -138,23 +159,25 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         pipe_puzzle.Render(camera);
-        G_Item->draw();
-
+        //G_Item->draw();
+        //cOBB(camera);
         screenR->end();
 
-        SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
-        SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
-        //SpriteRender(3, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
+        if (ClearGame)
+        {
+            Animation(sprClear, 12, nowdata, 2, 2, { 0,0 }, { 1,1 }, { 0,0 }, { 1920,1080 });
+        }
+        else
+        {
+            SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
+            SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
+        }
         break;
 
     case menue:
-
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
-        if (menu.isPause)
-        {
-            menu.draw();
-        }
+        menu.draw();
         break;
     case balance:
 
@@ -167,5 +190,4 @@ void SceneGame::Render()
 void SceneGame::Uninitialize()
 {
     pipe_puzzle.Release();
-    //Audio::unload(1);
 }
