@@ -11,3 +11,10 @@ Mobius strip/Alice.vcxproj.user
 Mobius strip/Data/
 Mobius strip/ステージエディター.exe
 *.png
+Mobius strip/Mobius strip/x64/
+Mobius strip/Mobius strip/Data/
+Mobius strip/Mobius strip/OpenAL/
+Mobius strip/Mobius strip/AliceLib/
+Mobius strip/Mobius strip/.vs/
+Mobius strip/Mobius strip/ステージエディター.exe
+Mobius strip/Mobius strip/当たり判定エディター.exe

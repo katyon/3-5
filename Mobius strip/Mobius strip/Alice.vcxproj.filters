@@ -1,0 +1,592 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソースファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダーファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="AliceLib">
+      <UniqueIdentifier>{a72dd9e8-1a98-4965-a874-5e3249b62e6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Headers">
+      <UniqueIdentifier>{82868f32-9c9c-4860-a8b4-9d2335f183ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Sources">
+      <UniqueIdentifier>{fa3d6f65-d1ec-451e-bdd7-5aceb1505d08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Shader">
+      <UniqueIdentifier>{db095c95-c6f9-4e4d-8a2d-6073ff6b97a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Shader\Model">
+      <UniqueIdentifier>{7861e381-fdde-4a53-85c6-c89a609b80d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Shader\Bloom">
+      <UniqueIdentifier>{2bf8893c-e694-49d5-99e6-05fe24e09823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Shader\Sprite">
+      <UniqueIdentifier>{297dc3a9-80e5-4c91-b8b4-6fe14fd2d197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Shader\Primitive">
+      <UniqueIdentifier>{15db7460-9f95-4765-a72a-ddaf01b8ded4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Shader\Mesh">
+      <UniqueIdentifier>{2434bc63-db47-4d6a-9bee-7351353989e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\External">
+      <UniqueIdentifier>{8812ea5e-bedb-4ad1-ae72-9efa05a27256}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\External\DirectXTex">
+      <UniqueIdentifier>{4a0463c4-a093-4f33-aa48-a112694c7500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\External\ImGUI">
+      <UniqueIdentifier>{d69d0c85-5576-4f0c-847d-4b0092bf1dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Shader\common">
+      <UniqueIdentifier>{ae87c179-310c-4656-927c-bb096babae46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AliceLib\Resource">
+      <UniqueIdentifier>{9914b2c5-2f83-4ee4-8eb0-9320d5c4b495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{1da7041d-ce78-42a9-8285-339bfaf086a3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\imgui\imgui.cpp">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\imgui\imgui_draw.cpp">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\imgui\imgui_impl_dx11.cpp">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\imgui\imgui_impl_win32.cpp">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\imgui\imgui_ja_gryph_ranges.cpp">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\imgui\imgui_widgets.cpp">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\AliceLib.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Animation.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Audio.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Camera.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Debug.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Fbx_loder.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Font.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Geometric_primitive.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Input_manager.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Loader.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Loop.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\MapChip.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Mathematics.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Model.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Model_renderer.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Model_resource.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Primitive.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\SceneManager.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Sprite.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\StaticMesh.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\TempMain.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Texture.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Development.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Shader.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Geometric_primitive_ex.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\SampleState.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Framebuffer.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Rasterizer.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\ConstantBuffer.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Light.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Bloom.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Component.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Lib\include\DDSTextureLoader\DDSTextureLoader11.cpp">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Lib\include\WICTextureLoader\WICTextureLoader11.cpp">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\Lib\include\ScreenGrab\ScreenGrab11.cpp">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\SkinnedMesh.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AliceLib\AddOn.cpp">
+      <Filter>AliceLib\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditor.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="AL_Sound.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="transition_y.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="orbital_camera.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="tps_camera.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Balance.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenRecord.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Shelter.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PipePuzzle.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonPush.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="fps_camera.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTite.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionEditer.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imconfig.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imgui.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imgui_impl_dx11.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imgui_impl_win32.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imgui_internal.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imstb_rectpack.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imstb_textedit.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\imgui\imstb_truetype.h">
+      <Filter>AliceLib\External\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\AliceLib.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Animation.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Audio.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Blender.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Camera.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Debug.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Fbx_loader.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Font.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Geometric_primitive.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\High_resolution_timer.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Imgui.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Input_manager.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Loader.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Loop.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\MapChip.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Mathematics.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Misc.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Model.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Model_data.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Model_renderer.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Model_resource.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Primitive.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\SceneManager.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Sprite.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\StaticMesh.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Texture.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Util.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Development.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Shader.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Geometric_primitive_ex.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\SampleState.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Framebuffer.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Rasterizer.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\ConstantBuffer.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\ObjectManager.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Light.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Bloom.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Component.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Lib\include\DDSTextureLoader\DDSTextureLoader11.h">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Lib\include\WICTextureLoader\WICTextureLoader11.h">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Lib\include\ScreenGrab\ScreenGrab11.h">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Easing.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Resource\resource.h">
+      <Filter>AliceLib\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\SkinnedMesh.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\AddOn.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\Lib\include\DirectXTex.h">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="AliceLib\DepthStencilStates.h">
+      <Filter>AliceLib\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StageEditor.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AL_Sound.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="transition_y.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="StageData.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="orbital_camera.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="tps_camera.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Balance.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenRecord.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PipePuzzle.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Shelter.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonPush.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="fps_camera.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTite.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="OBBs.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEditer.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="AliceLib\hlsls\model_vs.hlsl">
+      <Filter>AliceLib\Shader\Model</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\model_ps.hlsl">
+      <Filter>AliceLib\Shader\Model</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\LambertVS.hlsl">
+      <Filter>AliceLib\Shader\Model</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\LambertPS.hlsl">
+      <Filter>AliceLib\Shader\Model</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\gaussian_blur_convolution_ps.hlsl">
+      <Filter>AliceLib\Shader\Bloom</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\gaussian_blur_vertical_ps.hlsl">
+      <Filter>AliceLib\Shader\Bloom</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\gaussian_blur_horizontal_ps.hlsl">
+      <Filter>AliceLib\Shader\Bloom</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\gaussian_blur_downsampling_ps.hlsl">
+      <Filter>AliceLib\Shader\Bloom</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\glow_extraction_ps.hlsl">
+      <Filter>AliceLib\Shader\Bloom</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\sprite_batch_ps.hlsl">
+      <Filter>AliceLib\Shader\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\sprite_batch_vs.hlsl">
+      <Filter>AliceLib\Shader\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\sprite_ps.hlsl">
+      <Filter>AliceLib\Shader\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\sprite_vs.hlsl">
+      <Filter>AliceLib\Shader\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\geometric_primitive_ps.hlsl">
+      <Filter>AliceLib\Shader\Primitive</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\geometric_primitive_vs.hlsl">
+      <Filter>AliceLib\Shader\Primitive</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\skinned_mesh_ps.hlsl">
+      <Filter>AliceLib\Shader\Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\skinned_mesh_vs.hlsl">
+      <Filter>AliceLib\Shader\Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\static_mesh_ps.hlsl">
+      <Filter>AliceLib\Shader\Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\static_mesh_vs.hlsl">
+      <Filter>AliceLib\Shader\Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\post_effects_ps.hlsl">
+      <Filter>AliceLib\Shader\common</Filter>
+    </FxCompile>
+    <FxCompile Include="AliceLib\hlsls\shadertoy.hlsl">
+      <Filter>AliceLib\Shader\common</Filter>
+    </FxCompile>
+    <FxCompile Include="mask_ps.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AliceLib\hlsls\model.hlsli">
+      <Filter>AliceLib\Shader\Model</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\Lambert.hlsli">
+      <Filter>AliceLib\Shader\Model</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\bloom.hlsli">
+      <Filter>AliceLib\Shader\Bloom</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\sprite.hlsli">
+      <Filter>AliceLib\Shader\Sprite</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\sprite_batch.hlsli">
+      <Filter>AliceLib\Shader\Sprite</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\geometric_primitive.hlsli">
+      <Filter>AliceLib\Shader\Primitive</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\skinned_mesh.hlsli">
+      <Filter>AliceLib\Shader\Mesh</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\static_mesh.hlsli">
+      <Filter>AliceLib\Shader\Mesh</Filter>
+    </None>
+    <None Include="AliceLib\hlsls\common.hlsli">
+      <Filter>AliceLib\Shader\common</Filter>
+    </None>
+    <None Include="AliceLib\Resource\AliceLib.aps">
+      <Filter>AliceLib\Resource</Filter>
+    </None>
+    <None Include="AliceLib\Lib\include\DirectXTex.inl">
+      <Filter>AliceLib\External\DirectXTex</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AliceLib\Resource\AliceLib.rc">
+      <Filter>AliceLib\Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="AliceLib\Resource\icon.ico">
+      <Filter>AliceLib\Resource</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="AliceLib\Useful.txt">
+      <Filter>AliceLib</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
