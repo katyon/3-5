@@ -22,8 +22,9 @@ void SceneTitle::Initialize()
 
     Audio::stop(1);
 
-	Audio::SetVolume(0, 0.5f);
-	Audio::play(0, true);
+    //Audio::SetVolume(0, 0.5f);
+    Audio::play(0, true);
+    title.ChangeAnimation(0, 1);
 }
 
 //シーン全体の更新処理
@@ -80,12 +81,14 @@ void SceneTitle::Update(float elapsed_time)
     //	cTarget.z -= 0.5f;
     //}
 
-	camera.SetPos(cPos);
-	camera.SetTarget(cTarget);
-	if (input::TRG(input::MOUSE_L))
-	{
-		ChangeScene(S_GAME);
-	}
+    camera.SetPos(cPos);
+    camera.SetTarget(cTarget);
+
+    if (input::TRG(input::MOUSE_L))
+    {
+        ChangeScene(S_GAME);
+    }
+    title.UpdateAnimation(elapsed_time);
 }
 
 //シーンの描画処理

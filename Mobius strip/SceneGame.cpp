@@ -105,6 +105,7 @@ void SceneGame::Update(float elapsed_time)
         {
             menu.tab = MenuTab::Item;
             game_mode = menue;
+            SetShowCursor(true);
         }
         break;
 

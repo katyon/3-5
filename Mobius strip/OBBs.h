@@ -45,7 +45,7 @@ static const OBB colbox_f[] =
 	{{-31.0f,34.0f,-24.0f},{53.0f,4.0f,72.3f},{}},
 };
 //ƒAƒCƒeƒ€
-static const ItemBox colbox_i[] =
+static const ColBox colbox_i[] =
 {
 	//{{/*pos*/},{/*scale*/},{/*toRadian(angle)*/},-1},
 	{{-44.0f,13.0f,-38.0f},{9.3f,4.9f,4.6f},{},0},//Ž†

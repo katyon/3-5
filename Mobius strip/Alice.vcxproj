@@ -224,6 +224,7 @@
     <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="Balance.cpp" />
     <ClCompile Include="ButtonPush.cpp" />
+    <ClCompile Include="CollisionEditer.cpp" />
     <ClCompile Include="fps_camera.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="AL_Sound.h" />
     <ClInclude Include="Balance.h" />
     <ClInclude Include="ButtonPush.h" />
+    <ClInclude Include="CollisionEditer.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="fps_camera.h" />
     <ClInclude Include="Item.h" />
