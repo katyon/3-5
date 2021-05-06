@@ -16,14 +16,16 @@ enum ITEM_ID
 class ItemArr
 {
 public:
-    Sprite item_ptr;
+    Sprite ptr;
+    SkinnedMesh model;
+
     static constexpr int ITEM_MAX = 8;
-    FLOAT2 pos[ITEM_MAX];   // 表示位置
-    FLOAT2 scale[ITEM_MAX]; // 表示サイズ
-    FLOAT2 src[ITEM_MAX];
+    FLOAT3 pos;   // 表示位置
+    FLOAT3 scale; // 表示サイズ
+    FLOAT2 src;
 
     ITEM_ID items[ITEM_MAX];
-    bool isobserve[ITEM_MAX];
+    bool isobserve;
     bool exist[ITEM_MAX];
 
     void init();
@@ -133,10 +135,7 @@ public:
 class ItemObj
 {
 private:
-    SkinnedMesh kami;
-    FLOAT3 pos;
-    FLOAT3 scale;
-
+    ItemArr item3D[5];
     FLOAT3 OBBscale;
 
     FLOAT3 rayStart;
@@ -164,6 +163,8 @@ public:
 class ItemMenu
 {
 public:
+    ItemArr item2D[5];
+
     ItemMenu()
     {
         arr->reset();

@@ -1,12 +1,14 @@
 #include "Item.h"
 #include "Shelter.h"
 
-// ３Dでのアイテム
+// 3Dでのアイテム
 void ItemObj::init()
 {
-    kami.load("Data\\Objects\\kami.fbx");
-    pos = { -44.0f,13.0f,-38.0f };
-    scale = { 1,1,1 };
+    /*  */
+    item3D[0].model.load("Data\\Objects\\kami.fbx");
+    item3D[0].pos = { -46.0f,10.0f,-37.0f };
+    item3D[0].scale = { 0.5f,1.0f,0.7f };
+
     OBBscale = { 10.0f,10.0f,10.0f };
     Audio::load(6, L"./Data/BGM/get.wav");
     Audio::SetVolume(6, 0.3f);
@@ -18,7 +20,7 @@ void ItemObj::update(const Camera& camera)
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+        if (ColLineOBB(rayStart, rayEnd, CreateOBB(item3D[i].pos, OBBscale, posture), hitPos))
         {
             if (input::TRG(VK_LBUTTON))
             {
@@ -36,11 +38,13 @@ void ItemObj::render(const Camera& camera)
     Debug->SetString("存在[1]:%d", arr->exist[1]);
     COLOR color = { 1.0f,1.0f,1.0f,1.0f };
     posture.reset();
+    posture.RotationYaw(toRadian(-90.0f));
+
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
         if (arr->exist[i])
         {
-            SkinnedMeshRender(kami, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+            SkinnedMeshRender(item3D[i].model, camera, item3D[i].pos, item3D[i].scale, posture, camera.LightFloamCamera(), color);
         }
         break;
     }

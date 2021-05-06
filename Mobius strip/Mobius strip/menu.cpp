@@ -5,16 +5,19 @@
 /*************************************************/
 void ItemArr::init()
 {
-    SpriteLoad(item_ptr, L"Data/Sprite/ward.png");
+    SpriteLoad(ptr, L"Data/Sprite/ward.png");
     reset();
-
-    pos[0].x = 318.0f;
-    pos[0].y = 290.0f;
-    pos[1].x = 480.0f;
-    pos[1].y = 286.0;
-    pos[2].x = 645.0f;
-    pos[2].y = 286.0;
 }
+
+
+void ItemMenu::init()
+{
+    arr->init();
+    item2D[0].pos = { 318.0f,290.0f,0.0f };
+    item2D[1].pos = { 480.0f,290.0f,0.0f };
+    item2D[2].pos = { 645.0f,290.0f,0.0f };
+}
+
 
 void Menu::init()
 {
@@ -34,36 +37,36 @@ void ItemMenu::isChoice()
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        if (ColRects(arr->pos[i].y, arr->pos[i].y + 120.0f, arr->pos[i].x, arr->pos[i].x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
+        if (ColRects(item2D[i].pos.y, item2D[i].pos.y + 120.0f, item2D[i].pos.x, item2D[i].pos.x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
         {
             switch (arr->items[i])
             {
             case ID_ITEM1:
-                arr->isobserve[ID_ITEM1] = true;
-                arr->isobserve[ID_ITEM2] = false;
-                arr->isobserve[ID_ITEM3] = false;
-                arr->isobserve[ID_ITEM4] = false;
+                item2D[0].isobserve = true;
+                item2D[1].isobserve = false;
+                item2D[2].isobserve = false;
+                item2D[3].isobserve = false;
                 break;
 
             case ID_ITEM2:
-                arr->isobserve[ID_ITEM1] = false;
-                arr->isobserve[ID_ITEM2] = true;
-                arr->isobserve[ID_ITEM3] = false;
-                arr->isobserve[ID_ITEM4] = false;
+                item2D[0].isobserve = false;
+                item2D[1].isobserve = true;
+                item2D[2].isobserve = false;
+                item2D[3].isobserve = false;
                 break;
 
             case ID_ITEM3:
-                arr->isobserve[ID_ITEM1] = false;
-                arr->isobserve[ID_ITEM2] = false;
-                arr->isobserve[ID_ITEM3] = true;
-                arr->isobserve[ID_ITEM4] = false;
+                item2D[0].isobserve = false;
+                item2D[1].isobserve = false;
+                item2D[2].isobserve = true;
+                item2D[3].isobserve = false;
                 break;
 
             case ID_ITEM4:
-                arr->isobserve[ID_ITEM1] = false;
-                arr->isobserve[ID_ITEM2] = false;
-                arr->isobserve[ID_ITEM3] = false;
-                arr->isobserve[ID_ITEM4] = true;
+                item2D[0].isobserve = false;
+                item2D[1].isobserve = false;
+                item2D[2].isobserve = false;
+                item2D[3].isobserve = true;
                 break;
 
             case ID_EMPTY:
@@ -73,10 +76,6 @@ void ItemMenu::isChoice()
     }
 }
 
-void ItemMenu::init()
-{
-    arr->init();
-}
 
 // メニュー画面に表示されるアイテム版
 // ゲーム内での処理と連動させる
@@ -143,7 +142,7 @@ void Menu::update()
             {
                 for (auto i : arr->items)
                 {
-                    arr->isobserve[i] = false;
+                    M_Item->item2D[i].isobserve = false;
                 }
                 tab = MenuTab::Item;
             }
@@ -163,7 +162,7 @@ void Menu::update()
             {
                 for (auto i : arr->items)
                 {
-                    arr->isobserve[i] = false;
+                    M_Item->item2D[i].isobserve = false;
                 }
                 tab = MenuTab::Item;
             }
@@ -216,26 +215,26 @@ void ItemMenu::draw()
             switch (arr->items[i])
             {
             case ID_ITEM1:
-                SpriteRender(arr->item_ptr, arr->pos[0].x, arr->pos[0].y, 0.05f, 0.06f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
-                if (arr->isobserve[ID_ITEM1])
+                SpriteRender(arr->ptr, item2D[0].pos.x, item2D[0].pos.y, 0.05f, 0.06f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+                if (item2D[0].isobserve)
                 {
-                    SpriteRender(arr->item_ptr, 1190, 310, 0.18f, 0.24f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+                    SpriteRender(arr->ptr, 1190, 310, 0.18f, 0.24f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
                 }
                 break;
 
             case ID_ITEM2:
-                SpriteRender(arr->item_ptr, arr->pos[1].x, arr->pos[1].y, 0.4f, 0.5f, 256, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                if (arr->isobserve[ID_ITEM2])
+                SpriteRender(arr->ptr, item2D[1].pos.x, item2D[1].pos.y, 0.4f, 0.5f, 256, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                if (item2D[1].isobserve)
                 {
-                    SpriteRender(arr->item_ptr, 900, 286, 3, 3, 256, 0, 120, 256, 0, 0, 0, 1, 1, 1, 1);
+                    SpriteRender(arr->ptr, 900, 286, 3, 3, 256, 0, 120, 256, 0, 0, 0, 1, 1, 1, 1);
                 }
                 break;
 
             case ID_ITEM3:
-                SpriteRender(arr->item_ptr, arr->pos[2].x, arr->pos[2].y, 0.4f, 0.5f, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                if (arr->isobserve[ID_ITEM3])
+                SpriteRender(arr->ptr, item2D[2].pos.x, item2D[2].pos.y, 0.4f, 0.5f, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                if (item2D[2].isobserve)
                 {
-                    SpriteRender(arr->item_ptr, 900, 285, 3, 3, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                    SpriteRender(arr->ptr, 900, 285, 3, 3, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
                 }
                 break;
 
