@@ -223,6 +223,64 @@ inline void load_stage_from_file_ex(const std::string& file_pass,
 	}
 }
 
+using ColBoxs = std::vector<ColBox>;
+inline void LoadColBoxs(const std::string& file_pass,
+	ColBoxs& data)
+{
+	//ファイルが無ければ終了
+	if (!checkFileExistence(file_pass))return;
+	//ファイルポインタを取得
+	FILE* fp = fopen(file_pass.c_str(), "r");
+	if (fp)
+	{
+		//データを空にしておく
+		data.clear();
+		int data_size = 0;
+		//データ数を取得
+		fscanf(fp, "%d", &data_size);
+		fprintf(fp, "\n");
+		//データが0に満たない場合終了
+		if (data_size <= 0)
+		{
+			fclose(fp);
+			return;
+		}
+		FLOAT4 _Qu;
+		Quaternion Qu;
+		//データ数分だけコンテナを作成する
+		data.resize(static_cast<size_t>(data_size));
+		//データ数ループする
+		for (auto& d : data)
+		{
+			//座標データ
+			fscanf(fp, "%f,", &d.obb.pos.x);
+			fscanf(fp, "%f,", &d.obb.pos.y);
+			fscanf(fp, "%f,", &d.obb.pos.z);
+
+			//スケール値のデータ
+			fscanf(fp, "%f,", &d.obb.len.x);
+			fscanf(fp, "%f,", &d.obb.len.y);
+			fscanf(fp, "%f,", &d.obb.len.z);
+
+			//姿勢データを取得
+			fscanf(fp, "%f,", &_Qu.x);
+			fscanf(fp, "%f,", &_Qu.y);
+			fscanf(fp, "%f,", &_Qu.z);
+			fscanf(fp, "%f,", &_Qu.w);
+
+			Qu.SetQuaternion(_Qu);
+			d.obb.setVector(Qu);
+
+			//オプション(判定用のオプション)
+			fscanf(fp, "%d,", &d.option);
+
+			fprintf(fp, "\n");
+		}
+		fclose(fp);
+	}
+}
+
+
 /*
 	ステージのデータ
 */
@@ -233,18 +291,50 @@ public:
 protected:
 	//ステージ内に設置するオブジェクト
 	StageObject	objects[StageData::MaxObjects];
+	ColBoxs		colBoxs;
+	std::string	name;
 public:
 	StageData() {}
 	StageData(const StageData&) {}
 	void Load(std::string file_name, std::map<std::string, cStageModel>* manager)
 	{
-		load_stage_from_file(file_name, objects, manager);
+		name = file_name;
+		{
+			std::string file_pass = "Data\\StageData\\";
+			file_pass += file_name;
+			file_pass += ".csv";
+			load_stage_from_file(file_pass, objects, manager);
+		}
+		{
+			std::string file_pass = "Data\\ColData\\";
+			file_pass += file_name;
+			file_pass += "_CD.csv";
+			LoadColBoxs(file_pass, colBoxs);
+		}
+	}
+	void Load(std::map<std::string, cStageModel>* manager)
+	{
+		{
+			std::string file_pass = "Data\\StageData\\";
+			file_pass += name;
+			file_pass += ".csv";
+			load_stage_from_file(file_pass, objects, manager);
+		}
+		{
+			std::string file_pass = "Data\\ColData\\";
+			file_pass += name;
+			file_pass += "_CD.csv";
+			LoadColBoxs(file_pass, colBoxs);
+		}
 	}
 	StageObject* getObdects()
 	{
 		return objects;
 	}
-
+	const ColBoxs& getColBoxs()const
+	{
+		return colBoxs;
+	}
 	void Render()
 	{
 		ModelRenderBegin();

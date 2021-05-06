@@ -31,12 +31,12 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 
     game_mode = normal;
 
-    std::string fill_pass[] =
+    std::string fill_name[] =
     {
-        "Data/StageData/stage_data.csv",
+        "stage_data",
     };
 
-    StageManager::getIns()->LoadStages(fill_pass);
+    StageManager::getIns()->LoadStages(fill_name);
     //コンストラクタの最後で念のための初期化を行う
     SceneGame::Initialize();
 }

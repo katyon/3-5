@@ -2,63 +2,6 @@
 #include "StageData.h"
 #include <list>
 
-using ColBoxs = std::list<ColBox>;
-inline void LoadColBoxs(const std::string& file_pass,
-	ColBoxs& data)
-{
-	//ファイルが無ければ終了
-	if (!checkFileExistence(file_pass))return;
-	//ファイルポインタを取得
-	FILE* fp = fopen(file_pass.c_str(), "r");
-	if (fp)
-	{
-		//データを空にしておく
-		data.clear();
-		int data_size = 0;
-		//データ数を取得
-		fscanf(fp, "%d", &data_size);
-		fprintf(fp, "\n");
-		//データが0に満たない場合終了
-		if (data_size <= 0)
-		{
-			fclose(fp);
-			return;
-		}
-		FLOAT4 _Qu;
-		Quaternion Qu;
-		//データ数分だけコンテナを作成する
-		data.resize(static_cast<size_t>(data_size));
-		//データ数ループする
-		for (auto& d : data)
-		{
-			//座標データ
-			fscanf(fp, "%f,", &d.obb.pos.x);
-			fscanf(fp, "%f,", &d.obb.pos.y);
-			fscanf(fp, "%f,", &d.obb.pos.z);
-
-			//スケール値のデータ
-			fscanf(fp, "%f,", &d.obb.len.x);
-			fscanf(fp, "%f,", &d.obb.len.y);
-			fscanf(fp, "%f,", &d.obb.len.z);
-
-			//姿勢データを取得
-			fscanf(fp, "%f,", &_Qu.x);
-			fscanf(fp, "%f,", &_Qu.y);
-			fscanf(fp, "%f,", &_Qu.z);
-			fscanf(fp, "%f,", &_Qu.w);
-
-			Qu.SetQuaternion(_Qu);
-			d.obb.setVector(Qu);
-
-			//オプション(判定用のオプション)
-			fscanf(fp, "%d,", &d.option);
-
-			fprintf(fp, "\n");
-		}
-		fclose(fp);
-	}
-}
-
 
 class CollisionEditer
 {

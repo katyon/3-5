@@ -25,6 +25,12 @@ public:
 		}
 	}
 
+	StageData* getStageData(UINT num)
+	{
+		if (num >= stages.size())return nullptr;
+		return &stages.at(static_cast<size_t>(num));
+	}
+
 	void Render();
 
 	bool Switching(UINT next);
