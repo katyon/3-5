@@ -31,6 +31,16 @@ public:
 		return &stages.at(static_cast<size_t>(num));
 	}
 
+	const ColBoxs& getColBoxs()const
+	{
+		return stages.at(now_stage).getColBoxs();
+	}
+
+	StageObject* getStageObjects()
+	{
+		return stages.at(now_stage).getObdects();
+	}
+
 	void Render();
 
 	bool Switching(UINT next);

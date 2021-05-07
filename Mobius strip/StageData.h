@@ -108,6 +108,8 @@ inline void load_stage_from_file(const std::string& file_pass,
 		int   isbody, isshow;
 		for (StageObject& object : objects)
 		{
+			object.Clear();
+
 			char filename[256] = {};
 			//使用しているかのフラグ
 			fscanf(fp, "%d,", &isbody);

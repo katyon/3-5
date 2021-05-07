@@ -17,9 +17,18 @@ private:
     {
         COLOR gray = { 0.299f, 0.587f, 0.114f,0.0f };
     };
+    struct BrightnessCBuffer
+    {
+        float	ContrastWeight = 3.25f;	//コントラスト調整
+        float	Bright = 1.0f;			//明度調整
+        float	threshold = 0.525f;		//閾値
+        int		flg = 1;
+    };
     ConstantBuffer<GrayCbuffer> cbuff;
+    ConstantBuffer<BrightnessCBuffer> cbuff2;
     Texture		mask;
     Shaders		mask_ps;
+    Shaders     brightness_ps;
     framebuffer buffer;
     //ID3D11ShaderResourceView* test = nullptr;
 public:
@@ -39,6 +48,8 @@ public:
     //updateでは絶対に呼ばないこと
     void begin();
     void end();
+
+    void _edit();
 
     //void demoPlay();
     static ScreenRecord* getInstance()
