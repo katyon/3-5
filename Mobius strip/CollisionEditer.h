@@ -60,7 +60,7 @@ private:
 				MessageBoxW(nullptr, L"ファイルのパスを確認してください", L"ファイルが存在しません", MB_OK);
 				return;
 			}
-			stage.Load(pass, &manager);
+			stage.Load(storage, &manager);
 		}
 		{
 
@@ -129,7 +129,7 @@ private:
 	static constexpr float p90 = 90 * OnceInRadians;//90°
 	static constexpr float p30 = 30 * OnceInRadians;//30°
 	static constexpr float p15 = 15 * OnceInRadians;//15°
-
+	int result;
 	StageData stage;
 	AmbientLight					ambient;
 	class qCamera :public Camera
@@ -177,13 +177,15 @@ private:
 	qCamera							camera;
 	Quaternion						camera_q;
 	float							speed = 15.0f;
-	void GUI();
+	void GUI(int);
 	void update();
 	void render();
 	std::string						storage;
 	bool isShow = true;
 	CollisionEditer();
 	~CollisionEditer();
+
+	bool Click(int& operation);
 public:
 	static void Run()
 	{
