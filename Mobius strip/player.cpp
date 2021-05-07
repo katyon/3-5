@@ -9,7 +9,7 @@ Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
 	Audio::load(3, L"./Data/BGM/footsteps2.wav");
-	Audio::SetVolume(3, 1.0f);
+	//Audio::SetVolume(3, volume);
 }
 
 void Player::init()
@@ -30,6 +30,8 @@ void Player::update(const Camera& camera)
 	Debug->SetString("プレイヤー座標 x:%f,z:%f", pos.x, pos.z);
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
+
+	step_sound();
 
 	restrict_area();
 	colWall();
@@ -76,19 +78,6 @@ void Player::move(const Camera& camera)
 
 		pos += static_cast<FLOAT3>(Dest.target) * 0.7f;
 		moves = true;
-	}
-
-	if (moves)
-	{
-		if (!Audio::isPlay(3))
-		{
-			Audio::play(3, false);
-		}
-	}
-	else
-	{
-		Audio::stop(3);
-		Audio::pause(3);
 	}
 }
 
@@ -168,6 +157,35 @@ void Player::colFloor()
 	}
 
 	pos.y = hit_pos[MINIMUM].y;
+}
+
+void Player::step_sound()
+{
+	Audio::SetVolume(3, volume);
+
+	if (volume > 0)
+	{
+		Audio::play(3, true);
+	}
+
+	if (volume > 0.7f) { volume = 0.7f;	}
+
+	if (volume < 0.0f)
+	{
+		volume = 0.0f; 
+		Audio::pause(3);
+	}
+
+	if (moves)
+	{
+		volume += 0.03f;
+	}
+	else
+	{
+		volume -= 0.1f;
+	}
+
+	Debug->SetString("volume:%f", volume);
 }
 
 DirectX::XMMATRIX Player::getPlayerWorldMatrix()

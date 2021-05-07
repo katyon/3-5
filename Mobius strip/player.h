@@ -32,6 +32,7 @@ private:
 	}Dest;
 
 	bool moves;
+	float volume = 0.0f;
 
 public:
 	Player();
@@ -46,6 +47,8 @@ public:
 
 	void colWall();
 	void colFloor();
+
+	void step_sound();
 
 	FLOAT3& getPos() { return pos; }
 	DirectX::XMMATRIX getPlayerWorldMatrix();

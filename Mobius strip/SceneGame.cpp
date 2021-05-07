@@ -5,6 +5,7 @@
 #include "StageManager.h"
 #include "OBBs.h"
 Menu menu;
+
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
 SceneGame::SceneGame() /*: pipe_puzzle()*/
@@ -36,9 +37,10 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
         "Data/StageData/stage_data.csv",
     };
 
+
     StageManager::getIns()->LoadStages(fill_pass);
     //コンストラクタの最後で念のための初期化を行う
-    SceneGame::Initialize();
+    //SceneGame::Initialize();
 }
 
 //シーン変更された瞬間に実行される処理
@@ -151,6 +153,7 @@ void SceneGame::Render()
 
         camera.Active();
         //ambient->direction = camera.LightFloamCamera();
+       // ambient->option.x = 0.5f;
         ambient.Active();
         StageManager::getIns()->Render();
 
@@ -162,7 +165,6 @@ void SceneGame::Render()
         //G_Item->draw();
         //cOBB(camera);
         screenR->end();
-
         if (ClearGame)
         {
             Animation(sprClear, 12, nowdata, 2, 2, { 0,0 }, { 1,1 }, { 0,0 }, { 1920,1080 });
