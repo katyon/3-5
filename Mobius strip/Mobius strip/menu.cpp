@@ -5,7 +5,6 @@
 /*************************************************/
 void ItemArr::init()
 {
-    SpriteLoad(ptr, L"Data/Sprite/ward.png");
     reset();
 }
 
@@ -13,6 +12,11 @@ void ItemArr::init()
 void ItemMenu::init()
 {
     arr->init();
+    for (int i = 0; i < arr->ITEM_MAX; i++)
+    {
+        item2D[i].exist = false;
+    }
+    SpriteLoad(arr->ptr, L"Data/Sprite/ward.png");
     item2D[0].pos = { 318.0f,290.0f,0.0f };
     item2D[1].pos = { 480.0f,290.0f,0.0f };
     item2D[2].pos = { 645.0f,290.0f,0.0f };
@@ -30,7 +34,6 @@ void Menu::init()
 /*                    更　新                     */
 /*************************************************/
 // アイテムが選択されたかどうかの処理
-// 同じような処理いっぱい並べちゃった
 void ItemMenu::isChoice()
 {
     if (!input::TRG(VK_LBUTTON))return;
@@ -41,14 +44,14 @@ void ItemMenu::isChoice()
         {
             switch (arr->items[i])
             {
-            case ID_ITEM1:
+            case ID_MEMO:
                 item2D[0].isobserve = true;
                 item2D[1].isobserve = false;
                 item2D[2].isobserve = false;
                 item2D[3].isobserve = false;
                 break;
 
-            case ID_ITEM2:
+            case ID_OMORI:
                 item2D[0].isobserve = false;
                 item2D[1].isobserve = true;
                 item2D[2].isobserve = false;
@@ -207,39 +210,41 @@ void Menu::update()
 /*************************************************/
 void ItemMenu::draw()
 {
-    Debug->SetString("存在[0]:%d", arr->exist[0]);
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        if (!arr->exist[i])
+        for (auto& item : arr->items)
         {
-            switch (arr->items[i])
+       //     if (!arr->exist[item])
             {
-            case ID_ITEM1:
-                SpriteRender(arr->ptr, item2D[0].pos.x, item2D[0].pos.y, 0.05f, 0.06f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
-                if (item2D[0].isobserve)
+                switch (arr->items[i])
                 {
-                    SpriteRender(arr->ptr, 1190, 310, 0.18f, 0.24f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
-                }
-                break;
+                case ID_MEMO:
+                    SpriteRender(arr->ptr, item2D[0].pos.x, item2D[0].pos.y, 0.05f, 0.06f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+                    if (item2D[0].isobserve)
+                    {
+                        SpriteRender(arr->ptr, 1190, 310, 0.18f, 0.24f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+                    }
+                    break;
 
-            case ID_ITEM2:
-                SpriteRender(arr->ptr, item2D[1].pos.x, item2D[1].pos.y, 0.4f, 0.5f, 256, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                if (item2D[1].isobserve)
-                {
-                    SpriteRender(arr->ptr, 900, 286, 3, 3, 256, 0, 120, 256, 0, 0, 0, 1, 1, 1, 1);
-                }
-                break;
+                case ID_OMORI:
+                    SpriteRender(arr->ptr, item2D[1].pos.x, item2D[1].pos.y, 0.4f, 0.5f, 256, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                    if (item2D[1].isobserve)
+                    {
+                        SpriteRender(arr->ptr, 900, 286, 3, 3, 256, 0, 120, 256, 0, 0, 0, 1, 1, 1, 1);
+                    }
+                    break;
 
-            case ID_ITEM3:
-                SpriteRender(arr->ptr, item2D[2].pos.x, item2D[2].pos.y, 0.4f, 0.5f, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                if (item2D[2].isobserve)
-                {
-                    SpriteRender(arr->ptr, 900, 285, 3, 3, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                }
-                break;
+                case ID_ITEM3:
+                    SpriteRender(arr->ptr, item2D[2].pos.x, item2D[2].pos.y, 0.4f, 0.5f, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                    if (item2D[2].isobserve)
+                    {
+                        SpriteRender(arr->ptr, 900, 285, 3, 3, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+                    }
+                    break;
 
-            case ID_EMPTY:
-                break;
+                case ID_EMPTY:
+                    break;
+                }
             }
         }
         break;
@@ -248,22 +253,23 @@ void ItemMenu::draw()
 
 void Menu::draw()
 {
-    Debug->SetString("page:%d", page);
     switch (tab)
     {
+        /* アイテムページ */
     case MenuTab::Item:
         SpriteRender(menu_ptr, 0, 0, 1, 1, src.x, src.y, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
         M_Item->draw();
         break;
 
+        /* スクショページ */
     case MenuTab::Memo:
         SpriteRender(menu_ptr, 0, 0, 1, 1, src.x, src.y, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
-        SpriteRender(menu_ptr, 170, 515, -0.5f, 0.5f, 1920, 2160, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-        SpriteRender(menu_ptr, 1725, 515, 0.5f, 0.5f, 1920, 2160, 256, 256, 0, 0, 0, 1, 1, 1, 1);
+        SpriteRender(menu_ptr, 170, 515, -0.5f, 0.5f, 1152, 2160, 256, 256, 0, 0, 0, 1, 1, 1, 1);  // 矢印(←)
+        SpriteRender(menu_ptr, 1725, 515, 0.5f, 0.5f, 1152, 2160, 256, 256, 0, 0, 0, 1, 1, 1, 1);  // 矢印(→)
 
         for (int i = 0; i < screenR->max_racord; i++)
         {
-            if (screenR->records[i]) // もしデータが入ってたら
+            if (screenR->records[i]) // もしデータが入ってたらスクショ描画
             {
                 switch (page)
                 {
@@ -303,32 +309,39 @@ void Menu::draw()
         }
         break;
 
+        /* ヘルプページ */
     case MenuTab::Help:
         switch (content)
         {
+            /* 何も選択無し */
         case HelpContent::None:
-            SpriteRender(menu_ptr, 0, 0, 1, 1, 3840, 0, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
+            SpriteRender(menu_ptr, 0, 0, 1, 1, src.x, src.y, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
             break;
 
+            /* オプションタブ */
         case HelpContent::Option:
             SpriteRender(menu_ptr, 0, 0, 1, 1, 0, 1080, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
             break;
 
+            /* 操作説明タブ */
         case HelpContent::Ctrl:
             SpriteRender(menu_ptr, 0, 0, 1, 1, 1920, 1080, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
             break;
 
+            /* ゲームExitタブ */
         case HelpContent::Exit:
             SpriteRender(menu_ptr, 0, 0, 1, 1, 3840, 1080, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
+            // YES
             SpriteRender(menu_ptr, 1248, 366, 0.8, 0.8, 0, 2160, 250, 104, 0, 0, 0, 1, 1, 1, 1);
             if (ColRects(366, 470, 1248, 1498, input::GetMousePos()))
             {
-                SpriteRender(menu_ptr, 1248, 366, 0.8, 0.8, 251, 2160, 250, 104, 0, 0, 0, 1, 1, 1, 1);
+                SpriteRender(menu_ptr, 1248, 366, 0.8, 0.8, 256, 2160, 250, 104, 0, 0, 0, 1, 1, 1, 1);
             }
-            SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 536, 2160, 170, 106, 0, 0, 0, 1, 1, 1, 1);
+            // NO
+            SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 40, 2272, 247, 106, 0, 0, 0, 1, 1, 1, 1);
             if (ColRects(669, 775, 1248, 1418, input::GetMousePos()))
             {
-                SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 784, 2160, 170, 106, 0, 0, 0, 1, 1, 1, 1);
+                SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 296, 2272, 247, 106, 0, 0, 0, 1, 1, 1, 1);
             }
             break;
         }

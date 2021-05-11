@@ -6,8 +6,8 @@
 
 enum ITEM_ID
 {
-    ID_ITEM1 = 0,
-    ID_ITEM2 = 1,
+    ID_MEMO = 0,
+    ID_OMORI = 1,
     ID_ITEM3 = 2,
     ID_ITEM4 = 3,
     ID_EMPTY = 4,
@@ -20,23 +20,21 @@ public:
     SkinnedMesh model;
 
     static constexpr int ITEM_MAX = 8;
+    ITEM_ID items[ITEM_MAX];
+
     FLOAT3 pos;   // 表示位置
     FLOAT3 scale; // 表示サイズ
     FLOAT2 src;
-
-    ITEM_ID items[ITEM_MAX];
     bool isobserve;
-    bool exist[ITEM_MAX];
+    bool isConsumed; // 消費されるアイテムかどうか
+    bool exist;
 
     void init();
     void uninit();
 
     ItemArr()
     {
-        for (int i = 0; i < ITEM_MAX; i++)
-        {
-            exist[i] = true;
-        }
+
         reset();
     }
     void shorten()
@@ -87,7 +85,6 @@ public:
             {
                 item = id;
                 shorten();
-                exist[item] = false;
                 return true;
             }
         }
@@ -135,14 +132,14 @@ public:
 class ItemObj
 {
 private:
-    ItemArr item3D[5];
+    ItemArr item3D[8];
     FLOAT3 OBBscale;
 
     FLOAT3 rayStart;
     FLOAT3 rayEnd;
 
     FLOAT3 hitPos;
-    Quaternion posture;
+    Quaternion posture[8];
 
 public:
     void init();
@@ -163,7 +160,7 @@ public:
 class ItemMenu
 {
 public:
-    ItemArr item2D[5];
+    ItemArr item2D[8];
 
     ItemMenu()
     {
@@ -183,23 +180,18 @@ public:
 
 #define M_Item ItemMenu::getInstance()
 
-
+//
 //// ゲーム中にホイール操作で使用したりするアイテム
-//class GameItem :public ItemArr
+//class GameItem
 //{
 //private:
-//    // int item_num[ITEM_MAX]; 
+//    ItemArr item2D[8];
 //    bool select = false;    // 選べる状態ですよ
 //
 //
 //    GameItem()
 //    {
-//        for (int i = 0; i < ITEM_MAX; i++)
-//        {
-//            pos[i] = { 128.0f,256.0f * i + 128.0f };
-//            scale[i] = { 0.3f,0.3f };
-//        }
-//        reset();
+//        arr->reset();
 //    }
 //    int timer = 0;
 //
