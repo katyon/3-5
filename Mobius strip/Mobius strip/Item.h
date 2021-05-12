@@ -2,33 +2,33 @@
 #include <algorithm>
 #include "AliceLib/AliceLib.h"
 #include "common.h"
-
-
-enum ITEM_ID
-{
-    ID_MEMO = 0,
-    ID_OMORI = 1,
-    ID_ITEM3 = 2,
-    ID_ITEM4 = 3,
-    ID_EMPTY = 4,
-};
-
-class ItemArr
+class SPEC
 {
 public:
+    enum ITEM_ID
+    {
+        ID_ITEM1 = 0, // 最初に取った子
+        ID_ITEM2 = 1, // ２番目に取った子
+        ID_ITEM3 = 2, // ３番目に取った子
+        ID_ITEM4 = 3, // ４番目に取った子
+        ID_EMPTY = 4, // 消しゴムさん
+    };
     Sprite ptr;
     SkinnedMesh model;
-
-    static constexpr int ITEM_MAX = 8;
-    ITEM_ID items[ITEM_MAX];
-
     FLOAT3 pos;   // 表示位置
     FLOAT3 scale; // 表示サイズ
     FLOAT2 src;
     bool isobserve;
     bool isConsumed; // 消費されるアイテムかどうか
     bool exist;
+};
 
+class ItemArr:public SPEC
+{
+public:
+    static constexpr int ITEM_MAX = 8;
+    SPEC itemSpec[ITEM_MAX];
+    SPEC::ITEM_ID items[ITEM_MAX];
     void init();
     void uninit();
 
@@ -67,9 +67,9 @@ public:
 
     bool isPossessed(ITEM_ID id)
     {
-        for (auto i : items)
+        for (auto& item : items)
         {
-            if (id == i)return true;
+            if (id == item)return true;
         }
         return false;
     }
@@ -90,10 +90,11 @@ public:
         }
         return false;
     }
-
+    
     // IDを指定してアイテムを使用する
     bool use_item(ITEM_ID id)
     {
+
         for (auto& item : items)
         {
             if (item == id)
@@ -110,6 +111,7 @@ public:
     ITEM_ID use_item(int num)
     {
         if (num < 0 || num >= ITEM_MAX)return ID_EMPTY;
+
         if (items[num] != ID_EMPTY)
         {
             ITEM_ID result = items[num];
@@ -129,10 +131,9 @@ public:
 #define arr ItemArr::getInstance()
 
 // ３Dでのアイテム
-class ItemObj
+class ItemObj:public ItemArr
 {
 private:
-    ItemArr item3D[8];
     FLOAT3 OBBscale;
 
     FLOAT3 rayStart;
@@ -142,6 +143,8 @@ private:
     Quaternion posture[8];
 
 public:
+    ItemArr item3D;
+
     void init();
     void update(const Camera& camera);
     void render(const Camera& camera);
@@ -153,14 +156,13 @@ public:
         return &ins;
     }
 };
-
 #define itemObj ItemObj::getInstance()
 
 // メニューのアイテム欄に表示するアイテム
-class ItemMenu
+class ItemMenu:public ItemArr
 {
 public:
-    ItemArr item2D[8];
+    ItemArr item2D;
 
     ItemMenu()
     {

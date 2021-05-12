@@ -1,27 +1,28 @@
 #include "Item.h"
 #include "Shelter.h"
 
+
 // 3DÇ≈ÇÃÉAÉCÉeÉÄ
 void ItemObj::init()
 {
     arr->init();
 
-    for (int i = 0; i < arr->ITEM_MAX; i++)
-    {
-        item3D[i].exist = true;
-    }
-
     /* ÉÅÉÇ */
-    item3D[0].model.load("Data\\Objects\\kami.fbx");
-    item3D[0].pos = { -46.0f,10.0f,-37.0f };
-    item3D[0].scale = { 0.5f,1.0f,0.7f };
-    item3D[0].isConsumed = false;
+    item3D.itemSpec[0].model.load("Data\\Objects\\kami.fbx");
+    item3D.itemSpec[0].pos = { -46.0f,10.0f,-37.0f };
+    item3D.itemSpec[0].scale = { 0.5f,1.0f,0.7f };
+    itemSpec[0].isConsumed = false;
 
     /* êé */
-    item3D[1].model.load("Data\\Objects\\omori.fbx");
-    item3D[1].pos = { 0.0f,10.0f,0.0f };
-    item3D[1].scale = { 0.5f,0.5f,0.5f };
-    item3D[1].isConsumed = true;
+    item3D.itemSpec[1].model.load("Data\\Objects\\omori.fbx");
+    item3D.itemSpec[1].pos = { 0.0f,10.0f,0.0f };
+    item3D.itemSpec[1].scale = { 0.2f,0.2f,0.2f };
+    itemSpec[1].isConsumed = true;
+
+    for (int i = 0; i < arr->ITEM_MAX; i++)
+    {
+        item3D.itemSpec[i].exist = true;
+    }
 
     OBBscale = { 10.0f,10.0f,10.0f };
     Audio::load(6, L"./Data/BGM/get.wav");
@@ -34,30 +35,32 @@ void ItemObj::update(const Camera& camera)
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        if (ColLineOBB(rayStart, rayEnd, CreateOBB(item3D[i].pos, OBBscale, posture[i]), hitPos))
+        if (ColLineOBB(rayStart, rayEnd, CreateOBB(item3D.itemSpec[i].pos, OBBscale, posture[i]), hitPos))
         {
             if (input::TRG(VK_LBUTTON))
             {
                 arr->get_item(static_cast<ITEM_ID>(i));
-                item3D[i].exist = false;
+                item3D.itemSpec[i].exist = false;
+                M_Item->item2D.itemSpec[i].exist = true;
                 Audio::play(6);
             }
         }
-        break;
     }
 }
 
 void ItemObj::render(const Camera& camera)
 {
-    
     COLOR color = { 1.0f,1.0f,1.0f,1.0f };
+    Debug->Get()->SetString("ë∂ç›[0]:%d", item3D.itemSpec[0].exist);
+    Debug->Get()->SetString("ë∂ç›[1]:%d", item3D.itemSpec[1].exist);
+
     for (int i=0;i<arr->ITEM_MAX;i++)
     {
-        if (item3D[i].exist)
+        if (item3D.itemSpec[i].exist)
         {
             posture[i].reset();
             posture[0].RotationYaw(toRadian(-90.0f));
-            SkinnedMeshRender(item3D[i].model, camera, item3D[i].pos, item3D[i].scale, posture[i], camera.LightFloamCamera(), color);
+            SkinnedMeshRender(item3D.itemSpec[i].model, camera, item3D.itemSpec[i].pos, item3D.itemSpec[i].scale, posture[i], camera.LightFloamCamera(), color);
         }
     }
 }

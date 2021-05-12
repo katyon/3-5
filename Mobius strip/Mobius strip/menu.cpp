@@ -8,20 +8,23 @@ void ItemArr::init()
     reset();
 }
 
-
 void ItemMenu::init()
 {
     arr->init();
+    SpriteLoad(item2D.itemSpec[0].ptr, L"Data/Sprite/ward.png");
+    SpriteLoad(item2D.itemSpec[1].ptr, L"Data/Sprite/omori.png");
+
+
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        item2D[i].exist = false;
+        item2D.itemSpec[i].exist = false;
     }
-    SpriteLoad(arr->ptr, L"Data/Sprite/ward.png");
-    item2D[0].pos = { 318.0f,290.0f,0.0f };
-    item2D[1].pos = { 480.0f,290.0f,0.0f };
-    item2D[2].pos = { 645.0f,290.0f,0.0f };
+    for (int i = 0; i < arr->ITEM_MAX; i++)
+    {
+        M_Item->item2D.itemSpec[i].pos = { 318.0f + i * 162.0f,290.0f,0.0f };
+    }
+    
 }
-
 
 void Menu::init()
 {
@@ -40,39 +43,42 @@ void ItemMenu::isChoice()
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        if (ColRects(item2D[i].pos.y, item2D[i].pos.y + 120.0f, item2D[i].pos.x, item2D[i].pos.x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
+        // アイテム欄のアイテムをクリックしたら
+        if (ColRects(item2D.itemSpec[i].pos.y, item2D.itemSpec[i].pos.y + 120.0f, item2D.itemSpec[i].pos.x, item2D.itemSpec[i].pos.x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
         {
-            switch (arr->items[i])
+            // クリックされたアイテムが大きく表示される
+            switch (i)
             {
-            case ID_MEMO:
-                item2D[0].isobserve = true;
-                item2D[1].isobserve = false;
-                item2D[2].isobserve = false;
-                item2D[3].isobserve = false;
+            case 0:
+                item2D.itemSpec[0].isobserve = true;
+                item2D.itemSpec[1].isobserve = false;
+                item2D.itemSpec[2].isobserve = false;
+                item2D.itemSpec[3].isobserve = false;
                 break;
 
-            case ID_OMORI:
-                item2D[0].isobserve = false;
-                item2D[1].isobserve = true;
-                item2D[2].isobserve = false;
-                item2D[3].isobserve = false;
+            case 1:
+                item2D.itemSpec[0].isobserve = false;
+                item2D.itemSpec[1].isobserve = true;
+                item2D.itemSpec[2].isobserve = false;
+                item2D.itemSpec[3].isobserve = false;
                 break;
 
-            case ID_ITEM3:
-                item2D[0].isobserve = false;
-                item2D[1].isobserve = false;
-                item2D[2].isobserve = true;
-                item2D[3].isobserve = false;
+            case 2:
+                item2D.itemSpec[0].isobserve = false;
+                item2D.itemSpec[1].isobserve = false;
+                item2D.itemSpec[2].isobserve = true;
+                item2D.itemSpec[3].isobserve = false;
                 break;
 
-            case ID_ITEM4:
-                item2D[0].isobserve = false;
-                item2D[1].isobserve = false;
-                item2D[2].isobserve = false;
-                item2D[3].isobserve = true;
+            case 4:
+                item2D.itemSpec[0].isobserve = false;
+                item2D.itemSpec[1].isobserve = false;
+                item2D.itemSpec[2].isobserve = false;
+                item2D.itemSpec[3].isobserve = true;
                 break;
 
-            case ID_EMPTY:
+            default:
+                item2D.itemSpec[i].isobserve = false;
                 break;
             }
         }
@@ -145,7 +151,7 @@ void Menu::update()
             {
                 for (auto i : arr->items)
                 {
-                    M_Item->item2D[i].isobserve = false;
+                    M_Item->item2D.itemSpec[i].isobserve = false;
                 }
                 tab = MenuTab::Item;
             }
@@ -165,7 +171,7 @@ void Menu::update()
             {
                 for (auto i : arr->items)
                 {
-                    M_Item->item2D[i].isobserve = false;
+                    M_Item->item2D.itemSpec[i].isobserve = false;
                 }
                 tab = MenuTab::Item;
             }
@@ -212,45 +218,32 @@ void ItemMenu::draw()
 {
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        for (auto& item : arr->items)
+        switch (arr->items[i])
         {
-       //     if (!arr->exist[item])
-            {
-                switch (arr->items[i])
-                {
-                case ID_MEMO:
-                    SpriteRender(arr->ptr, item2D[0].pos.x, item2D[0].pos.y, 0.05f, 0.06f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
-                    if (item2D[0].isobserve)
-                    {
-                        SpriteRender(arr->ptr, 1190, 310, 0.18f, 0.24f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
-                    }
-                    break;
+        case SPEC::ITEM_ID::ID_ITEM1:
+            SpriteRender(item2D.itemSpec[0].ptr,
+                item2D.itemSpec[i].pos.x, item2D.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0,0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
 
-                case ID_OMORI:
-                    SpriteRender(arr->ptr, item2D[1].pos.x, item2D[1].pos.y, 0.4f, 0.5f, 256, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                    if (item2D[1].isobserve)
-                    {
-                        SpriteRender(arr->ptr, 900, 286, 3, 3, 256, 0, 120, 256, 0, 0, 0, 1, 1, 1, 1);
-                    }
-                    break;
-
-                case ID_ITEM3:
-                    SpriteRender(arr->ptr, item2D[2].pos.x, item2D[2].pos.y, 0.4f, 0.5f, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                    if (item2D[2].isobserve)
-                    {
-                        SpriteRender(arr->ptr, 900, 285, 3, 3, 512, 0, 256, 256, 0, 0, 0, 1, 1, 1, 1);
-                    }
-                    break;
-
-                case ID_EMPTY:
-                    break;
-                }
-            }
+        case SPEC::ITEM_ID::ID_ITEM2:
+            SpriteRender(item2D.itemSpec[1].ptr,
+                item2D.itemSpec[i].pos.x, item2D.itemSpec[i].pos.y,
+                0.5f, 0.6f,
+                0, 0,
+                295, 354,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
         }
-        break;
     }
 }
-
 void Menu::draw()
 {
     switch (tab)
