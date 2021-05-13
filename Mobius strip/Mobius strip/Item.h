@@ -162,7 +162,7 @@ public:
 class ItemMenu:public ItemArr
 {
 public:
-    ItemArr item2D;
+    ItemArr menuItem;
 
     ItemMenu()
     {
@@ -182,32 +182,31 @@ public:
 
 #define M_Item ItemMenu::getInstance()
 
-//
-//// ゲーム中にホイール操作で使用したりするアイテム
-//class GameItem
-//{
-//private:
-//    ItemArr item2D[8];
-//    bool select = false;    // 選べる状態ですよ
-//
-//
-//    GameItem()
-//    {
-//        arr->reset();
-//    }
-//    int timer = 0;
-//
-//public:
-//    void init();
-//    void isChoice();
-//    void update();
-//    void draw();
-//
-//    static GameItem* getInstance()
-//    {
-//        static GameItem ins;
-//        return &ins;
-//    }
-//};
-//
-//#define G_Item GameItem::getInstance()
+
+// ゲーム中にホイール操作で使用したりするアイテム
+class GameItem:public ItemMenu
+{
+private:
+    ItemArr gameItem;
+    bool select = false;    // 選べる状態ですよ
+
+    GameItem()
+    {
+        arr->reset();
+    }
+    int timer = 0;
+
+public:
+    void init();
+    void isChoice();
+    void update();
+    void draw();
+
+    static GameItem* getInstance()
+    {
+        static GameItem ins;
+        return &ins;
+    }
+};
+
+#define G_Item GameItem::getInstance()

@@ -11,17 +11,17 @@ void ItemArr::init()
 void ItemMenu::init()
 {
     arr->init();
-    SpriteLoad(item2D.itemSpec[0].ptr, L"Data/Sprite/ward.png");
-    SpriteLoad(item2D.itemSpec[1].ptr, L"Data/Sprite/omori.png");
+    SpriteLoad(menuItem.itemSpec[0].ptr, L"Data/Sprite/ward.png");
+    SpriteLoad(menuItem.itemSpec[1].ptr, L"Data/Sprite/omori.png");
 
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        item2D.itemSpec[i].exist = false;
+        menuItem.itemSpec[i].exist = false;
     }
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        M_Item->item2D.itemSpec[i].pos = { 318.0f + i * 162.0f,290.0f,0.0f };
+        M_Item->menuItem.itemSpec[i].pos = { 318.0f + i * 162.0f,290.0f,0.0f };
     }
     
 }
@@ -44,41 +44,41 @@ void ItemMenu::isChoice()
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
         // アイテム欄のアイテムをクリックしたら
-        if (ColRects(item2D.itemSpec[i].pos.y, item2D.itemSpec[i].pos.y + 120.0f, item2D.itemSpec[i].pos.x, item2D.itemSpec[i].pos.x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
+        if (ColRects(menuItem.itemSpec[i].pos.y, menuItem.itemSpec[i].pos.y + 120.0f, menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
         {
             // クリックされたアイテムが大きく表示される
             switch (i)
             {
             case 0:
-                item2D.itemSpec[0].isobserve = true;
-                item2D.itemSpec[1].isobserve = false;
-                item2D.itemSpec[2].isobserve = false;
-                item2D.itemSpec[3].isobserve = false;
+                menuItem.itemSpec[0].isobserve = true;
+                menuItem.itemSpec[1].isobserve = false;
+                menuItem.itemSpec[2].isobserve = false;
+                menuItem.itemSpec[3].isobserve = false;
                 break;
 
             case 1:
-                item2D.itemSpec[0].isobserve = false;
-                item2D.itemSpec[1].isobserve = true;
-                item2D.itemSpec[2].isobserve = false;
-                item2D.itemSpec[3].isobserve = false;
+                menuItem.itemSpec[0].isobserve = false;
+                menuItem.itemSpec[1].isobserve = true;
+                menuItem.itemSpec[2].isobserve = false;
+                menuItem.itemSpec[3].isobserve = false;
                 break;
 
             case 2:
-                item2D.itemSpec[0].isobserve = false;
-                item2D.itemSpec[1].isobserve = false;
-                item2D.itemSpec[2].isobserve = true;
-                item2D.itemSpec[3].isobserve = false;
+                menuItem.itemSpec[0].isobserve = false;
+                menuItem.itemSpec[1].isobserve = false;
+                menuItem.itemSpec[2].isobserve = true;
+                menuItem.itemSpec[3].isobserve = false;
                 break;
 
             case 4:
-                item2D.itemSpec[0].isobserve = false;
-                item2D.itemSpec[1].isobserve = false;
-                item2D.itemSpec[2].isobserve = false;
-                item2D.itemSpec[3].isobserve = true;
+                menuItem.itemSpec[0].isobserve = false;
+                menuItem.itemSpec[1].isobserve = false;
+                menuItem.itemSpec[2].isobserve = false;
+                menuItem.itemSpec[3].isobserve = true;
                 break;
 
             default:
-                item2D.itemSpec[i].isobserve = false;
+                menuItem.itemSpec[i].isobserve = false;
                 break;
             }
         }
@@ -151,7 +151,7 @@ void Menu::update()
             {
                 for (auto i : arr->items)
                 {
-                    M_Item->item2D.itemSpec[i].isobserve = false;
+                    M_Item->menuItem.itemSpec[i].isobserve = false;
                 }
                 tab = MenuTab::Item;
             }
@@ -171,7 +171,7 @@ void Menu::update()
             {
                 for (auto i : arr->items)
                 {
-                    M_Item->item2D.itemSpec[i].isobserve = false;
+                    M_Item->menuItem.itemSpec[i].isobserve = false;
                 }
                 tab = MenuTab::Item;
             }
@@ -221,8 +221,8 @@ void ItemMenu::draw()
         switch (arr->items[i])
         {
         case SPEC::ITEM_ID::ID_ITEM1:
-            SpriteRender(item2D.itemSpec[0].ptr,
-                item2D.itemSpec[i].pos.x, item2D.itemSpec[i].pos.y,
+            SpriteRender(menuItem.itemSpec[0].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
                 0.05f, 0.06f,
                 0,0,
                 2048, 2048,
@@ -232,8 +232,8 @@ void ItemMenu::draw()
             break;
 
         case SPEC::ITEM_ID::ID_ITEM2:
-            SpriteRender(item2D.itemSpec[1].ptr,
-                item2D.itemSpec[i].pos.x, item2D.itemSpec[i].pos.y,
+            SpriteRender(menuItem.itemSpec[1].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
                 0.5f, 0.6f,
                 0, 0,
                 295, 354,
