@@ -13,6 +13,7 @@ struct Buttons
 
 	bool isPush;
 	bool Pushflg = false;
+	bool Downflg = false;
 };
 
 class ButtonPush
@@ -31,8 +32,9 @@ public:
 	int answer_board[5] = {};   // “š‚¦‚Ìƒ{ƒ^ƒ“‚Ì”Ô†
 	bool final_judge;
 	bool provisional_judge;
-	//int timer = 60;
+	int timer = 30;
 	bool isPlay = true;
+	bool isJudge = false;
 
 	void init();
 	bool judge_answer();
