@@ -44,10 +44,13 @@ public:
     void init();
     //処理的には呼ばれたタイミングの1フレーム前の物を使用する
     bool save(int);
+    bool erasure(int);
 
     //updateでは絶対に呼ばないこと
     void begin();
     void end();
+
+    
 
     void _edit();
 

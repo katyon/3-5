@@ -35,6 +35,17 @@ bool ScreenRecord::save(int num)
 	return true;
 }
 
+bool ScreenRecord::erasure(int num)
+{
+	if (0 > num || num >= max_racord)return false;
+	if (records[num])
+	{
+		records[num].unload();
+		return true;
+	}
+	return false;
+}
+
 void ScreenRecord::begin()
 {
 	//テクスチャバインドによるエラー回避用
