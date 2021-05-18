@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "StageManager.h"
 #include "OBBs.h"
+#include "Balance.h"
 Menu menu;
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
@@ -38,7 +39,7 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 
     StageManager::getIns()->LoadStages(fill_name);
     //コンストラクタの最後で念のための初期化を行う
-    SceneGame::Initialize();
+    //SceneGame::Initialize();
 }
 
 //シーン変更された瞬間に実行される処理

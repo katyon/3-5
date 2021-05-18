@@ -89,25 +89,12 @@ namespace Balance
 	static FLOAT3		pos[3];
 	static Quaternion	postrue;
 	static Camera		eye;
+	static B_weight r_weight = 0;
+	static B_weight l_weight = 6;
 	void Init()
 	{
 		flgs[0] = flgs[1] = false;
 		isClear = false;
-		if (!balance_model.IsModel()) 
-		{
-			Model* model = StageManager::getIns()->getModel("tenbin.fbx");
-			if (model)
-			{
-				balance_model.SetModel(model);
-			}
-			else
-			{
-				Model _model;
-				ModelLoad(_model,"Data\\Objects\\tenbin.fbx");
-				balance_model.SetModel(&_model);
-			}
-			balance_model.PlayAnimation(1, 1);
-		}
 		if (!omori_model.IsModel())
 		{
 			Model* model = StageManager::getIns()->getModel("omori.fbx");
@@ -124,25 +111,55 @@ namespace Balance
 		}
 		eye.SetPos({ 0.0f,50.0f, - 150.0f });
 		eye.SetTarget({ 0,25.0f,0.0f });
+
+		//ステージから天秤のオブジェクトを検索して
+		//モーションブレンドようにアニメーションを設定
+		StageObject* objects = StageManager::getIns()->getStageObjects();
+		if (objects)
+		{
+			for (int i = 0; i < StageData::MaxObjects; i++)
+			{
+				if (objects[i].ID == "tenbin.fbx")
+				{
+					objects[i].body.PlayAnimation(1, true);
+					break;
+				}
+			}
+		}
 	}
 
 	bool Update()
 	{
 		if (isClear)return true;
 
-		static int r = 0;
-		static constexpr int l = 6;
-		r = (static_cast<int>(flgs[0]) + static_cast<int>(flgs[1])) * 3;
+		r_weight = (static_cast<int>(flgs[0]) + static_cast<int>(flgs[1])) * 3;
 		float rate = 0.0f;
-		getTilt(r, l, &rate);
+		getTilt(r_weight, l_weight, &rate);
 		int frame = 150;
 		makeAnAngle(frame, rate);
-		balance_model.UpdateBlendAnimation(0, frame, 1.0f, 0.0f);
-		pos[0].y = 10.5f + static_cast<float>((r - l) * 0.8f);
+
+		//ステージから天秤のオブジェクトを検索して
+		//モーションブレンドする
+		StageObject* objects = StageManager::getIns()->getStageObjects();
+		if (objects) 
+		{
+			for (int i = 0; i < StageData::MaxObjects; i++)
+			{
+				if (objects[i].ID == "tenbin.fbx")
+				{
+					objects[i].body.UpdateBlendAnimation(0, frame, 1.0f, 0.0f);
+					break;
+				}
+			}
+		}
+
+
+		//balance_model.UpdateBlendAnimation(0, frame, 1.0f, 0.0f);
+		pos[0].y = 10.5f + static_cast<float>((r_weight - l_weight) * 0.8f);
 		pos[0].x = -14.25f + static_cast<float>(fabsf(rate) * 1.75f);
-		pos[1].y = 10.5f + static_cast<float>((l - r) * 0.8f);
+		pos[1].y = 10.5f + static_cast<float>((l_weight - r_weight) * 0.8f);
 		pos[1].x = 12.25f - static_cast<float>(fabsf(rate) * 1.75f);
-		pos[2].y = 10.5f + static_cast<float>((l - r) * 0.8f);
+		pos[2].y = 10.5f + static_cast<float>((l_weight - r_weight) * 0.8f);
 		pos[2].x = 18.25f - static_cast<float>(fabsf(rate) * 1.75f);
 		return isClear;
 	}
@@ -171,7 +188,7 @@ namespace Balance
 		eye.Active();
 
 		ModelRenderBegin();
-		ModelRender(balance_model, world);
+		//ModelRender(balance_model, world);
 		ModelRender(omori_model, pos[0], ScalarToFloat3(0.6f), {});
 		if (flgs[0])ModelRender(omori_model, pos[1], ScalarToFloat3(0.45f), {});
 		if (flgs[1])ModelRender(omori_model, pos[2], ScalarToFloat3(0.45f), {});
