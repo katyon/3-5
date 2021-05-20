@@ -1,6 +1,8 @@
 #include "CollisionEditer.h"
 
 bool getFileNames(std::string folderPath, std::vector<std::string>& file_names);
+void getMouseRay(const Camera& eye, FLOAT3& start, FLOAT3& end);
+bool ColLineOBB(const FLOAT3& start, const FLOAT3& end, const OBB& obb, FLOAT3& hitPoint);
 
 void CollisionEditer::load_object()
 {
@@ -38,7 +40,7 @@ CollisionEditer::CollisionEditer()
 	ambient->option.x = 0.5f;
 	{
 		std::string pass = "Data\\ColData\\When_finished.csv";
-		stage.Load(pass, &manager);
+		//stage.Load(pass, &manager);
 
 		//ファイルが無ければ終了
 		if (!checkFileExistence(pass))return;
@@ -57,10 +59,7 @@ CollisionEditer::CollisionEditer()
 			if (filename[0] != '\0')
 			{
 				storage = filename;
-				std::string pass = "Data\\StageData\\";
-				pass += storage;
-				pass += ".csv";
-				stage.Load(pass, &manager);
+				stage.Load(storage, &manager);
 			}
 			fprintf(fp, "\n");
 			//データが0に満たない場合終了
@@ -131,8 +130,46 @@ CollisionEditer::~CollisionEditer()
 	}
 }
 
+bool CollisionEditer::Click(int& operation)
+{
+	bool result = false;
+	operation = -1;
+	float dis = 0.0f;
+	FLOAT3 hitPos[2] = {};
+	static FLOAT3 s, e;
+	getMouseRay(camera, s, e);
+	int index = 0;
+	for (const auto& it : ColDataList)
+	{
+		if (ColLineOBB(s, e,
+			it.d.obb,
+			hitPos[0]))
+		{
+			if (!result)
+			{
+				hitPos[1] = hitPos[0];
+				dis = s.distanceFrom(hitPos[1]);
+				operation = index;
+				result = true;
+			}
+			else
+			{
+				float s_h = s.distanceFrom(hitPos[0]);
+				if (s_h < dis)
+				{
+					operation = index;
+					hitPos[1] = hitPos[0];
+					dis = s.distanceFrom(hitPos[1]);
+				}
+			}
+		}
+		index++;
+	}
+	return result;
+}
 
-void CollisionEditer::GUI()
+
+void CollisionEditer::GUI(int num)
 {
 	if (isShow)
 	{
@@ -190,7 +227,10 @@ void CollisionEditer::GUI()
 	storage.empty() ? ImGui::NewLine() :
 		ImGui::Text(u8"%sを編集中", storage.c_str());
 	ImGui::InputFloat(u8"カメラの移動速度", &speed, 1.0f, -1.0f);
-
+	if (num >= 0)
+	{
+		ImGui::Text(u8"OBB[%d]", num);
+	}
 	ImGui::End();
 
 	ImGui::Begin(u8"パラメータ");
@@ -216,11 +256,12 @@ void CollisionEditer::GUI()
 			ImGui::InputFloat(u8"座標::Z", &it->d.obb.pos.z, 0.5f, -0.5f);
 
 			ImGui::Text(u8"辺の長さ");
-			ImGui::InputFloat(u8"辺の長さ::X", &it->d.obb.len.x, 0.01f, -0.01f);
-			ImGui::InputFloat(u8"辺の長さ::Y", &it->d.obb.len.y, 0.01f, -0.01f);
-			ImGui::InputFloat(u8"辺の長さ::Z", &it->d.obb.len.z, 0.01f, -0.01f);
+			ImGui::InputFloat(u8"辺の長さ::X", &it->d.obb.len.x, 0.1f, -0.1f);
+			ImGui::InputFloat(u8"辺の長さ::Y", &it->d.obb.len.y, 0.1f, -0.1f);
+			ImGui::InputFloat(u8"辺の長さ::Z", &it->d.obb.len.z, 0.1f, -0.1f);
 
 			ImGui::Text(u8"姿勢");
+			if (ImGui::Button(u8"姿勢をリセット")) { it->q.reset(); }
 			{
 				if (ImGui::Button("X - 30°")) { it->q.RotationPitch(n30); }
 				ImGui::SameLine();
@@ -270,8 +311,11 @@ void CollisionEditer::GUI()
 
 void CollisionEditer::update()
 {
-	GUI();
+
 	camera.Control(camera_q, speed * DeltaTime(), OnceInRadians * 0.5f);
+	result = -1;
+	Click(result);
+	GUI(result);
 	if ((input::TRG('S') && input::STATE(input::CTRL)) ||
 		(input::STATE('S') && input::TRG(input::CTRL)))
 	{
@@ -286,11 +330,17 @@ void CollisionEditer::render()
 	ambient.Active();
 	stage.Render();
 	DirectX::XMMATRIX w;
+	int index = 0;
 	Geometric::Begin();
 	for (const auto& d : ColDataList)
 	{
 		w = GetWorldMatrix(d.d.obb.pos, d.d.obb.len, d.q);
-		Geometric::Cube(w, { DCOLOR_YELLOW }, true);
+		if (input::STATE(input::MOUSE_C))
+		{
+			index != result ? Geometric::Cube(w, {  DCOLOR_YELLOW }, true): Geometric::Cube(w, { DCOLOR_PURPLE }, true);
+		}
+		else Geometric::Cube(w, { DCOLOR_YELLOW }, true);
+		index++;
 	}
 	Geometric::End();
 }

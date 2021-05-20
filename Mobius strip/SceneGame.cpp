@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "StageManager.h"
 #include "OBBs.h"
+#include "Balance.h"
 Menu menu;
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
@@ -31,12 +32,12 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 
     game_mode = normal;
 
-    std::string fill_pass[] =
+    std::string fill_name[] =
     {
-        "Data/StageData/stage_data.csv",
+        "stage_data",
     };
 
-    StageManager::getIns()->LoadStages(fill_pass);
+    StageManager::getIns()->LoadStages(fill_name);
     //コンストラクタの最後で念のための初期化を行う
     SceneGame::Initialize();
 }
@@ -97,6 +98,15 @@ void SceneGame::Update(float elapsed_time)
                     break;
                 }
             }
+        }
+        if (input::TRG(input::MOUSE_R))
+        {
+            fix_cursor = !fix_cursor;
+            SetShowCursor(fix_cursor);
+            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+            center.x = floorf(center.x);
+            center.y = floorf(center.y);
+            SetCursorPos(center.x, center.y);
         }
         if (input::TRG(input::MOUSE_R))
         {
