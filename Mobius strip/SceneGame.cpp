@@ -11,7 +11,7 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 {
     //Todo::ここにソースを記入する
     player.init();
-    stage.load("Data/Objects/stage.fbx");
+    //stage.load("Data/Objects/stage.fbx");
     SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
@@ -97,6 +97,15 @@ void SceneGame::Update(float elapsed_time)
                     break;
                 }
             }
+        }
+        if (input::TRG(input::MOUSE_R))
+        {
+            fix_cursor = !fix_cursor;
+            SetShowCursor(fix_cursor);
+            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+            center.x = floorf(center.x);
+            center.y = floorf(center.y);
+            SetCursorPos(center.x, center.y);
         }
         if (input::TRG(input::MOUSE_R))
         {

@@ -59,7 +59,7 @@ void TPSCamera::update(XMMATRIX player_world_matrix, FLOAT3 center)
 	// カメラの姿勢軸を基準に、マウスの入力量から進行方向ベクトルを取得
 	VECTOR3D dist = (camera_X * cursor_amount.x + camera_Y * cursor_amount.y);
 	// 入力がない場合にベクトルの値がすべて0にならないように対策
-	if (dist.x == 0 && dist.y == 0 && dist.z == 0) { dist.x = 1, dist.y = 1, dist.z = 1; }
+	if (dist.x == 0 && dist.y == 0) { dist.x = 1, dist.y = 1; }
 
 	XMVECTOR dist_vector = XMLoadFloat3(&XMFLOAT3(dist.x, dist.y, dist.z));
 	dist_vector = XMVector3Normalize(dist_vector);
@@ -71,7 +71,7 @@ void TPSCamera::update(XMMATRIX player_world_matrix, FLOAT3 center)
 
 	// 回転軸を基にカーソル入力量を使って、回転クォータニオンを作成
 	XMVECTOR quaternion;
-	quaternion = XMQuaternionRotationAxis(rot_axis, toRadian(fabsf(cursor_amount.x + cursor_amount.y) * 0.1f));
+	quaternion = XMQuaternionRotationAxis(rot_axis, toRadian((fabs(cursor_amount.x) + fabs(cursor_amount.y)) * 0.1f));
 
 	// 回転クォータニオンから回転行列を作成
 	XMMATRIX rotate_matrix;
