@@ -1,6 +1,7 @@
 #pragma once
 #include "AliceLib/AliceLib.h"
 #include "OBBs.h"
+#include "fps_camera.h"
 
 class Player
 {
@@ -31,21 +32,31 @@ private:
 		VECTOR3D target;
 	}Dest;
 
+	FLOAT3 attract_point;
+	bool auto_control;
+	int auto_control_timer;
+
 	bool moves;
 
 public:
 	Player();
 
 	void init();
-	void update(const Camera& camera);
+	void update(FPSCamera& camera);
 	void render(const Camera& camera);
 
 	void move(const Camera& camera);
 	void updateDestVec(VECTOR3D forward);
-	void restrict_area();
+	void restrictArea();
+	void changeAnimation();
+
+	void setAutoMode(FPSCamera& camera);
+	void autoControl(FPSCamera& camera);
 
 	void colWall();
 	void colFloor();
+
+	bool getControlable() { return auto_control; }
 
 	FLOAT3& getPos() { return pos; }
 	DirectX::XMMATRIX getPlayerWorldMatrix();

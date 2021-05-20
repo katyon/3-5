@@ -17,8 +17,14 @@ void Player::init()
 	world_matrix = GetWorldMatrix(pos, scale, posture);
 }
 
-void Player::update(const Camera& camera)
+void Player::update(FPSCamera& camera)
 {
+	if (auto_control)
+	{
+		autoControl(camera);
+		return;
+	}
+
 	world_matrix = GetWorldMatrix(pos, scale, posture);
 	posture_vec.CreateVector(posture);
 	updateDestVec(camera.GetTarget() - camera.GetPos());
@@ -31,14 +37,22 @@ void Player::update(const Camera& camera)
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
-	restrict_area();
+	restrictArea();
 	colWall();
 	colFloor();
+
+	changeAnimation();
 }
 
 void Player::render(const Camera& camera)
 {
-	SkinnedMeshRender(model, camera, GetWorldMatrix(pos - (camera.GetTarget() - camera.GetPos()), scale,posture), camera.LightFloamCamera());
+	model.UpdateAnimation();
+
+	posture.RotationYaw(toRadian(180));
+	{
+		SkinnedMeshRender(model, camera, GetWorldMatrix(pos - (camera.GetTarget() - camera.GetPos()), scale, posture), camera.LightFloamCamera());
+	}
+	posture.RotationYaw(-toRadian(180));
 }
 
 void Player::move(const Camera& camera)
@@ -144,12 +158,47 @@ void Player::colWall()
 	}
 }
 
-void Player::restrict_area()
+void Player::restrictArea()
 {
 	if (pos.x > 50) { pos.x = 50; }
 	if (pos.x < -50) { pos.x = -50; }
 	if (pos.z > 50) { pos.z = 50; }
 	if (pos.z < -50) { pos.z = -50; }
+}
+
+void Player::changeAnimation()
+{
+	if (moves)
+	{
+		if (model.GetPlayAnimationNum() != 0) { model.ChangeAnimation(0, true); }
+	}
+	else
+	{
+		if (model.GetPlayAnimationNum() != 1) { model.ChangeAnimation(1, true); }
+	}
+}
+
+void Player::setAutoMode(FPSCamera& camera)
+{
+	if (input::STATE('G'))
+	{
+		attract_point = { -50, 0, 0 };
+		camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f);
+		auto_control_timer = 0;
+	}
+}
+
+void Player::autoControl(FPSCamera& camera)
+{
+	auto_control_timer++;
+	if (auto_control_timer > 120)
+	{
+		camera.autoFin();
+		auto_control = false;
+	}
+
+	VECTOR3D vec = pos - attract_point;
+	vec.normalizeAssign();
 }
 
 void Player::colFloor()

@@ -11,7 +11,7 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
 {
     //Todo::ここにソースを記入する
     player.init();
-    stage.load("Data/Objects/stage.fbx");
+    //stage.load("Data/Objects/stage.fbx");
     SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
