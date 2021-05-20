@@ -179,15 +179,15 @@ void FPSCamera::focusCompulsion(XMMATRIX player_world_matrix, FLOAT3 center)
 	target_vector = target_vector.normalize();
 
 	// åÎç∑1Ç≈èIóπ
-	if (acosf(VECTOR3D::dot(current_vector, target_vector)) < 0.01f) 
-	{
-		FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
-		center.x = floorf(center.x);
-		center.y = floorf(center.y);
-		SetCursorPos(center.x, center.y);
+	//if (acosf(VECTOR3D::dot(current_vector, target_vector)) < 0.01f) 
+	//{
+	//	FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+	//	center.x = floorf(center.x);
+	//	center.y = floorf(center.y);
+	//	SetCursorPos(center.x, center.y);
 
-		auto_focus = false;
-	}
+	//	auto_focus = false;
+	//}
 
 	// ïΩçtèÛë‘éûÇÃèCê≥èàóù
 	if (current_vector.isParallel(target_vector)) 

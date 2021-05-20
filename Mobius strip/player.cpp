@@ -42,6 +42,7 @@ void Player::update(FPSCamera& camera)
 	colFloor();
 
 	changeAnimation();
+	setAutoMode(camera);
 }
 
 void Player::render(const Camera& camera)
@@ -182,9 +183,10 @@ void Player::setAutoMode(FPSCamera& camera)
 {
 	if (input::STATE('G'))
 	{
-		attract_point = { -50, 0, 0 };
+		attract_point = { -30, 0, 0 };
 		camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f);
 		auto_control_timer = 0;
+		auto_control = true;
 	}
 }
 
@@ -193,12 +195,19 @@ void Player::autoControl(FPSCamera& camera)
 	auto_control_timer++;
 	if (auto_control_timer > 120)
 	{
-		camera.autoFin();
 		auto_control = false;
+		FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+		center.x = floorf(center.x);
+		center.y = floorf(center.y);
+		SetCursorPos(center.x, center.y);
+		camera.autoFin();
 	}
 
-	VECTOR3D vec = pos - attract_point;
-	vec.normalizeAssign();
+	VECTOR3D vec = attract_point - pos;
+	if (vec.length() < 0.01f)return;
+	vec = vec.normalize();
+
+	pos += static_cast<FLOAT3>(vec) * 0.5f;
 }
 
 void Player::colFloor()
