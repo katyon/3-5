@@ -2,22 +2,32 @@
 #include <algorithm>
 #include "AliceLib/AliceLib.h"
 #include "common.h"
+
 class SPEC
 {
 public:
     enum ITEM_ID
     {
-        ID_ITEM1 = 0, // 最初に取った子
-        ID_ITEM2 = 1, // ２番目に取った子
-        ID_ITEM3 = 2, // ３番目に取った子
-        ID_ITEM4 = 3, // ４番目に取った子
-        ID_EMPTY = 4, // 消しゴムさん
+        ID_Esc1,     // ０
+        ID_Esc2,     // １
+        ID_Stone1,   // ２
+        ID_Stone2,   // ３
+        ID_Pipe3,    // ４
+        ID_Balance1, // ５
+        ID_Balance2, // ６
+        ID_Balance3, // ７
+        ID_SafetyBox,// ８
+        ID_Weight,   // ９
+        ID_Key,      // １０
+        ID_EMPTY,    // 消しゴムさん
     };
+
     Sprite ptr;
     SkinnedMesh model;
     FLOAT3 pos;   // 表示位置
     FLOAT3 scale; // 表示サイズ
     FLOAT2 src;
+
     bool isobserve;
     bool isConsumed; // 消費されるアイテムかどうか
     bool exist;
@@ -26,15 +36,14 @@ public:
 class ItemArr:public SPEC
 {
 public:
-    static constexpr int ITEM_MAX = 8;
+    static constexpr int ITEM_MAX = 15;
     SPEC itemSpec[ITEM_MAX];
-    SPEC::ITEM_ID items[ITEM_MAX];
+    ITEM_ID items[ITEM_MAX];
     void init();
     void uninit();
 
     ItemArr()
     {
-
         reset();
     }
     void shorten()
@@ -83,6 +92,7 @@ public:
         {
             if (item == ID_EMPTY)
             {
+                Audio::play(6);
                 item = id;
                 shorten();
                 return true;
@@ -90,7 +100,7 @@ public:
         }
         return false;
     }
-    
+
     // IDを指定してアイテムを使用する
     bool use_item(ITEM_ID id)
     {
@@ -108,7 +118,7 @@ public:
     }
 
     //場所を指定してアイテムを使用する
-    ITEM_ID use_item(int num)
+    ITEM_ID use_Disitem(int num)
     {
         if (num < 0 || num >= ITEM_MAX)return ID_EMPTY;
 
@@ -131,21 +141,27 @@ public:
 #define arr ItemArr::getInstance()
 
 // ３Dでのアイテム
-class ItemObj:public ItemArr
+class ItemObj
 {
 private:
+    ItemObj()
+    {
+        arr->reset();
+    }
     FLOAT3 OBBscale;
 
     FLOAT3 rayStart;
     FLOAT3 rayEnd;
+    float timer=0;
 
     FLOAT3 hitPos;
-    Quaternion posture[8];
+    Quaternion posture[15];
 
 public:
     ItemArr item3D;
 
     void init();
+    void get();
     void update(const Camera& camera);
     void render(const Camera& camera);
     void uninit();
@@ -159,7 +175,7 @@ public:
 #define itemObj ItemObj::getInstance()
 
 // メニューのアイテム欄に表示するアイテム
-class ItemMenu:public ItemArr
+class ItemMenu
 {
 public:
     ItemArr menuItem;
@@ -168,6 +184,7 @@ public:
     {
         arr->reset();
     }
+
     void isChoice();
     void init();
     void update();
@@ -179,16 +196,16 @@ public:
         return &ins;
     }
 };
-
 #define M_Item ItemMenu::getInstance()
 
 
 // ゲーム中にホイール操作で使用したりするアイテム
-class GameItem:public ItemMenu
+class GameItem
 {
 private:
     ItemArr gameItem;
-    bool select = false;    // 選べる状態ですよ
+    FLOAT2 pos;
+    int selectNum = 1;
 
     GameItem()
     {
@@ -197,6 +214,7 @@ private:
     int timer = 0;
 
 public:
+    bool count[2];
     void init();
     void isChoice();
     void update();
@@ -208,5 +226,4 @@ public:
         return &ins;
     }
 };
-
 #define G_Item GameItem::getInstance()

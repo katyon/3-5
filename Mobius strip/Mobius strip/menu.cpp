@@ -11,19 +11,22 @@ void ItemArr::init()
 void ItemMenu::init()
 {
     arr->init();
-    SpriteLoad(menuItem.itemSpec[0].ptr, L"Data/Sprite/ward.png");
-    SpriteLoad(menuItem.itemSpec[1].ptr, L"Data/Sprite/omori.png");
-
-
-    for (int i = 0; i < arr->ITEM_MAX; i++)
-    {
-        menuItem.itemSpec[i].exist = false;
-    }
+    SpriteLoad(menuItem.itemSpec[0].ptr, L"Data/Sprite/esc1.png");     // ID_Esc1
+    SpriteLoad(menuItem.itemSpec[1].ptr, L"Data/Sprite/esc2.png");     // ID_Esc2     
+    SpriteLoad(menuItem.itemSpec[2].ptr, L"Data/Sprite/ward.png");     // ID_Stone1   
+    SpriteLoad(menuItem.itemSpec[3].ptr, L"Data/Sprite/ward.png");     // ID_Stone2   
+    SpriteLoad(menuItem.itemSpec[4].ptr, L"Data/Sprite/ward.png");     // ID_Pipe3   
+    SpriteLoad(menuItem.itemSpec[5].ptr, L"Data/Sprite/balance1.png"); // ID_Balance1 
+    SpriteLoad(menuItem.itemSpec[6].ptr, L"Data/Sprite/balance2.png"); // ID_Balance2 
+    SpriteLoad(menuItem.itemSpec[7].ptr, L"Data/Sprite/balance3.png"); // ID_Balance3 
+    SpriteLoad(menuItem.itemSpec[8].ptr, L"Data/Sprite/ward.png");     // ID_SafetyBox
+    SpriteLoad(menuItem.itemSpec[9].ptr, L"Data/Sprite/omori.png");    // ID_Weight
+    SpriteLoad(menuItem.itemSpec[10].ptr, L"Data/Sprite/omori.png");   // ID_Key   
+ 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
         M_Item->menuItem.itemSpec[i].pos = { 318.0f + i * 162.0f,290.0f,0.0f };
     }
-    
 }
 
 void Menu::init()
@@ -43,43 +46,46 @@ void ItemMenu::isChoice()
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        // アイテム欄のアイテムをクリックしたら
-        if (ColRects(menuItem.itemSpec[i].pos.y, menuItem.itemSpec[i].pos.y + 120.0f, menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
+        if (menuItem.itemSpec[i].exist)
         {
-            // クリックされたアイテムが大きく表示される
-            switch (i)
+            // アイテム欄のアイテムをクリックしたら
+            if (ColRects(menuItem.itemSpec[i].pos.y, menuItem.itemSpec[i].pos.y + 120.0f, menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.x + 120.0f, input::GetMousePos()) && input::TRG(VK_LBUTTON))
             {
-            case 0:
-                menuItem.itemSpec[0].isobserve = true;
-                menuItem.itemSpec[1].isobserve = false;
-                menuItem.itemSpec[2].isobserve = false;
-                menuItem.itemSpec[3].isobserve = false;
-                break;
+                // クリックされたアイテムが大きく表示される
+                switch (i)
+                {
+                case 0:
+                    menuItem.itemSpec[0].isobserve = true;
+                    menuItem.itemSpec[1].isobserve = false;
+                    menuItem.itemSpec[2].isobserve = false;
+                    menuItem.itemSpec[3].isobserve = false;
+                    break;
 
-            case 1:
-                menuItem.itemSpec[0].isobserve = false;
-                menuItem.itemSpec[1].isobserve = true;
-                menuItem.itemSpec[2].isobserve = false;
-                menuItem.itemSpec[3].isobserve = false;
-                break;
+                case 1:
+                    menuItem.itemSpec[0].isobserve = false;
+                    menuItem.itemSpec[1].isobserve = true;
+                    menuItem.itemSpec[2].isobserve = false;
+                    menuItem.itemSpec[3].isobserve = false;
+                    break;
 
-            case 2:
-                menuItem.itemSpec[0].isobserve = false;
-                menuItem.itemSpec[1].isobserve = false;
-                menuItem.itemSpec[2].isobserve = true;
-                menuItem.itemSpec[3].isobserve = false;
-                break;
+                case 2:
+                    menuItem.itemSpec[0].isobserve = false;
+                    menuItem.itemSpec[1].isobserve = false;
+                    menuItem.itemSpec[2].isobserve = true;
+                    menuItem.itemSpec[3].isobserve = false;
+                    break;
 
-            case 4:
-                menuItem.itemSpec[0].isobserve = false;
-                menuItem.itemSpec[1].isobserve = false;
-                menuItem.itemSpec[2].isobserve = false;
-                menuItem.itemSpec[3].isobserve = true;
-                break;
+                case 4:
+                    menuItem.itemSpec[0].isobserve = false;
+                    menuItem.itemSpec[1].isobserve = false;
+                    menuItem.itemSpec[2].isobserve = false;
+                    menuItem.itemSpec[3].isobserve = true;
+                    break;
 
-            default:
-                menuItem.itemSpec[i].isobserve = false;
-                break;
+                default:
+                    menuItem.itemSpec[i].isobserve = false;
+                    break;
+                }
             }
         }
     }
@@ -220,23 +226,23 @@ void ItemMenu::draw()
     {
         switch (arr->items[i])
         {
-        case SPEC::ITEM_ID::ID_ITEM1:
-            SpriteRender(menuItem.itemSpec[0].ptr,
+        case ItemArr::ITEM_ID::ID_Stone1:
+            SpriteRender(menuItem.itemSpec[2].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
                 0.05f, 0.06f,
-                0,0,
+                0, 0,
                 2048, 2048,
                 0, 0,
                 0,
                 1, 1, 1, 1);
             break;
 
-        case SPEC::ITEM_ID::ID_ITEM2:
-            SpriteRender(menuItem.itemSpec[1].ptr,
+        case ItemArr::ITEM_ID::ID_Weight:
+            SpriteRender(menuItem.itemSpec[9].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.5f, 0.6f,
+                0.3f, 0.4f,
                 0, 0,
-                295, 354,
+                256, 324,
                 0, 0,
                 0,
                 1, 1, 1, 1);

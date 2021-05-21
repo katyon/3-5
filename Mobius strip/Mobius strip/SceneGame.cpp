@@ -15,6 +15,7 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
+    SpriteLoad(10, L"Data/Sprite/reticle.png");
 
     Audio::load(1, L"Data/BGM/Waltz.wav");
     Audio::SetVolume(1, 0.4f);
@@ -49,7 +50,7 @@ void SceneGame::Initialize()
     pipe_puzzle.Init();
     itemObj->init();
     M_Item->init();
-    //G_Item->init();
+    G_Item->init();
 
     menu.init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -85,7 +86,7 @@ void SceneGame::Update(float elapsed_time)
         ButtonPush::getInstance()->update(camera);
         pipe_puzzle.Update();
         itemObj->update(camera);
-        //G_Item->update();
+        G_Item->update();
 
         if (input::TRG('P'))
         {
@@ -114,7 +115,6 @@ void SceneGame::Update(float elapsed_time)
         }
         if (input::TRG(VK_TAB))
         {
-            menu.isPause = true;
             menu.tab = MenuTab::Item;
             game_mode = menue;
         }
@@ -123,6 +123,10 @@ void SceneGame::Update(float elapsed_time)
     case menue:
         if (input::TRG(VK_TAB))
         {
+            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+            center.x = floorf(center.x);
+            center.y = floorf(center.y);
+            SetCursorPos(center.x, center.y);
             game_mode = normal;
             Audio::play(5);
         }
@@ -159,7 +163,7 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         pipe_puzzle.Render(camera);
-        //G_Item->draw();
+        G_Item->draw();
         //cOBB(camera);
         screenR->end();
 
@@ -178,6 +182,13 @@ void SceneGame::Render()
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
         menu.draw();
+        SpriteRender(10, input::GetMousePos().x, input::GetMousePos().y,
+            0.2, 0.2,
+            256, 0,
+            256, 256,
+            256, 0,
+            0,
+            1, 1, 1, 1);
         break;
     case balance:
 
