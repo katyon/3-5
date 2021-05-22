@@ -185,6 +185,8 @@ public:
         arr->reset();
     }
 
+    bool isObserve(int num);
+    void origin_Draw(int num);
     void isChoice();
     void init();
     void update();

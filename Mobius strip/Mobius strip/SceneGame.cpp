@@ -4,7 +4,6 @@
 #include "Item.h"
 #include "StageManager.h"
 #include "OBBs.h"
-Menu menu;
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
 SceneGame::SceneGame() /*: pipe_puzzle()*/
@@ -15,7 +14,6 @@ SceneGame::SceneGame() /*: pipe_puzzle()*/
     SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
-    SpriteLoad(10, L"Data/Sprite/reticle.png");
 
     Audio::load(1, L"Data/BGM/Waltz.wav");
     Audio::SetVolume(1, 0.4f);
@@ -52,7 +50,7 @@ void SceneGame::Initialize()
     M_Item->init();
     G_Item->init();
 
-    menu.init();
+    menu->init();
     camera.SetPos(FLOAT3(0, 0, -1));
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
@@ -115,7 +113,7 @@ void SceneGame::Update(float elapsed_time)
         }
         if (input::TRG(VK_TAB))
         {
-            menu.tab = MenuTab::Item;
+            menu->tab = MenuTab::Item;
             game_mode = menue;
         }
         break;
@@ -130,7 +128,7 @@ void SceneGame::Update(float elapsed_time)
             game_mode = normal;
             Audio::play(5);
         }
-        menu.update();
+        menu->update();
         break;
     case balance:
 
@@ -181,14 +179,7 @@ void SceneGame::Render()
     case menue:
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
-        menu.draw();
-        SpriteRender(10, input::GetMousePos().x, input::GetMousePos().y,
-            0.2, 0.2,
-            256, 0,
-            256, 256,
-            256, 0,
-            0,
-            1, 1, 1, 1);
+        menu->draw();
         break;
     case balance:
 

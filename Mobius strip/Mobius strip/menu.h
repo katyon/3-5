@@ -23,7 +23,6 @@ enum HelpContent
 class Menu
 {
 private:
-    Sprite menu_ptr;
     FLOAT2 pos;
     FLOAT2 src;
     int page = 0;
@@ -94,6 +93,7 @@ private:
     }
 
 public:
+    Sprite menu_ptr;
     bool isPause;
     int tab;
     int content;
@@ -102,4 +102,10 @@ public:
     void draw();
     void uninit();
 
+    static Menu* getInstance()
+    {
+        static Menu ins;
+        return &ins;
+    }
 };
+#define menu Menu::getInstance()
