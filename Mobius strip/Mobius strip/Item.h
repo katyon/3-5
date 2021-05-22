@@ -206,19 +206,17 @@ class GameItem
 {
 private:
     ItemArr gameItem;
-    FLOAT2 pos;
-    int selectNum = 1;
 
     GameItem()
     {
         arr->reset();
     }
-    int timer = 0;
+    void isChoice();
 
 public:
+    int selectNum = 0;
     bool count[2];
     void init();
-    void isChoice();
     void update();
     void draw();
 

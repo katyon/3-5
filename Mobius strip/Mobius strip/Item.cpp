@@ -88,35 +88,34 @@ void ItemObj::update(const Camera& camera)
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        if (ColLineOBB(rayStart, rayEnd, CreateOBB(item3D.itemSpec[i].pos, OBBscale, posture[i]), hitPos))
+        if (ColLineOBB(rayStart, rayEnd, CreateOBB(item3D.itemSpec[i].pos, OBBscale, posture[i]), hitPos)&& input::TRG(VK_LBUTTON))
         {
-            if (input::TRG(VK_LBUTTON))
+            if (item3D.itemSpec[i].exist)
             {
-                if (item3D.itemSpec[i].exist)
+                arr->get_item(static_cast<SPEC::ITEM_ID>(i));
+                item3D.itemSpec[i].exist = false;
+
+                switch (i)
                 {
-                    arr->get_item(static_cast<SPEC::ITEM_ID>(i));
-                    item3D.itemSpec[i].exist = false;
+                case 0:
+                    item3D.itemSpec[2].exist = true;
+                    G_Item->count[1] = true;
 
-                    switch (i)
-                    {
-                    case 0:
-                        item3D.itemSpec[2].exist = true;
-                        break;
+                    break;
 
-                    case 2:
-                        item3D.itemSpec[9].exist = true;
-                        break;
+                case 2:
+                    item3D.itemSpec[9].exist = true;
+                    break;
 
-                    case 9:
-                        item3D.itemSpec[10].exist = true;
-                        G_Item->count[0] = true;
-                        break;
+                case 9:
+                    item3D.itemSpec[10].exist = true;
+                    G_Item->selectNum = 0;
+                    G_Item->count[0] = true;
+                    break;
 
-                    case 10:
-                        G_Item->count[1] = true;
-                        break;
+                case 10:
+                    break;
 
-                    }
                 }
             }
         }
@@ -173,14 +172,20 @@ void GameItem::init()
     M_Item->init();
     SpriteLoad(12, L"Data/Sprite/cursor.png");
 
-    pos = { 0.0f,290.0f };
+    gameItem.itemSpec[9].pos = { 0.0f,290.0f,0.0f };
+    gameItem.itemSpec[0].pos = { 0.0f,290.0f + 120,0.0f };
 }
 
 // Á”ïŒnƒAƒCƒeƒ€‚Ìˆ— 
 void GameItem::isChoice()
 {
-    if (input::GetWheel() > 0) { selectNum = 1; }
-    if (input::GetWheel() < 0) { selectNum = 2; }
+    if (count[0] && !count[1]) { selectNum = 0; }
+    if (count[0] && count[1])
+    {
+        if (input::GetWheel() > 0) { selectNum = 0; }
+        if (input::GetWheel() < 0) { selectNum = 1; }
+    }
+    if (!count[0] && count[1]) { selectNum = 1; }
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
@@ -188,19 +193,20 @@ void GameItem::isChoice()
         {
             /* Ž */
         case SPEC::ITEM_ID::ID_Weight:
-            if (selectNum ==1 && count[0] && input::TRG('U'))
+            if (selectNum ==0 && count[0] && input::TRG('U'))
             {
                 itemObj->item3D.itemSpec[9].exist = true;
                 itemObj->item3D.itemSpec[9].pos = { 20,20,20 };
                 itemObj->item3D.itemSpec[9].scale = { 0.02f,0.02f,0.02f };
                 count[0] = false;
+                selectNum = 1;
                 arr->use_Disitem(i);
             }
             break;
 
             /* Œ® */
-        case SPEC::ITEM_ID::ID_Key:
-            if (selectNum == 2 && count[1] && input::TRG('U'))
+        case SPEC::ITEM_ID::ID_Esc1:
+            if (selectNum == 1 && count[1] && input::TRG('U'))
             {
                 count[1] = false;
                 arr->use_Disitem(i);
@@ -217,6 +223,8 @@ void GameItem::update()
 
 void GameItem::draw()
 {
+    Debug->SetString("cursor:%d", selectNum);
+
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
         switch (arr->items[i])
@@ -224,18 +232,68 @@ void GameItem::draw()
             /* Ž */
         case SPEC::ITEM_ID::ID_Weight:
             SpriteRender(M_Item->menuItem.itemSpec[9].ptr,
-                pos.x,pos.y,
-                0.2f, 0.2f,
+                gameItem.itemSpec[9].pos.x, gameItem.itemSpec[9].pos.y,
+                0.05f, 0.05f,
                 0, 0,
-                295, 354,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+
+            if(selectNum==0)
+            SpriteRender(12,
+                gameItem.itemSpec[9].pos.x, gameItem.itemSpec[9].pos.y,
+                0.9f, 0.9f,
+                0, 0,
+                120, 120,
                 0, 0,
                 0,
                 1, 1, 1, 1);
             break;
 
-        case ItemArr::ITEM_ID::ID_Key:
-            break;
+        case SPEC::ITEM_ID::ID_Esc1:
+            if (count[0])
+            {
+                SpriteRender(M_Item->menuItem.itemSpec[0].ptr,
+                    gameItem.itemSpec[0].pos.x, gameItem.itemSpec[0].pos.y,
+                    0.05f, 0.05f,
+                    0, 0,
+                    2048, 2048,
+                    0, 0,
+                    0,
+                    1, 1, 1, 1);
+                if (selectNum == 1) {
+                    SpriteRender(12,
+                        gameItem.itemSpec[0].pos.x, gameItem.itemSpec[0].pos.y,
+                        0.9f, 0.9f,
+                        0, 0,
+                        120, 120,
+                        0, 0,
+                        0,
+                        1, 1, 1, 1);
+                }
+            }
+            if(!count[0])
+            {
+                SpriteRender(M_Item->menuItem.itemSpec[0].ptr,
+                    gameItem.itemSpec[9].pos.x, gameItem.itemSpec[9].pos.y,
+                    0.05f, 0.05f,
+                    0, 0,
+                    2048, 2048,
+                    0, 0,
+                    0,
+                    1, 1, 1, 1);
 
+                SpriteRender(12,
+                    gameItem.itemSpec[9].pos.x, gameItem.itemSpec[9].pos.y,
+                    0.9f, 0.9f,
+                    0, 0,
+                    120, 120,
+                    0, 0,
+                    0,
+                    1, 1, 1, 1);
+            }
+            break;
         }
     }
 }
