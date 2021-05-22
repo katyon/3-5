@@ -8,7 +8,7 @@ Menu menu;
 
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
-SceneGame::SceneGame() /*: pipe_puzzle()*/
+SceneGame::SceneGame()
 {
     //Todo::ここにソースを記入する
     player.init();
@@ -48,7 +48,8 @@ void SceneGame::Initialize()
 {
     // ボタンプッシュ これはいらないかも
     ButtonPush::getInstance()->init();
-    pipe_puzzle.Init();
+    PipePuzzle::getInstance()->Init();
+    Candle::getInstance()->Init();
     itemObj->init();
     M_Item->init();
     //G_Item->init();
@@ -85,7 +86,8 @@ void SceneGame::Update(float elapsed_time)
     case normal:
         // ボタンプッシュ
         ButtonPush::getInstance()->update(camera);
-        pipe_puzzle.Update();
+        PipePuzzle::getInstance()->Update();
+        Candle::getInstance()->Update();
         itemObj->update(camera);
         //G_Item->update();
 
@@ -161,7 +163,8 @@ void SceneGame::Render()
         ButtonPush::getInstance()->Render(camera);
         itemObj->render(camera);
 
-        pipe_puzzle.Render(camera);
+        PipePuzzle::getInstance()->Render(camera);
+        Candle::getInstance()->Render(camera);
         //G_Item->draw();
         //cOBB(camera);
         screenR->end();
@@ -191,5 +194,5 @@ void SceneGame::Render()
 //シーンが切り替わるタイミングで呼ばれる処理
 void SceneGame::Uninitialize()
 {
-    pipe_puzzle.Release();
+    PipePuzzle::getInstance()->Release();
 }

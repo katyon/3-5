@@ -76,7 +76,8 @@ void PipePuzzle::Init()
     scale = ScalarToFloat3(0.3f);
     OBBscale = ScalarToFloat3(4.8f);
 
-    clearFlg = false;
+    clearFlg0 = false;
+    clearFlg1 = false;
 
     for (int y = 0; y < 5; y++)
     {
@@ -172,6 +173,10 @@ void PipePuzzle::Update()
     
     if (timer % 2 == 0 )
     {
+        if (wateres[4][2] > 1 && !clearFlg0)
+        {
+            Reset();
+        }
         switch (Pipes[Water_pos_y][Water_pos_x])
         {
         case CURVE0:
@@ -375,7 +380,14 @@ void PipePuzzle::Update()
             break;
 
         case GOAL:
-            clearFlg = true;
+            if (wateres[0][4] > 0)         // クリアフラグ 0
+            {
+                clearFlg0 = true;
+            }
+            if (wateres[4][2] > 0 && clearFlg0)    // クリアフラグ 1
+            {
+                clearFlg1 = true;
+            }
             Reset();
             break;
 
@@ -384,7 +396,6 @@ void PipePuzzle::Update()
             break;
         }
     }
-
 }
 
 void PipePuzzle::Render(const Camera& camera)
@@ -507,13 +518,39 @@ void PipePuzzle::Render(const Camera& camera)
         }
     }
 
-    if (clearFlg == true)
+    //if (clearFlg0)
+    //{
+    //    font::OutPut(L"Clear No.00", 900.0f, 0.0f);
+    //}
+
+    //if (clearFlg1)
+    //{
+    //    font::OutPut(L"Clear No.01", 1200.0f, 0.0f);
+    //}
+
+    if (wateres[4][2] > 0 && !clearFlg0)
     {
-        font::OutPut(L"Clear!", 900.0f, 0.0f);
+        font::OutPut(L"水がうまく流れないようだ…", 960.0f, 1000.0f);
     }
 }
 
 void PipePuzzle::Release()
 {
 
+}
+
+int PipePuzzle::GetClearFlg()
+{
+    if (clearFlg1)
+    {
+        return 1;
+    }
+    else if (clearFlg0)
+    {
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
