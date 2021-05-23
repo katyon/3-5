@@ -171,12 +171,10 @@ void GameItem::init()
     arr->init();
     M_Item->init();
     SpriteLoad(12, L"Data/Sprite/cursor.png");
-
     gameItem.itemSpec[9].pos = { 0.0f,290.0f,0.0f };
     gameItem.itemSpec[0].pos = { 0.0f,290.0f + 120,0.0f };
 }
 
-// Á”ïŒnƒAƒCƒeƒ€‚Ìˆ— 
 void GameItem::isChoice()
 {
     if (count[0] && !count[1]) { selectNum = 0; }
