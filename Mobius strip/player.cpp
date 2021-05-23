@@ -43,9 +43,7 @@ void Player::update(FPSCamera& camera)
 
 	changeAnimation();
 	setAutoMode(camera);
-	colFloor();
-	colFloor();
-	colFloor();
+
 }
 
 void Player::render(const Camera& camera)
