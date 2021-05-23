@@ -44,6 +44,7 @@ void Player::update(FPSCamera& camera)
 	changeAnimation();
 	setAutoMode(camera);
 	colFloor();
+	colFloor();
 }
 
 void Player::render(const Camera& camera)
@@ -92,6 +93,19 @@ void Player::move(const Camera& camera)
 
 		pos += static_cast<FLOAT3>(Dest.target) * 0.7f;
 		moves = true;
+	}
+
+	if (moves)
+	{
+		if (!Audio::isPlay(3))
+		{
+			Audio::play(3, false);
+		}
+	}
+	else
+	{
+		Audio::stop(3);
+		Audio::pause(3);
 	}
 }
 

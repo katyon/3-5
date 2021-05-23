@@ -165,7 +165,8 @@ void ButtonPush::update(const Camera& camera)
 	int operation_y = -1;
 
 	// Ç±Ç±Ç…ÉLÅ[ëÄçÏ
-	if (input::TRG(input::MOUSE_L) && !final_judge) {
+	if (input::TRG(input::MOUSE_L) && !final_judge && !isJudge)
+	{
 
 		getMouseRay(camera, start, end);
 
@@ -204,7 +205,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 0);
 			button[0][0].isPush = false;
-			button[0][0].pos.y = DownPos;
+			//button[0][0].pos.y -= DownPos;
+			button[0][0].Downflg = true;
 			button[0][0].Pushflg = true;
 			Audio::play(4);
 		}
@@ -212,7 +214,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(1, 0);
 			button[1][0].isPush = false;
-			button[1][0].pos.y = DownPos;
+			//button[1][0].pos.y = DownPos;
+			button[1][0].Downflg = true;
 			button[1][0].Pushflg = true;
 			Audio::play(4);
 		}
@@ -220,7 +223,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(2, 0);
 			button[2][0].isPush = false;
-			button[2][0].pos.y = DownPos;
+			//button[2][0].pos.y = DownPos;
+			button[2][0].Downflg = true;
 			button[2][0].Pushflg = true;
 			Audio::play(4);
 		}
@@ -228,7 +232,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(3, 0);
 			button[3][0].isPush = false;
-			button[3][0].pos.y = DownPos;
+			//button[3][0].pos.y = DownPos;
+			button[3][0].Downflg = true;
 			button[3][0].Pushflg = true;
 			Audio::play(4);
 		}
@@ -236,7 +241,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(4, 0);
 			button[4][0].isPush = false;
-			button[4][0].pos.y = DownPos;
+			//button[4][0].pos.y = DownPos;
+			button[4][0].Downflg = true;
 			button[4][0].Pushflg = true;
 			Audio::play(4);
 		}
@@ -245,7 +251,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 1);
 			button[0][1].isPush = false;
-			button[0][1].pos.y = DownPos;
+			//button[0][1].pos.y = DownPos;
+			button[0][1].Downflg = true;
 			button[0][1].Pushflg = true;
 			Audio::play(4);
 		}
@@ -253,14 +260,17 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(1, 1);
 			button[1][1].isPush = false;
-			button[1][1].pos.y = DownPos;
+			//button[1][1].pos.y = DownPos;
+			button[1][1].Downflg = true;
+			button[1][1].Pushflg = true;
 			Audio::play(4);
 		}
 		if (button[2][1].isPush && !button[2][1].Pushflg)
 		{
 			push_botton(2, 1);
 			button[2][1].isPush = false;
-			button[2][1].pos.y = DownPos;
+			//button[2][1].pos.y = DownPos;
+			button[2][1].Downflg = true;
 			button[2][1].Pushflg = true;
 			Audio::play(4);
 		}
@@ -268,7 +278,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(3, 1);
 			button[3][1].isPush = false;
-			button[3][1].pos.y = DownPos;
+			//button[3][1].pos.y = DownPos;
+			button[3][1].Downflg = true;
 			button[3][1].Pushflg = true;
 			Audio::play(4);
 		}
@@ -276,7 +287,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(4, 1);
 			button[4][1].isPush = false;
-			button[4][1].pos.y = DownPos;
+			//button[4][1].pos.y = DownPos;
+			button[4][1].Downflg = true;
 			button[4][1].Pushflg = true;
 			Audio::play(4);
 		}
@@ -285,7 +297,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 2);
 			button[0][2].isPush = false;
-			button[0][2].pos.y = DownPos;
+			//button[0][2].pos.y = DownPos;
+			button[0][2].Downflg = true;
 			button[0][2].Pushflg = true;
 			Audio::play(4);
 		}
@@ -293,7 +306,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(1, 2);
 			button[1][2].isPush = false;
-			button[1][2].pos.y = DownPos;
+			//button[1][2].pos.y = DownPos;
+			button[1][2].Downflg = true;
 			button[1][2].Pushflg = true;
 			Audio::play(4);
 		}
@@ -301,7 +315,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(2, 2);
 			button[2][2].isPush = false;
-			button[2][2].pos.y = DownPos;
+			//button[2][2].pos.y = DownPos;
+			button[2][2].Downflg = true;
 			button[2][2].Pushflg = true;
 			Audio::play(4);
 		}
@@ -309,14 +324,17 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(3, 2);
 			button[3][2].isPush = false;
-			button[3][2].pos.y = DownPos;
+			//button[3][2].pos.y = DownPos;
+			button[3][2].Downflg = true;
+			button[3][2].Pushflg = true;
 			Audio::play(4);
 		}
 		if (button[4][2].isPush && !button[4][2].Pushflg)
 		{
 			push_botton(4, 2);
 			button[4][2].isPush = false;
-			button[4][2].pos.y = DownPos;
+			//button[4][2].pos.y = DownPos;
+			button[4][2].Downflg = true;
 			button[4][2].Pushflg = true;
 			Audio::play(4);
 		}
@@ -325,7 +343,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 3);
 			button[0][3].isPush = false;
-			button[0][3].pos.y = DownPos;
+			//button[0][3].pos.y = DownPos;
+			button[0][3].Downflg = true;
 			button[0][3].Pushflg = true;
 			Audio::play(4);
 		}
@@ -333,7 +352,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(1, 3);
 			button[1][3].isPush = false;
-			button[1][3].pos.y = DownPos;
+			//button[1][3].pos.y = DownPos;
+			button[1][3].Downflg = true;
 			button[1][3].Pushflg = true;
 			Audio::play(4);
 		}
@@ -341,7 +361,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(2, 3);
 			button[2][3].isPush = false;
-			button[2][3].pos.y = DownPos;
+			//button[2][3].pos.y = DownPos;
+			button[2][3].Downflg = true;
 			button[2][3].Pushflg = true;
 			Audio::play(4);
 		}
@@ -349,7 +370,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(3, 3);
 			button[3][3].isPush = false;
-			button[3][3].pos.y = DownPos;
+			//button[3][3].pos.y = DownPos;
+			button[3][3].Downflg = true;
 			button[3][3].Pushflg = true;
 			Audio::play(4);
 		}
@@ -357,7 +379,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(4, 3);
 			button[4][3].isPush = false;
-			button[4][3].pos.y = DownPos;
+			//button[4][3].pos.y = DownPos;
+			button[4][3].Downflg = true;
 			button[4][3].Pushflg = true;
 			Audio::play(4);
 		}
@@ -366,7 +389,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(0, 4);
 			button[0][4].isPush = false;
-			button[0][4].pos.y = DownPos;
+			//button[0][4].pos.y = DownPos;
+			button[0][4].Downflg = true;
 			button[0][4].Pushflg = true;
 			Audio::play(4);
 		}
@@ -374,7 +398,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(1, 4);
 			button[1][4].isPush = false;
-			button[1][4].pos.y = DownPos;
+			//button[1][4].pos.y = DownPos;
+			button[1][4].Downflg = true;
 			button[1][4].Pushflg = true;
 			Audio::play(4);
 		}
@@ -382,7 +407,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(2, 4);
 			button[2][4].isPush = false;
-			button[2][4].pos.y = DownPos;
+			//button[2][4].pos.y = DownPos;
+			button[2][4].Downflg = true;
 			button[2][4].Pushflg = true;
 			Audio::play(4);
 		}
@@ -390,7 +416,8 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(3, 4);
 			button[3][4].isPush = false;
-			button[3][4].pos.y = DownPos;
+			//button[3][4].pos.y = DownPos;
+			button[3][4].Downflg = true;
 			button[3][4].Pushflg = true;
 			Audio::play(4);
 		}
@@ -398,28 +425,71 @@ void ButtonPush::update(const Camera& camera)
 		{
 			push_botton(4, 4);
 			button[4][4].isPush = false;
-			button[4][4].pos.y = DownPos;
+			//button[4][4].pos.y = DownPos;
+			button[4][4].Downflg = true;
 			button[4][4].Pushflg = true;
 			Audio::play(4);
 		}
-
+		//for (int i = 0; i < 5; i++)
+		//{
+		//	for (int j = 0; j < 5; j++)
+		//	{
+		//		if (button[i][j].isPush && !button[i][j].Pushflg) 
+		//		{					
+		//			push_botton(i, j);
+		//			button[i][j].isPush = false;
+		//			button[i][j].Downflg = true;
+		//			button[i][j].Pushflg = true;
+		//			Audio::play(4);
+		//		}
+		//	}
+		//}
 
 
 	}
+
+	for (int i = 0; i < 5; i++) 
+	{
+		for (int j = 0; j < 5; j++) 
+		{
+			if (button[i][j].Downflg) 
+			{
+				if (button[i][j].pos.y > DownPos) 
+				{
+					button[i][j].pos.y -= 0.05f;
+				}else
+				{
+					button[i][j].Downflg = false; 
+				}
+			}
+			
+		}
+	}
+
 	// 5Ç¬Ç∑Ç◊ÇƒâüÇµÇΩÇÁîªíË
-	if (storage_board[4] != 0) {
-		// falseÇÃèÍçáÇÕjudge_answeì‡Ç≈storage_boardÇ™èâä˙âªÇ≥ÇÍÇ‹Ç∑
-		final_judge = judge_answer();
+	if (storage_board[4] != 0)
+	{
+		isJudge = true;
+		timer--;
+		if (timer <= 0)
+		{
+			// falseÇÃèÍçáÇÕjudge_answeì‡Ç≈storage_boardÇ™èâä˙âªÇ≥ÇÍÇ‹Ç∑
+			final_judge = judge_answer();
+			timer = 30;
+			isJudge = false;
+		}
 	}
 
 	// ñ‚ëËÇ™âÇØÇΩèÍçáÇÃèàóù
 	if (final_judge)
 	{
 		//font::OutPut(L"clear", { 100,100 }, { 10,10 }, { 1,1,0,1 });
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++)
+		{
 			for (int j = 0; j < 5; j++)
 			{
-				if (button[i][j].pos.y > DownPos) {
+				if (button[i][j].pos.y > DownPos) 
+				{
 					button[i][j].pos.y -= 0.05f;
 				}
 				else if (i == 4 && j == 4)
