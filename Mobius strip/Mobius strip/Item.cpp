@@ -223,8 +223,6 @@ void GameItem::update()
 
 void GameItem::draw()
 {
-    Debug->SetString("cursor:%d", selectNum);
-
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
         switch (arr->items[i])
