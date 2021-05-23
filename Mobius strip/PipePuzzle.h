@@ -38,7 +38,15 @@ private:
 
 public:
 
-    bool clearFlg = false;
+    bool clearFlg0;  
+    bool clearFlg1;  
+    /* クリアフラグの条件　＝　指定の場所を通り、SからGまでつなぐこと。
+       Ｓ　・　・　０　・ 
+       ・　・　・　・　・
+       ・　・　・　・　・
+       ・　・　・　・　・
+       ・　・　１　・　Ｇ
+    */
 
     PipePuzzle();
 
@@ -46,5 +54,13 @@ public:
     void Update();
     void Render(const Camera& camera);
     void Release();
+
+    int GetClearFlg();
+
+    static PipePuzzle* getInstance()
+    {
+        static PipePuzzle instance;
+        return &instance;
+    }
 
 };

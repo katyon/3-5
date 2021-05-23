@@ -242,6 +242,10 @@
     <ClCompile Include="CollisionEditer.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Candle.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+
     <ClCompile Include="test.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -473,6 +477,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="CollisionEditer.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

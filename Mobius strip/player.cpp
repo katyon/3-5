@@ -9,7 +9,7 @@ Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
 	Audio::load(3, L"./Data/BGM/footsteps2.wav");
-	Audio::SetVolume(3, 1.0f);
+	//Audio::SetVolume(3, volume);
 }
 
 void Player::init()
@@ -43,6 +43,7 @@ void Player::update(FPSCamera& camera)
 
 	changeAnimation();
 	setAutoMode(camera);
+	colFloor();
 }
 
 void Player::render(const Camera& camera)
@@ -91,19 +92,6 @@ void Player::move(const Camera& camera)
 
 		pos += static_cast<FLOAT3>(Dest.target) * 0.7f;
 		moves = true;
-	}
-
-	if (moves)
-	{
-		if (!Audio::isPlay(3))
-		{
-			Audio::play(3, false);
-		}
-	}
-	else
-	{
-		Audio::stop(3);
-		Audio::pause(3);
 	}
 }
 

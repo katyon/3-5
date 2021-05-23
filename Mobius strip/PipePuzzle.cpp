@@ -76,7 +76,8 @@ void PipePuzzle::Init()
     scale = ScalarToFloat3(0.3f);
     OBBscale = ScalarToFloat3(4.8f);
 
-    clearFlg = false;
+    clearFlg0 = false;
+    clearFlg1 = false;
 
     for (int y = 0; y < 5; y++)
     {
@@ -172,6 +173,10 @@ void PipePuzzle::Update()
     
     if (timer % 2 == 0 )
     {
+        if (wateres[4][2] > 1 && !clearFlg0)
+        {
+            Reset();
+        }
         switch (Pipes[Water_pos_y][Water_pos_x])
         {
         case CURVE0:
@@ -375,7 +380,14 @@ void PipePuzzle::Update()
             break;
 
         case GOAL:
-            clearFlg = true;
+            if (wateres[0][4] > 0)         // クリアフラグ 0
+            {
+                clearFlg0 = true;
+            }
+            if (wateres[4][2] > 0 && clearFlg0)    // クリアフラグ 1
+            {
+                clearFlg1 = true;
+            }
             Reset();
             break;
 
@@ -384,12 +396,13 @@ void PipePuzzle::Update()
             break;
         }
     }
-
 }
 
 void PipePuzzle::Render(const Camera& camera)
 {
     getMouseRay(camera, rayStart, rayEnd);
+
+    FLOAT4 light_dir = { 0, 0, 0, 1 };
 
     for (int y = 0; y < 5; y++)
     {
@@ -432,7 +445,7 @@ void PipePuzzle::Render(const Camera& camera)
                     Cursor_pos_x = x;
                     Cursor_pos_y = y;
                 }
-                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
             }
             if (Pipes[y][x] == CURVE1)
             {
@@ -443,7 +456,7 @@ void PipePuzzle::Render(const Camera& camera)
                     Cursor_pos_x = x;
                     Cursor_pos_y = y;
                 }
-                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
             }
             if (Pipes[y][x] == CURVE2)
             {
@@ -454,7 +467,7 @@ void PipePuzzle::Render(const Camera& camera)
                     Cursor_pos_x = x;
                     Cursor_pos_y = y;
                 }
-                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
 
             }
             if (Pipes[y][x] == CURVE3)
@@ -466,7 +479,7 @@ void PipePuzzle::Render(const Camera& camera)
                     Cursor_pos_x = x;
                     Cursor_pos_y = y;
                 }
-                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+                SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
             }
             if (Pipes[y][x] == STRAIGHT0)
             {
@@ -477,7 +490,7 @@ void PipePuzzle::Render(const Camera& camera)
                     Cursor_pos_x = x;
                     Cursor_pos_y = y;
                 }
-                SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+                SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
             }
             if (Pipes[y][x] == STRAIGHT1)
             {
@@ -487,31 +500,57 @@ void PipePuzzle::Render(const Camera& camera)
                     Cursor_pos_x = x;
                     Cursor_pos_y = y;
                 }
-                SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), color);
+                SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
             }
             if (Pipes[y][x] == START)
             {
                 posture.RotationPitch(-PI / 2);
 
-                SkinnedMeshRender(start_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), { 1.0f, 1.0f, 1.0f, 1.0f });
+                SkinnedMeshRender(start_pipe, camera, pos, scale, posture, light_dir, { 1.0f, 1.0f, 1.0f, 1.0f });
             }
             if (Pipes[y][x] == GOAL)
             {
                 posture.RotationPitch(-PI / 2);
 
-                SkinnedMeshRender(goal_pipe, camera, pos, scale, posture, camera.LightFloamCamera(), { 1.0f, 1.0f, 1.0f, 1.0f });
+                SkinnedMeshRender(goal_pipe, camera, pos, scale, posture, light_dir, { 1.0f, 1.0f, 1.0f, 1.0f });
             }
             
         }
     }
 
-    if (clearFlg == true)
+    //if (clearFlg0)
+    //{
+    //    font::OutPut(L"Clear No.00", 900.0f, 0.0f);
+    //}
+
+    //if (clearFlg1)
+    //{
+    //    font::OutPut(L"Clear No.01", 1200.0f, 0.0f);
+    //}
+
+    if (wateres[4][2] > 0 && !clearFlg0)
     {
-        font::OutPut(L"Clear!", 900.0f, 0.0f);
+        font::OutPut(L"水がうまく流れないようだ…", 960.0f, 1000.0f);
     }
 }
 
 void PipePuzzle::Release()
 {
 
+}
+
+int PipePuzzle::GetClearFlg()
+{
+    if (clearFlg1)
+    {
+        return 1;
+    }
+    else if (clearFlg0)
+    {
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }

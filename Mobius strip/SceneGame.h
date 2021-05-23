@@ -5,6 +5,7 @@
 #include "fps_camera.h"
 #include "tps_camera.h"
 #include "player.h"
+#include "Candle.h"
 
 class SceneGame
 {
@@ -18,8 +19,6 @@ private:
 	SceneGame();
 
 	bool fix_cursor;
-
-	PipePuzzle pipe_puzzle;
 
 	Sprite sprClear;
 	AnimaData nowdata;
