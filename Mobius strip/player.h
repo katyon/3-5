@@ -38,6 +38,15 @@ private:
 
 	bool moves;
 
+	enum AUTO_PHASE
+	{
+		MOVE_TO_DOOR,
+		OPEN_THE_DOOR,
+		LEAVE_THE_ROOM,
+		CLOSE_THE_DOOR,
+		PHASE_END
+	}auto_control_phase;
+
 public:
 	Player();
 

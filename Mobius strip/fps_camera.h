@@ -74,7 +74,7 @@ public:
 	void zoom();
 	void setSensitivity(int s) { correct_sensitivity = s; }
 	void setFocusPos(FLOAT3 pos) { focus_pos = pos; }
-	void autoFin() { auto_focus = false; }
+	void autoFin(XMMATRIX player_world_matrix, FLOAT3 center);
 
 	void setAutoFocus(FLOAT3 focus_point, float complement);
 	void focusCompulsion(XMMATRIX player_world_matrix, FLOAT3 center);

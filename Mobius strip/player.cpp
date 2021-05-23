@@ -37,8 +37,8 @@ void Player::update(FPSCamera& camera)
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
-	restrictArea();
-	colWall();
+	//restrictArea();
+	//colWall();
 	colFloor();
 
 	changeAnimation();
@@ -126,10 +126,12 @@ void Player::colWall()
 	float distance = 10.0f;
 	FLOAT3 hitPos[2];
 
-	for (auto& obb : colbox_w)
+	for (const auto& col : StageManager::getIns()->getColBoxs())
 	{
+		if (col.option != 0) continue;
+
 		if (ColLineOBB(horizontal_lay_start, horizontal_lay_end,
-			obb, hitPos[SAVE]))
+			col.obb, hitPos[SAVE]))
 		{
 			float dist_temp = horizontal_lay_start.distanceFrom(hitPos[SAVE]);
 
@@ -150,13 +152,33 @@ void Player::colWall()
 		if(distance != 0)vec = vec.normalize();
 
 		// ‰Ÿ‚µ–ß‚µˆ—
-		pos = hitPos[MINIMUM] + vec*5.0f;
+		pos = hitPos[MINIMUM] + vec * 5.0f;
 		pos.y = 0;
 		if (isnan(pos.x))
 		{
 			int hoge = 0;
 		}
 	}
+}
+
+void Player::colFloor()
+{
+	FLOAT3 hit_pos[2];
+	float distance = 100.0f;
+
+	for (const auto& col : StageManager::getIns()->getColBoxs())
+	{
+		if ((col.option != 1) && (col.option != 2)) continue;
+
+		if (ColLineOBB(vertical_lay_start, vertical_lay_end,
+			col.obb, hit_pos[SAVE]))
+		{
+			float dist_temp = vertical_lay_start.distanceFrom(hit_pos[SAVE]);
+			if (dist_temp < distance) { hit_pos[MINIMUM] = hit_pos[SAVE]; }
+		}
+	}
+
+	pos.y = hit_pos[MINIMUM].y;
 }
 
 void Player::restrictArea()
@@ -183,50 +205,154 @@ void Player::setAutoMode(FPSCamera& camera)
 {
 	if (input::STATE('G'))
 	{
-		attract_point = { -30, 0, 0 };
+		attract_point = { -30.0f, 0, 0 };
 		camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f);
 		auto_control_timer = 0;
+		auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
 		auto_control = true;
 	}
 }
 
 void Player::autoControl(FPSCamera& camera)
 {
-	auto_control_timer++;
-	if (auto_control_timer > 120)
+	//if (auto_control_timer > 120)
+	//{
+	//	auto_control = false;
+	//	FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+	//	center.x = floorf(center.x);
+	//	center.y = floorf(center.y);
+	//	SetCursorPos(center.x, center.y);
+	//	camera.autoFin();
+	//}
+	StageObject* objects = StageManager::getIns()->getStageObjects();
+	VECTOR3D vec;
+
+	switch (auto_control_phase)
 	{
+	case AUTO_PHASE::MOVE_TO_DOOR:
+
+		vec = attract_point - pos;
+		if (vec.length() > 0.5f)
+		{
+			vec = vec.normalize();
+			vec.y = 0;
+			pos += static_cast<FLOAT3>(vec) * 0.5f;
+		}
+		else { pos = attract_point; }
+
+		if (auto_control_timer > 120)
+		{
+			if (objects)
+			{
+				for (int i = 0; i < StageData::MaxObjects; i++)
+				{
+					if (objects[i].ID == "spic2door.fbx")
+					{
+						objects[i].body.PlayAnimation(0, false);
+					}
+				}
+			}
+			pos = attract_point;
+			auto_control_timer = 0;
+			auto_control_phase = AUTO_PHASE::OPEN_THE_DOOR;
+		}
+
+		auto_control_timer++;
+		break;
+
+	case AUTO_PHASE::OPEN_THE_DOOR:
+
+		if (objects)
+		{
+			for (int i = 0; i < StageData::MaxObjects; i++)
+			{
+				if (objects[i].ID == "spic2door.fbx")
+				{
+					objects[i].body.UpdateAnimation();
+					if (!objects[i].body.IsPlayAnimation()) 
+					{
+						objects[i].body.PlayAnimation(1, false);
+						objects[i].body.UpdateAnimation(0.0f);
+						camera.setAutoFocus({ -80, 12.5f, 0 }, 0.1f);
+						attract_point = { -70.0f, 0, 0 };
+						auto_control_phase = AUTO_PHASE::LEAVE_THE_ROOM;
+					}
+					break;
+				}
+			}
+		}
+		break;
+
+	case AUTO_PHASE::LEAVE_THE_ROOM:
+
+		vec = attract_point - pos;
+		if (vec.length() > 0.5f)
+		{
+			vec = vec.normalize();
+			vec.y = 0;
+			pos += static_cast<FLOAT3>(vec) * 0.5f;
+		}
+		else { pos = attract_point; }
+
+		if (auto_control_timer > 120)
+		{
+			if (objects)
+			{
+				for (int i = 0; i < StageData::MaxObjects; i++)
+				{
+					if (objects[i].ID == "spic2door.fbx")
+					{
+						objects[i].body.PlayAnimation(1, false);
+					}
+				}
+			}
+			pos = attract_point;
+			auto_control_timer = 0;
+			auto_control_phase = AUTO_PHASE::CLOSE_THE_DOOR;
+		}
+
+		auto_control_timer++;
+		break;
+
+	case AUTO_PHASE::CLOSE_THE_DOOR:
+
+		if (objects)
+		{
+			for (int i = 0; i < StageData::MaxObjects; i++)
+			{
+				if (objects[i].ID == "spic2door.fbx")
+				{
+					objects[i].body.UpdateAnimation();
+					if (!objects[i].body.IsPlayAnimation())
+					{
+						objects[i].body.PlayAnimation(0, false);
+						objects[i].body.UpdateAnimation(0.0f);
+						auto_control_phase = AUTO_PHASE::PHASE_END;
+					}
+					break;
+				}
+			}
+		}
+		break;
+		
+	case AUTO_PHASE::PHASE_END:
+
 		auto_control = false;
 		FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
 		center.x = floorf(center.x);
 		center.y = floorf(center.y);
+		pos = { 0.5f, 0, 141.8f };
+		camera.autoFin(GetWorldMatrix((pos + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), {pos.x, pos.y + 12.5f, pos.z});
 		SetCursorPos(center.x, center.y);
-		camera.autoFin();
 	}
 
-	VECTOR3D vec = attract_point - pos;
-	if (vec.length() < 0.01f)return;
-	vec = vec.normalize();
 
-	pos += static_cast<FLOAT3>(vec) * 0.5f;
+	//VECTOR3D vec = attract_point - pos;
+	//if (vec.length() < 0.5f)return;
+	//vec = vec.normalize();
+	//vec.y = 0;
 }
 
-void Player::colFloor()
-{
-	FLOAT3 hit_pos[2];
-	float distance = 100.0f;
-
-	for (auto& obb : colbox_f)
-	{
-		if (ColLineOBB(vertical_lay_start, vertical_lay_end,
-			obb, hit_pos[SAVE]))
-		{
-			float dist_temp = vertical_lay_start.distanceFrom(hit_pos[SAVE]);
-			if (dist_temp < distance) { hit_pos[MINIMUM] = hit_pos[SAVE]; }
-		}
-	}
-
-	pos.y = hit_pos[MINIMUM].y;
-}
 
 DirectX::XMMATRIX Player::getPlayerWorldMatrix()
 {
