@@ -45,6 +45,7 @@ void Player::update(FPSCamera& camera)
 	setAutoMode(camera);
 	colFloor();
 	colFloor();
+	colFloor();
 }
 
 void Player::render(const Camera& camera)

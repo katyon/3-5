@@ -3,38 +3,47 @@
 #include "AliceLib/AliceLib.h"
 #include "common.h"
 
-
-enum ITEM_ID
-{
-    ID_ITEM1 = 0,
-    ID_ITEM2 = 1,
-    ID_ITEM3 = 2,
-    ID_ITEM4 = 3,
-    ID_EMPTY = 4,
-};
-
-class ItemArr
+class SPEC
 {
 public:
-    Sprite item_ptr;
-    static constexpr int ITEM_MAX = 8;
-    FLOAT2 pos[ITEM_MAX];   // 表示位置
-    FLOAT2 scale[ITEM_MAX]; // 表示サイズ
-    FLOAT2 src[ITEM_MAX];
+    enum ITEM_ID
+    {
+        ID_Esc1,     // ０
+        ID_Esc2,     // １
+        ID_Stone1,   // ２
+        ID_Stone2,   // ３
+        ID_Pipe3,    // ４
+        ID_Balance1, // ５
+        ID_Balance2, // ６
+        ID_Balance3, // ７
+        ID_SafetyBox,// ８
+        ID_Weight,   // ９
+        ID_Key,      // １０
+        ID_EMPTY,    // 消しゴムさん
+    };
 
+    Sprite ptr;
+    SkinnedMesh model;
+    FLOAT3 pos;   // 表示位置
+    FLOAT3 scale; // 表示サイズ
+    FLOAT2 src;
+
+    bool isobserve;
+    bool isConsumed; // 消費されるアイテムかどうか
+    bool exist;
+};
+
+class ItemArr:public SPEC
+{
+public:
+    static constexpr int ITEM_MAX = 15;
+    SPEC itemSpec[ITEM_MAX];
     ITEM_ID items[ITEM_MAX];
-    bool isobserve[ITEM_MAX];
-    bool exist[ITEM_MAX];
-
     void init();
     void uninit();
 
     ItemArr()
     {
-        for (int i = 0; i < ITEM_MAX; i++)
-        {
-            exist[i] = true;
-        }
         reset();
     }
     void shorten()
@@ -67,9 +76,9 @@ public:
 
     bool isPossessed(ITEM_ID id)
     {
-        for (auto i : items)
+        for (auto& item : items)
         {
-            if (id == i)return true;
+            if (id == item)return true;
         }
         return false;
     }
@@ -83,9 +92,9 @@ public:
         {
             if (item == ID_EMPTY)
             {
+                Audio::play(6);
                 item = id;
                 shorten();
-                exist[item] = false;
                 return true;
             }
         }
@@ -95,6 +104,7 @@ public:
     // IDを指定してアイテムを使用する
     bool use_item(ITEM_ID id)
     {
+
         for (auto& item : items)
         {
             if (item == id)
@@ -108,9 +118,10 @@ public:
     }
 
     //場所を指定してアイテムを使用する
-    ITEM_ID use_item(int num)
+    ITEM_ID use_Disitem(int num)
     {
         if (num < 0 || num >= ITEM_MAX)return ID_EMPTY;
+
         if (items[num] != ID_EMPTY)
         {
             ITEM_ID result = items[num];
@@ -133,20 +144,24 @@ public:
 class ItemObj
 {
 private:
-    SkinnedMesh kami;
-    FLOAT3 pos;
-    FLOAT3 scale;
-
+    ItemObj()
+    {
+        arr->reset();
+    }
     FLOAT3 OBBscale;
 
     FLOAT3 rayStart;
     FLOAT3 rayEnd;
+    float timer=0;
 
     FLOAT3 hitPos;
-    Quaternion posture;
+    Quaternion posture[15];
 
 public:
+    ItemArr item3D;
+
     void init();
+    void get();
     void update(const Camera& camera);
     void render(const Camera& camera);
     void uninit();
@@ -157,17 +172,21 @@ public:
         return &ins;
     }
 };
-
 #define itemObj ItemObj::getInstance()
 
 // メニューのアイテム欄に表示するアイテム
 class ItemMenu
 {
 public:
+    ItemArr menuItem;
+
     ItemMenu()
     {
         arr->reset();
     }
+
+    bool isObserve(int num);
+    void origin_Draw(int num);
     void isChoice();
     void init();
     void update();
@@ -179,40 +198,32 @@ public:
         return &ins;
     }
 };
-
 #define M_Item ItemMenu::getInstance()
 
 
-//// ゲーム中にホイール操作で使用したりするアイテム
-//class GameItem :public ItemArr
-//{
-//private:
-//    // int item_num[ITEM_MAX]; 
-//    bool select = false;    // 選べる状態ですよ
-//
-//
-//    GameItem()
-//    {
-//        for (int i = 0; i < ITEM_MAX; i++)
-//        {
-//            pos[i] = { 128.0f,256.0f * i + 128.0f };
-//            scale[i] = { 0.3f,0.3f };
-//        }
-//        reset();
-//    }
-//    int timer = 0;
-//
-//public:
-//    void init();
-//    void isChoice();
-//    void update();
-//    void draw();
-//
-//    static GameItem* getInstance()
-//    {
-//        static GameItem ins;
-//        return &ins;
-//    }
-//};
-//
-//#define G_Item GameItem::getInstance()
+// ゲーム中にホイール操作で使用したりするアイテム
+class GameItem
+{
+private:
+    ItemArr gameItem;
+
+    GameItem()
+    {
+        arr->reset();
+    }
+    void isChoice();
+
+public:
+    int selectNum = 0;
+    bool count[2];
+    void init();
+    void update();
+    void draw();
+
+    static GameItem* getInstance()
+    {
+        static GameItem ins;
+        return &ins;
+    }
+};
+#define G_Item GameItem::getInstance()

@@ -63,7 +63,9 @@ INT WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, INT)
 	AliceLib::Entry(L"AliceLib", 1920,1080, DefaultWindowMode::WM_FULLSCREEN, 60);
 
 	AllInitializes();
+
 	SetShowCursor(false);
+
 	//std::string fill_pass[] =
 	//{
 	//	"Data\StageData\stage_data.csv",

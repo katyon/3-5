@@ -23,7 +23,6 @@ enum HelpContent
 class Menu
 {
 private:
-    Sprite menu_ptr;
     FLOAT2 pos;
     FLOAT2 src;
     int page = 0;
@@ -44,21 +43,21 @@ private:
     {
         if (ColRects(300, 390, 300, 780, input::GetMousePos()))
         {
-            SpriteRender(menu_ptr, 246, 287, 1, 1, 960, 2160, 592, 115, 0, 0, 0, 1, 1, 1, 1);
+            SpriteRender(menu_ptr, 246, 287, 1, 1, 536, 2160, 592, 115, 0, 0, 0, 1, 1, 1, 1);
         }
     }
     void Sele_Ctrl()
     {
         if (ColRects(515, 605, 300, 780, input::GetMousePos()))
         {
-            SpriteRender(menu_ptr, 243, 500, 1, 1, 960, 2160, 592, 115, 0, 0, 0, 1, 1, 1, 1);
+            SpriteRender(menu_ptr, 243, 500, 1, 1, 536, 2160, 592, 115, 0, 0, 0, 1, 1, 1, 1);
         }
     }
     void Sele_Exit()
     {
         if (ColRects(710, 800, 300, 780, input::GetMousePos()))
         {
-            SpriteRender(menu_ptr, 243, 699, 1, 1, 960, 2160, 592, 115, 0, 0, 0, 1, 1, 1, 1);
+            SpriteRender(menu_ptr, 243, 699, 1, 1, 536, 2160, 592, 115, 0, 0, 0, 1, 1, 1, 1);
         }
     }
     void Sele_None()
@@ -94,6 +93,7 @@ private:
     }
 
 public:
+    Sprite menu_ptr;
     bool isPause;
     int tab;
     int content;
@@ -102,4 +102,10 @@ public:
     void draw();
     void uninit();
 
+    static Menu* getInstance()
+    {
+        static Menu ins;
+        return &ins;
+    }
 };
+#define menu Menu::getInstance()

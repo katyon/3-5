@@ -5,7 +5,7 @@
 #include "StageManager.h"
 #include "OBBs.h"
 #include "Balance.h"
-Menu menu;
+//Menu menu;
 
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
@@ -52,9 +52,9 @@ void SceneGame::Initialize()
     Candle::getInstance()->Init();
     itemObj->init();
     M_Item->init();
-    //G_Item->init();
+    G_Item->init();
 
-    menu.init();
+    menu->init();
     camera.SetPos(FLOAT3(0, 0, -1));
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
@@ -89,7 +89,7 @@ void SceneGame::Update(float elapsed_time)
         PipePuzzle::getInstance()->Update();
         Candle::getInstance()->Update();
         itemObj->update(camera);
-        //G_Item->update();
+        G_Item->update();
 
         if (input::TRG('P'))
         {
@@ -136,8 +136,7 @@ void SceneGame::Update(float elapsed_time)
         }
         if (input::TRG(VK_TAB))
         {
-            menu.isPause = true;
-            menu.tab = MenuTab::Item;
+            menu->tab = MenuTab::Item;
             game_mode = menue;
         }
         break;
@@ -145,10 +144,14 @@ void SceneGame::Update(float elapsed_time)
     case menue:
         if (input::TRG(VK_TAB))
         {
+            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
+            center.x = floorf(center.x);
+            center.y = floorf(center.y);
+            SetCursorPos(center.x, center.y);
             game_mode = normal;
             Audio::play(5);
         }
-        menu.update();
+        menu->update();
         break;
     case balance:
 
@@ -183,7 +186,7 @@ void SceneGame::Render()
 
         PipePuzzle::getInstance()->Render(camera);
         Candle::getInstance()->Render(camera);
-        //G_Item->draw();
+        G_Item->draw();
         //cOBB(camera);
         screenR->end();
 
@@ -201,7 +204,7 @@ void SceneGame::Render()
     case menue:
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
-        menu.draw();
+        menu->draw();
         break;
     case balance:
 
