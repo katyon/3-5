@@ -40,7 +40,7 @@ SceneGame::SceneGame()
 
     StageManager::getIns()->LoadStages(fill_name);
     //コンストラクタの最後で念のための初期化を行う
-    SceneGame::Initialize();
+    //SceneGame::Initialize();
 }
 
 //シーン変更された瞬間に実行される処理
@@ -53,6 +53,8 @@ void SceneGame::Initialize()
     itemObj->init();
     M_Item->init();
     G_Item->init();
+    //Libra::getInstance()->Init();
+    //Balance::Init();
 
     menu->init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -90,6 +92,8 @@ void SceneGame::Update(float elapsed_time)
         Candle::getInstance()->Update();
         itemObj->update(camera);
         G_Item->update();
+        //Libra::getInstance()->Update();
+        //Balance::Update();
 
         if (input::TRG('P'))
         {
@@ -186,6 +190,8 @@ void SceneGame::Render()
 
         PipePuzzle::getInstance()->Render(camera);
         Candle::getInstance()->Render(camera);
+        //Libra::getInstance()->Render(camera);
+        //Balance::Render();
         G_Item->draw();
         //cOBB(camera);
         screenR->end();

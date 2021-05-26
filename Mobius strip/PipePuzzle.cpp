@@ -427,6 +427,7 @@ void PipePuzzle::Render(const Camera& camera)
                     color = { 1.0f, 1.0f, 1.0f, 1.0f };
                 }
             }
+
             if (Cursor_pos_y == y && Cursor_pos_x == x)
             {
                 if (!ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
@@ -435,6 +436,12 @@ void PipePuzzle::Render(const Camera& camera)
                     Cursor_pos_y = 0;
                 }
 
+                float dist_temp = rayStart.distanceFrom(hitPos);
+                if (dist_temp > 40)
+                {
+                    Cursor_pos_x = 0;
+                    Cursor_pos_y = 0;
+                }
             }
 
             if (Pipes[y][x] == CURVE0)  
@@ -442,8 +449,12 @@ void PipePuzzle::Render(const Camera& camera)
                 posture.RotationPitch(PI / 2);
                 if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                 {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
+                    float dist_temp = rayStart.distanceFrom(hitPos);
+                    if (dist_temp < 40)
+                    {
+                        Cursor_pos_x = x;
+                        Cursor_pos_y = y;
+                    }
                 }
                 SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
             }
@@ -453,8 +464,12 @@ void PipePuzzle::Render(const Camera& camera)
                 posture.RotationYaw(-PI / 2);
                 if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                 {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
+                    float dist_temp = rayStart.distanceFrom(hitPos);
+                    if (dist_temp < 40)
+                    {
+                        Cursor_pos_x = x;
+                        Cursor_pos_y = y;
+                    }
                 }
                 SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
             }
@@ -464,8 +479,12 @@ void PipePuzzle::Render(const Camera& camera)
                 posture.RotationYaw(PI);
                 if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                 {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
+                    float dist_temp = rayStart.distanceFrom(hitPos);
+                    if (dist_temp < 40)
+                    {
+                        Cursor_pos_x = x;
+                        Cursor_pos_y = y;
+                    }
                 }
                 SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
 
@@ -476,8 +495,12 @@ void PipePuzzle::Render(const Camera& camera)
                 posture.RotationYaw(PI / 2);
                 if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                 {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
+                    float dist_temp = rayStart.distanceFrom(hitPos);
+                    if (dist_temp < 40)
+                    {
+                        Cursor_pos_x = x;
+                        Cursor_pos_y = y;
+                    }
                 }
                 SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
             }
@@ -487,8 +510,12 @@ void PipePuzzle::Render(const Camera& camera)
                 posture.RotationYaw(PI / 2);
                 if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                 {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
+                    float dist_temp = rayStart.distanceFrom(hitPos);
+                    if (dist_temp < 40)
+                    {
+                        Cursor_pos_x = x;
+                        Cursor_pos_y = y;
+                    }
                 }
                 SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
             }
@@ -497,8 +524,12 @@ void PipePuzzle::Render(const Camera& camera)
                 posture.RotationPitch(PI / 2);
                 if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                 {
-                    Cursor_pos_x = x;
-                    Cursor_pos_y = y;
+                    float dist_temp = rayStart.distanceFrom(hitPos);
+                    if (dist_temp < 40)
+                    {
+                        Cursor_pos_x = x;
+                        Cursor_pos_y = y;
+                    }
                 }
                 SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
             }

@@ -10,7 +10,7 @@ SceneTitle::SceneTitle()
 	Audio::load(0, L"./Data/BGM/BGM.wav");
 	SpriteLoad(sprTitle, L"Data/Sprite/title.png");
 	//コンストラクタの最後で念のための初期化を行う
-	SceneTitle::Initialize();
+	//SceneTitle::Initialize();
 }
 
 //シーン変更された瞬間に実行される処理
