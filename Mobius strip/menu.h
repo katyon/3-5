@@ -25,8 +25,11 @@ class Menu
 private:
     FLOAT2 pos;
     FLOAT2 src;
+    FLOAT2 value_pos[4]; // çïñ_ÇÃà íu
+    FLOAT2 arrow_pos; // Å©Å®ÇÃà íu
     int page = 0;
     int remainder = 0;
+
 
     void ScreenShot(int num)
     {
@@ -94,10 +97,12 @@ private:
 
 public:
     Sprite menu_ptr;
-    bool isPause;
+    float volumeSE;
+    float volumeBGM;
     int tab;
     int content;
     void init();
+    void volume(float type, int num);
     void update();
     void draw();
     void uninit();

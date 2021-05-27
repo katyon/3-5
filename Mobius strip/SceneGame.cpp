@@ -22,9 +22,7 @@ SceneGame::SceneGame()
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
 
     Audio::load(1, L"Data/BGM/Waltz.wav");
-    Audio::SetVolume(1, 0.4f);
     Audio::load(5, L"Data/BGM/menu.wav");
-    Audio::SetVolume(5, 0.7f);
     itemObj->init();
     // ボタンプッシュ ここから
     camera.SetPos({ 0,200,-10 });
