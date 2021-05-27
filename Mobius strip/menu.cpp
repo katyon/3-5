@@ -11,17 +11,17 @@ void ItemArr::init()
 void ItemMenu::init()
 {
     arr->init();
-    SpriteLoad(menuItem.itemSpec[0].ptr, L"Data/Sprite/esc1.png");     // ID_Esc1
-    SpriteLoad(menuItem.itemSpec[1].ptr, L"Data/Sprite/esc2.png");     // ID_Esc2     
-    SpriteLoad(menuItem.itemSpec[2].ptr, L"Data/Sprite/ward.png");     // ID_Stone1   
-    SpriteLoad(menuItem.itemSpec[3].ptr, L"Data/Sprite/ward.png");     // ID_Stone2   
-    SpriteLoad(menuItem.itemSpec[4].ptr, L"Data/Sprite/ward.png");     // ID_Pipe3   
-    SpriteLoad(menuItem.itemSpec[5].ptr, L"Data/Sprite/balance1.png"); // ID_Balance1 
-    SpriteLoad(menuItem.itemSpec[6].ptr, L"Data/Sprite/balance2.png"); // ID_Balance2 
-    SpriteLoad(menuItem.itemSpec[7].ptr, L"Data/Sprite/balance3.png"); // ID_Balance3 
-    SpriteLoad(menuItem.itemSpec[8].ptr, L"Data/Sprite/ward.png");     // ID_SafetyBox
-    SpriteLoad(menuItem.itemSpec[9].ptr, L"Data/Sprite/omori.png");    // ID_Weight
-    SpriteLoad(menuItem.itemSpec[10].ptr, L"Data/Sprite/omori.png");   // ID_Key   
+    SpriteLoad(menuItem.itemSpec[0].ptr, L"Data/Sprite/EscHint/esc1.png");         // ID_Esc1
+    SpriteLoad(menuItem.itemSpec[1].ptr, L"Data/Sprite/EscHint/esc2.png");         // ID_Esc2     
+    SpriteLoad(menuItem.itemSpec[2].ptr, L"Data/Sprite/StoneHint/stone1.png");     // ID_Stone1   
+    SpriteLoad(menuItem.itemSpec[3].ptr, L"Data/Sprite/StoneHint/stone2.png");     // ID_Stone2   
+    SpriteLoad(menuItem.itemSpec[4].ptr, L"Data/Sprite/pipe.png");                 // ID_Pipe
+    SpriteLoad(menuItem.itemSpec[5].ptr, L"Data/Sprite/BalanceHint/balance1.png"); // ID_Balance1 
+    SpriteLoad(menuItem.itemSpec[6].ptr, L"Data/Sprite/BalanceHint/balance2.png"); // ID_Balance2 
+    SpriteLoad(menuItem.itemSpec[7].ptr, L"Data/Sprite/BalanceHint/balance3.png"); // ID_Balance3 
+    SpriteLoad(menuItem.itemSpec[8].ptr, L"Data/Sprite/safety.png");               // ID_SafetyBox
+    SpriteLoad(menuItem.itemSpec[9].ptr, L"Data/Sprite/omori.png");                // ID_Weight
+    SpriteLoad(menuItem.itemSpec[10].ptr, L"Data/Sprite/omori.png");               // ID_Key   
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
@@ -40,6 +40,13 @@ void Menu::init()
     SpriteLoad(menu_ptr, L"Data/Sprite/menu.png");
     tab = MenuTab::Item;
     content = HelpContent::None;
+    value_pos[0] = { 1364,299 };
+    value_pos[1] = { 1364,481 };
+    value_pos[2] = { 1364,660 };
+    value_pos[3] = { 1364,836 };
+    arrow_pos = { 0,0 };
+    volumeSE = 0.4f;
+    volumeBGM = 0.4f;
 }
 
 /*************************************************/
@@ -91,8 +98,32 @@ void ItemMenu::isChoice()
                 isObserve(3);
                 break;
 
+            case SPEC::ITEM_ID::ID_Pipe3:
+                isObserve(4);
+                break;
+
+            case SPEC::ITEM_ID::ID_Balance1:
+                isObserve(5);
+                break;
+
+            case SPEC::ITEM_ID::ID_Balance2:
+                isObserve(6);
+                break;
+
+            case SPEC::ITEM_ID::ID_Balance3:
+                isObserve(7);
+                break;
+
+            case SPEC::ITEM_ID::ID_SafetyBox:
+                isObserve(8);
+                break;
+
             case SPEC::ITEM_ID::ID_Weight:
                 isObserve(9);
+                break;
+
+            case SPEC::ITEM_ID::ID_Key:
+                isObserve(10);
                 break;
 
             default:
@@ -115,6 +146,14 @@ void ItemMenu::update()
 // ページ切り替えと各ページでの処理
 void Menu::update()
 {
+    Audio::SetVolume(1, volumeBGM);
+    
+    for (int i = 2; i < 7; i++)
+    {
+        Audio::SetVolume(i, volumeSE);
+    }
+
+
     switch (tab)
     {
     case MenuTab::Item:
@@ -210,8 +249,92 @@ void Menu::update()
                 content = HelpContent::Exit;
             }
 
-            if (content == HelpContent::Exit)
+            switch (content)
             {
+            case HelpContent::Option:
+                // マウス感度操作(←)
+                if (ColRects(293, 341, 1100, 1165, input::GetMousePos()))
+                {
+                    if (input::TRG(VK_LBUTTON) && FPSCamera::correct_sensitivity > 0)
+                    {
+                        FPSCamera::correct_sensitivity--;
+                        value_pos[0].x -= 38.0f;
+                    }
+                }
+                //マウス感度操作(→)
+                if (ColRects(293, 341, 1572, 1638, input::GetMousePos()))
+                {
+                    if (input::TRG(VK_LBUTTON) && FPSCamera::correct_sensitivity < 10)
+                    {
+                        FPSCamera::correct_sensitivity++;
+                        value_pos[0].x += 38.0f;
+                    }
+                }
+
+                // 画面明るさ(←)
+                if (ColRects(475, 523, 1100, 1165, input::GetMousePos()))
+                {
+
+                }
+                // 画面明るさ(→)
+                if (ColRects(475, 523, 1572, 1637, input::GetMousePos()))
+                {
+
+                }
+
+                // 効果音(←)
+                if (ColRects(654, 702, 1100, 1165, input::GetMousePos()))
+                {
+                    if (volumeSE > 0.0f && input::TRG(VK_LBUTTON))
+                    { 
+                        value_pos[2].x -= 95.0f;
+                        volumeSE -= 0.2f;
+
+                        if (volumeSE <= 0.0f)
+                        {
+                            value_pos[2].x = 1174.0f;
+                            volumeSE = 0.0f;
+                        }
+                    }
+                }
+                // 効果音(→)
+                if (ColRects(654, 702, 1572, 1637, input::GetMousePos()))
+                {
+                    if (volumeSE < 0.8f && input::TRG(VK_LBUTTON))
+                    {
+                        value_pos[2].x += 95.0f;
+                        volumeSE += 0.2f;
+                    }
+                }
+                
+                // BGM(←)
+                if (ColRects(830, 878, 1100, 1165, input::GetMousePos())) 
+                {
+                    if (volumeBGM > 0.0f && input::TRG(VK_LBUTTON))
+                    {
+                        value_pos[3].x -= 95.0f;
+                        volumeBGM -= 0.2f;
+
+                        if (volumeBGM <= 0.0f)
+                        {
+                            value_pos[3].x = 1174.0f;
+                            volumeBGM = 0.0f;
+                        }
+                    }
+                }
+                // BGM(→)
+                if (ColRects(830, 878, 1572, 1637, input::GetMousePos()))
+                {
+                    if (volumeBGM < 0.8f && input::TRG(VK_LBUTTON))
+                    {
+                        value_pos[3].x += 95.0f;
+                        volumeBGM += 0.2f;
+                    }
+                }
+
+                break;
+
+            case HelpContent::Exit:
                 if (ColRects(366, 470, 1248, 1498, input::GetMousePos()))
                 {
                     ChangeScene(S_TITLE);
@@ -221,11 +344,11 @@ void Menu::update()
                 {
                     content = HelpContent::None;
                 }
+                break;
             }
         }
         break;
     }
-
 }
 
 
@@ -237,6 +360,51 @@ void ItemMenu::origin_Draw(int num)
     if (menuItem.itemSpec[num].isobserve) {
         SpriteRender(menuItem.itemSpec[num].ptr, 1189, 310, 0.18f, 0.27f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
     }
+}
+
+void LeftArrow(FLOAT2 pos,int num)
+{
+    switch (num)
+    {
+    case 0:
+        pos = { 1099, 293 };
+        break;
+    case 1:
+        pos = { 1099, 475 };
+        break;
+    case 2:
+        pos = { 1099, 654 };
+        break;
+    case 3:
+        pos = { 1099, 830 };
+        break;
+    }
+    SpriteRender(menu->menu_ptr, pos.x, pos.y, 1, 1, 0, 2371, 68, 51, 0, 0, 0, 1, 1, 1, 1);
+}
+
+void RightArrow(FLOAT2 pos,int num)
+{
+    switch (num)
+    {
+    case 0:
+        pos = { 1572, 293 };
+        break;
+    case 1:
+        pos = { 1572, 475 };
+        break;
+    case 2:
+        pos = { 1572, 654 };
+        break;
+    case 3:
+        pos = { 1572, 830 };
+        break;
+    }
+    SpriteRender(menu->menu_ptr, pos.x, pos.y, 1, 1, 68, 2371, 68, 51, 0, 0, 0, 1, 1, 1, 1);
+}
+
+void Value(FLOAT2* pos,int num)
+{
+    SpriteRender(menu->menu_ptr, pos[num].x, pos[num].y, 1, 1, 0, 2422, 11, 37, 0, 0, 0, 1, 1, 1, 1);
 }
 
 void ItemMenu::draw()
@@ -285,7 +453,6 @@ void ItemMenu::draw()
 }
 void Menu::draw()
 {
-
     switch (tab)
     {
         /* アイテムページ */
@@ -353,7 +520,48 @@ void Menu::draw()
 
             /* オプションタブ */
         case HelpContent::Option:
+            Debug->SetString("volumeSE:%f",volumeSE);
+            Debug->SetString("volumeBGM:%f", volumeBGM);
             SpriteRender(menu_ptr, 0, 0, 1, 1, 0, 1080, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
+
+
+            /*   感度   */
+            /************/
+            // ←のところにカーソルが合ったら
+            if (ColRects(293, 341, 1100, 1165, input::GetMousePos())) { LeftArrow(arrow_pos,0); }
+            // →のところにカーソルが合ったら
+            if (ColRects(293, 341, 1572, 1637, input::GetMousePos())) { RightArrow(arrow_pos, 0); }
+            // 黒棒
+            Value(value_pos, 0);
+
+            /*  明るさ  */
+            /************/
+             // ←のところにカーソルが合ったら
+            if (ColRects(475, 523, 1100, 1165, input::GetMousePos())) { LeftArrow(arrow_pos, 1); }
+            // →のところにカーソルが合ったら
+            if (ColRects(475, 523, 1572, 1637, input::GetMousePos())) { RightArrow(arrow_pos, 1); }
+            // 黒棒
+            Value(value_pos, 1);
+
+            /*  効果音  */
+            /************/
+            // ←のところにカーソルが合ったら
+            if (ColRects(654, 702, 1100, 1165, input::GetMousePos())) { LeftArrow(arrow_pos, 2); }
+            // →のところにカーソルが合ったら
+            if (ColRects(654, 702, 1572, 1637, input::GetMousePos())) { RightArrow(arrow_pos, 2); }
+            // 黒棒
+            Value(value_pos, 2);
+
+            /*    BGM   */
+            /************/
+            // ←のところにカーソルが合ったら
+            if (ColRects(830, 878, 1100, 1165, input::GetMousePos())) { LeftArrow(arrow_pos, 3); }
+            // →のところにカーソルが合ったら
+            if (ColRects(830, 878, 1572, 1637, input::GetMousePos())) { RightArrow(arrow_pos, 3); }
+            // 黒棒
+            Value(value_pos, 3);
+
+
             break;
 
             /* 操作説明タブ */

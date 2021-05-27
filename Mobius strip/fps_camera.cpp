@@ -137,16 +137,16 @@ void FPSCamera::control(XMMATRIX player_world_matrix, FLOAT3 center)
 	SetTarget(targetPos);
 	zoom();
 
-#ifdef DEBUG_SENSITIVITY_SETTING
-	if (input::TRG('N'))
-	{
-		if (FPSCamera::correct_sensitivity > 0) FPSCamera::correct_sensitivity--;
-	}
-	if (input::TRG('M'))
-	{
-		if (FPSCamera::correct_sensitivity < 10) FPSCamera::correct_sensitivity++;
-	}
-#endif
+//#ifdef DEBUG_SENSITIVITY_SETTING
+//	if (input::TRG('N'))
+//	{
+//		if (FPSCamera::correct_sensitivity > 0) FPSCamera::correct_sensitivity--;
+//	}
+//	if (input::TRG('M'))
+//	{
+//		if (FPSCamera::correct_sensitivity < 10) FPSCamera::correct_sensitivity++;
+//	}
+//#endif
 }
 
 void FPSCamera::zoom()

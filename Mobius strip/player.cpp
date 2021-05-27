@@ -1,6 +1,6 @@
 #include "player.h"
 #include "StageManager.h"
-
+#include "menu.h"
 #include <cassert>
 #include <cmath>
 #include <limits>
@@ -9,7 +9,6 @@ Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
 	Audio::load(3, L"./Data/BGM/footsteps2.wav");
-	//Audio::SetVolume(3, volume);
 }
 
 void Player::init()
