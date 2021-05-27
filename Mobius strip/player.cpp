@@ -1,5 +1,7 @@
 #include "player.h"
 #include "StageManager.h"
+#include "menu.h"
+#include "reticle.h"
 
 #include <cassert>
 #include <cmath>
@@ -9,12 +11,12 @@ Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
 	Audio::load(3, L"./Data/BGM/footsteps2.wav");
-	//Audio::SetVolume(3, volume);
 }
 
 void Player::init()
 {
 	world_matrix = GetWorldMatrix(pos, scale, posture);
+	current_area = AREA_TYPE::ROOM;
 }
 
 void Player::update(FPSCamera& camera)
@@ -44,6 +46,7 @@ void Player::update(FPSCamera& camera)
 	changeAnimation();
 	setAutoMode(camera);
 
+	colDoor(camera);
 }
 
 void Player::render(const Camera& camera)
@@ -175,7 +178,11 @@ void Player::colFloor()
 			col.obb, hit_pos[SAVE]))
 		{
 			float dist_temp = vertical_lay_start.distanceFrom(hit_pos[SAVE]);
-			if (dist_temp < distance) { hit_pos[MINIMUM] = hit_pos[SAVE]; }
+			if (dist_temp < distance) 
+			{
+				distance = dist_temp;
+				hit_pos[MINIMUM] = hit_pos[SAVE];
+			}
 		}
 	}
 
@@ -202,6 +209,54 @@ void Player::changeAnimation()
 	}
 }
 
+void Player::colDoor(FPSCamera& camera)
+{
+	FLOAT3 hit_pos[2];
+	float distance = 100.0f;
+
+	static FLOAT3 rayStart, rayEnd;
+	getMouseRay(camera, rayStart, rayEnd);
+
+	switch (current_area)
+	{
+	case AREA_TYPE::ROOM:
+		for (const auto& col : StageManager::getIns()->getColBoxs())
+		{
+			if (col.option != -3) continue;
+
+			if (ColLineOBB(rayStart, rayEnd,
+				col.obb, hit_pos[SAVE]))
+			{
+				float dist_temp = rayStart.distanceFrom(hit_pos[SAVE]);
+				if (dist_temp < distance) 
+				{
+					hit_pos[MINIMUM] = hit_pos[SAVE];
+					distance = horizontal_lay_start.distanceFrom(hit_pos[MINIMUM]);
+				}
+			}
+		}
+		if (distance < 30.0f)
+		{
+			Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::EXIT);
+			if (input::TRG(input::MOUSE_L))
+			{
+				attract_point = { -30.0f, 0, 0 };
+				camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f);
+				auto_control_timer = 0;
+				auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
+				auto_control = true;
+			}
+		}
+		break;
+
+	case AREA_TYPE::CORRIDOR:
+		break;
+
+	case AREA_TYPE::FAKE_CORRIDOR:
+		break;
+	}
+}
+
 void Player::setAutoMode(FPSCamera& camera)
 {
 	if (input::STATE('G'))
@@ -216,15 +271,6 @@ void Player::setAutoMode(FPSCamera& camera)
 
 void Player::autoControl(FPSCamera& camera)
 {
-	//if (auto_control_timer > 120)
-	//{
-	//	auto_control = false;
-	//	FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
-	//	center.x = floorf(center.x);
-	//	center.y = floorf(center.y);
-	//	SetCursorPos(center.x, center.y);
-	//	camera.autoFin();
-	//}
 	StageObject* objects = StageManager::getIns()->getStageObjects();
 	VECTOR3D vec;
 
@@ -338,11 +384,12 @@ void Player::autoControl(FPSCamera& camera)
 		
 	case AUTO_PHASE::PHASE_END:
 
+		(StageManager::getIns()->getStageNum() == 0) ? StageManager::getIns()->Switching(1) : StageManager::getIns()->Switching(0);
 		auto_control = false;
 		FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
 		center.x = floorf(center.x);
 		center.y = floorf(center.y);
-		pos = { 0.5f, 0, 141.8f };
+		pos = { 0.45f, 0, 141.8f };
 		camera.autoFin(GetWorldMatrix((pos + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), {pos.x, pos.y + 12.5f, pos.z});
 		SetCursorPos(center.x, center.y);
 	}

@@ -245,8 +245,13 @@
     <ClCompile Include="Candle.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-
     <ClCompile Include="test.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="reticle.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="safety_box.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -480,6 +485,12 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Candle.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="reticle.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="safety_box.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

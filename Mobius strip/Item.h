@@ -18,7 +18,6 @@ public:
         ID_Balance3, // ‚V
         ID_SafetyBox,// ‚W
         ID_Weight,   // ‚X
-        ID_Key,      // ‚P‚O
         ID_EMPTY,    // Á‚µƒSƒ€‚³‚ñ
     };
 
@@ -29,8 +28,8 @@ public:
     FLOAT2 src;
 
     bool isobserve;
-    bool isConsumed; // Á”ï‚³‚ê‚éƒAƒCƒeƒ€‚©‚Ç‚¤‚©
     bool exist;
+    bool used;
 };
 
 class ItemArr:public SPEC
@@ -152,7 +151,8 @@ private:
 
     FLOAT3 rayStart;
     FLOAT3 rayEnd;
-    float timer=0;
+    float timer = 0;
+    int RoomNum;    // ”z’u‚·‚é•”‰®”Ô†¯•Ê—p
 
     FLOAT3 hitPos;
     Quaternion posture[15];

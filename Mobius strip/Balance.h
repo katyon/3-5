@@ -13,6 +13,12 @@ namespace Balance
 		BR_Left
 	};
 
+
+	//SkinnedMesh cross_weight;  // weight = 10
+	//SkinnedMesh gold_weight;   // weight = 5
+	//SkinnedMesh iron_weight;   // weight = 3
+	//SkinnedMesh wood_weight;   // weight = 2
+
 	//重さの単位
 	using B_weight = int;
 
@@ -38,4 +44,38 @@ namespace Balance
 	//テスト用
 	void demoPlay();
 }
+
+class Libra
+{
+private:
+	SkinnedMesh cross_weight;  // weight = 10
+	SkinnedMesh gold_weight;   // weight = 5
+	SkinnedMesh iron_weight;   // weight = 3
+	SkinnedMesh wood_weight;   // weight = 2
+
+	SkinnedMesh tenbin_1;
+	SkinnedMesh tenbin_2;
+
+	FLOAT3 position;
+	FLOAT3 cross_scale;
+	FLOAT3 iron_scale;
+	FLOAT3 gold_scale;
+	Quaternion posture;
+
+public:
+	bool Equilibrium = false;   // アイテムが置かれたときtrueにする
+
+	Libra();
+
+	void Init();
+	void Update();
+	void Render(const Camera& camera);
+	void Release();
+
+	static Libra* getInstance()
+	{
+		static Libra instance;
+		return &instance;
+	}
+};
 

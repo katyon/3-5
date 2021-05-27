@@ -1,5 +1,6 @@
 #include "Balance.h"
 #include "StageManager.h"
+#include "player.h"
 
 namespace Balance
 {
@@ -89,26 +90,27 @@ namespace Balance
 	static FLOAT3		pos[3];
 	static Quaternion	postrue;
 	static Camera		eye;
-	static B_weight r_weight = 0;
-	static B_weight l_weight = 6;
+	static B_weight r_weight = 10;
+	static B_weight l_weight = 13;
+
 	void Init()
 	{
 		flgs[0] = flgs[1] = false;
 		isClear = false;
-		if (!omori_model.IsModel())
-		{
-			Model* model = StageManager::getIns()->getModel("omori.fbx");
-			if (model)
-			{
-				omori_model.SetModel(model);
-			}
-			else
-			{
-				Model _model;
-				ModelLoad(_model, "Data\\Objects\\omori.fbx");
-				omori_model.SetModel(&_model);
-			}
-		}
+		//if (!omori_model.IsModel())
+		//{
+		//	Model* model = StageManager::getIns()->getModel("omori.fbx");
+		//	if (model)
+		//	{
+		//		omori_model.SetModel(model);
+		//	}
+		//	else
+		//	{
+		//		Model _model;
+		//		ModelLoad(_model, "Data\\Objects\\omori.fbx");
+		//		omori_model.SetModel(&_model);
+		//	}
+		//}
 		eye.SetPos({ 0.0f,50.0f, - 150.0f });
 		eye.SetTarget({ 0,25.0f,0.0f });
 
@@ -132,7 +134,7 @@ namespace Balance
 	{
 		if (isClear)return true;
 
-		r_weight = (static_cast<int>(flgs[0]) + static_cast<int>(flgs[1])) * 3;
+		//r_weight = (static_cast<int>(flgs[0]) + static_cast<int>(flgs[1])) * 3;
 		float rate = 0.0f;
 		getTilt(r_weight, l_weight, &rate);
 		int frame = 150;
@@ -152,6 +154,15 @@ namespace Balance
 				}
 			}
 		}
+
+		//if (input::TRG(KEY::VK_O))
+		//{
+		//	Balance::l_weight += 1;
+		//}
+		//if (input::TRG(KEY::VK_P))
+		//{
+		//	Balance::r_weight += 1;
+		//}
 
 
 		//balance_model.UpdateBlendAnimation(0, frame, 1.0f, 0.0f);
@@ -187,12 +198,12 @@ namespace Balance
 		light.Active();
 		eye.Active();
 
-		ModelRenderBegin();
-		//ModelRender(balance_model, world);
-		ModelRender(omori_model, pos[0], ScalarToFloat3(0.6f), {});
-		if (flgs[0])ModelRender(omori_model, pos[1], ScalarToFloat3(0.45f), {});
-		if (flgs[1])ModelRender(omori_model, pos[2], ScalarToFloat3(0.45f), {});
-		ModelRenderEnd();
+		//ModelRenderBegin();
+		////ModelRender(balance_model, world);
+		//ModelRender(omori_model, pos[0], ScalarToFloat3(0.6f), {});
+		//if (flgs[0])ModelRender(omori_model, pos[1], ScalarToFloat3(0.45f), {});
+		//if (flgs[1])ModelRender(omori_model, pos[2], ScalarToFloat3(0.45f), {});
+		//ModelRenderEnd();
 	}
 
 
@@ -265,5 +276,83 @@ namespace Balance
 	}
 
 
+
+}
+
+Libra::Libra()
+{
+	cross_weight.load("Data\\Weight\\omori_god.fbx");
+	gold_weight.load("Data\\Weight\\omori_gold.fbx");
+	iron_weight.load("Data\\Weight\\omori.fbx");
+	wood_weight.load("Data\\Weight\\omori_wood.fbx");
+
+	//tenbin_1.load("Data\\Objects\\tenbin_1.fbx");
+	//tenbin_2.load("Data\\Objects\\tenbin_2.fbx");
+
+	posture.reset();
+}
+
+void Libra::Init()
+{
+	position = { 0, 0, 0 };
+	cross_scale = { 0.15f, 0.15f, 0.15f };
+	iron_scale = { 0.03f,0.03f,0.03f };
+	gold_scale = { 0.085f, 0.085f, 0.085f };
+	posture.RotationYaw(-PI / 2);
+
+	Equilibrium = false;
+}
+
+void Libra::Update()
+{
+	//if (input::STATE(KEY::VK_O))
+	//{
+	//	Balance::l_weight += 1;
+	//}
+	//if (input::STATE(KEY::VK_P))
+	//{
+	//	Balance::r_weight += 1;
+	//}
+	if (input::TRG(KEY::VK_P))
+	{
+		Balance::l_weight = 13;
+		Balance::r_weight = 13;
+		Equilibrium = true;
+	}
+}
+
+void Libra::Render(const Camera& camera)
+{
+	FLOAT4 light_dir = { 0, 0, 0, 1 };
+
+	if(!Equilibrium)
+	{   // ÉAÉCÉeÉÄÇÃêéÇíuÇ≠ëOÅBÇPÇRÅÑÇPÇO 
+		// LEFT_SIDE
+		SkinnedMeshRender(cross_weight, camera, { -42.0f, 13.8f, -23.5f }, cross_scale, posture, light_dir);
+		SkinnedMeshRender(iron_weight, camera, { -42.0f, 13.8f, -25.0f }, iron_scale, posture, light_dir);
+		// RIGHT_SIDE
+		SkinnedMeshRender(gold_weight, camera, { -42.0f, 15.55f, -15.0f }, gold_scale, posture, light_dir);
+		SkinnedMeshRender(iron_weight, camera, { -42.0f, 15.55f, -13.5f }, iron_scale, posture, light_dir);
+		SkinnedMeshRender(wood_weight, camera, { -42.0f, 15.55f, -12.0f }, gold_scale, posture, light_dir);
+	}
+	else
+	{   // ÉAÉCÉeÉÄÇÃêéÇíuÇ¢ÇΩå„ÅB ÇPÇRÅÅÇPÇR
+		// LEFT_SIDE
+		SkinnedMeshRender(cross_weight, camera, { -42.0f, 14.65f, -23.5f }, cross_scale, posture, light_dir);
+		SkinnedMeshRender(iron_weight, camera, { -42.0f, 14.65f, -25.0f }, iron_scale, posture, light_dir);
+		// RIGHT_SIDE
+		SkinnedMeshRender(gold_weight, camera, { -42.0f, 14.65f, -15.0f }, gold_scale, posture, light_dir);
+		SkinnedMeshRender(iron_weight, camera, { -42.0f, 14.65f, -14.0f }, iron_scale, posture, light_dir);
+		SkinnedMeshRender(iron_weight, camera, { -42.0f, 14.65f, -13.0f }, iron_scale, posture, light_dir);
+		SkinnedMeshRender(wood_weight, camera, { -42.0f, 14.65f, -12.0f }, gold_scale, posture, light_dir);
+	}
+
+	//SkinnedMeshRender(tenbin_1, camera, { -10, .0f, .0f }, {1,1,1}, posture, light_dir);
+	//SkinnedMeshRender(tenbin_2, camera, { .0f, .0f, .0f }, {1,1,1}, posture, light_dir);
+
+}
+
+void Libra::Release()
+{
 
 }

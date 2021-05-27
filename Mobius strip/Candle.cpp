@@ -1,5 +1,6 @@
 #include "Candle.h"
 #include "PipePuzzle.h"
+#include "Item.h"
 
 Candle::Candle()
 {
@@ -32,7 +33,12 @@ void Candle::Render(const Camera& camera)
         break;
 
     case 1:
-        SkinnedMeshRender(Candle_lost, camera, position, scale, posture, light_dir);
+        if (G_Item->count[0] == true)
+        {
+            SkinnedMeshRender(Candle_lost, camera, position, scale, posture, light_dir);
+            break;
+        }
+        SkinnedMeshRender(Candle_half, camera, position, scale, posture, light_dir);
         break;
 
     case -1:

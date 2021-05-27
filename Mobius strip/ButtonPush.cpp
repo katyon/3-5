@@ -6,9 +6,9 @@
 //#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
-#define ButtonPosX -40.0f
-#define ButtonPosY 44.0f
-#define ButtonPosZ -8.0f
+#define ButtonPosX -21.5f
+#define ButtonPosY 42.5f
+#define ButtonPosZ -3.0f
 #define DownPos ButtonPosY-0.5f
 
 ButtonPush::ButtonPush()
@@ -48,7 +48,7 @@ ButtonPush::ButtonPush()
 void ButtonPush::init()
 {
 	// 初期座標
-	base.pos = { -40,43,-8 };
+	base.pos = { -21.5,41.5,-3 };
 
 	button[0][0].pos = { ButtonPosX + -2.6f,ButtonPosY,ButtonPosZ + 2.8f };
 	button[0][1].pos = { ButtonPosX + -1.3f,ButtonPosY,ButtonPosZ + 2.8f };
@@ -164,6 +164,25 @@ void ButtonPush::update(const Camera& camera)
 	int operation_x = -1;
 	int operation_y = -1;
 
+
+	getMouseRay(camera, start, end);
+
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			if (ColLineOBB(start, end, { button[i][j].pos,FLOAT3(1, 1, 1),button[i][j].posture }, HitPos[0]))
+			{
+				if (start.distanceFrom(HitPos[0]) <= 20)
+				{
+					// アイコンを切り替える処理
+
+				}
+			}
+		}
+	}
+
+
 	// ここにキー操作
 	if (input::TRG(input::MOUSE_L) && !final_judge && !isJudge)
 	{
@@ -177,23 +196,26 @@ void ButtonPush::update(const Camera& camera)
 				button[i][j].isPush = false;
 				if (ColLineOBB(start, end, { button[i][j].pos,FLOAT3(1, 1, 1),button[i][j].posture }, HitPos[0]))
 				{
-					if (!result)
+					if (start.distanceFrom(HitPos[0]) <= 20) 
 					{
-						HitPos[1] = HitPos[0];
-						dis = start.distanceFrom(HitPos[1]);
-						operation_y = i;
-						operation_x = j;
-						result = true;
-					}
-					else
-					{
-						float s_h = start.distanceFrom(HitPos[0]);
-						if (s_h < dis)
+						if (!result)
 						{
-							operation_y = i;
-							operation_x = j;
 							HitPos[1] = HitPos[0];
 							dis = start.distanceFrom(HitPos[1]);
+							operation_y = i;
+							operation_x = j;
+							result = true;
+						}
+						else
+						{
+							float s_h = start.distanceFrom(HitPos[0]);
+							if (s_h < dis)
+							{
+								operation_y = i;
+								operation_x = j;
+								HitPos[1] = HitPos[0];
+								dis = start.distanceFrom(HitPos[1]);
+							}
 						}
 					}
 				}

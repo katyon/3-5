@@ -1,6 +1,10 @@
 #pragma once
 #include "./AliceLib/AliceLib.h"
 
+//******************************** 
+// 　キャンドルはR1に配置する
+//********************************
+
 class Candle
 {
 private:

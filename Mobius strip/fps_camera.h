@@ -53,7 +53,6 @@ private:
 
 	XMMATRIX rotate_to_target;
 	int magnification = 15;
-	static int correct_sensitivity;
 
 	bool auto_focus;
 	FLOAT3 focus_target;
@@ -65,6 +64,7 @@ private:
 private:
 	VECTOR2D getCursorMoveAmount();
 public:
+	static int correct_sensitivity;
 	FPSCamera();
 	void initPos();
 	void update(XMMATRIX player_world_matrix, FLOAT3 center);

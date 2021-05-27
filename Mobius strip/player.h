@@ -48,6 +48,15 @@ private:
 		PHASE_END
 	}auto_control_phase;
 
+	enum AREA_TYPE
+	{
+		ROOM,
+		CORRIDOR,
+		FAKE_CORRIDOR
+	}area_type;
+
+	AREA_TYPE current_area;
+
 public:
 	Player();
 
@@ -59,6 +68,8 @@ public:
 	void updateDestVec(VECTOR3D forward);
 	void restrictArea();
 	void changeAnimation();
+
+	void colDoor(FPSCamera& camera);
 
 	void setAutoMode(FPSCamera& camera);
 	void autoControl(FPSCamera& camera);
