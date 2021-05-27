@@ -12,7 +12,6 @@ public:
     FLOAT2		ScreenSize;
 
 private:
-
     struct GrayCbuffer
     {
         COLOR gray = { 0.299f, 0.587f, 0.114f,0.0f };
@@ -24,6 +23,17 @@ private:
         float	threshold = 0.525f;		//臒l
         int		flg = 1;
     };
+    const BrightnessCBuffer luminance_level[5] =
+    {
+        {3.65f,1.10f,0.70f ,1},
+        {3.75f,1.00f,0.55f ,1},
+        {3.25f,1.00f,0.525f ,1},
+        {4.25f,1.35f,0.50f ,1},
+        {4.25f,1.60f,0.50f ,1}
+    };
+
+    int level = 2;
+
     ConstantBuffer<GrayCbuffer> cbuff;
     ConstantBuffer<BrightnessCBuffer> cbuff2;
     Texture		mask;

@@ -297,7 +297,7 @@ void StageEditor::Render()
 {
 	//シェーダに定数バッファを転送
 	camera.Active();
-	ambient->direction = camera.LightFloamCamera();
+	//ambient->direction = camera.LightFloamCamera();
 	ambient.Active();
 
 	if (showV)
