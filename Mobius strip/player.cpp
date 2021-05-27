@@ -38,14 +38,14 @@ void Player::update(FPSCamera& camera)
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
 	//restrictArea();
-	//colWall();
+	colWall();
 	colFloor();
 
 	changeAnimation();
 	setAutoMode(camera);
-	colFloor();
-	colFloor();
-	colFloor();
+	//colFloor();
+	//colFloor();
+	//colFloor();
 }
 
 void Player::render(const Camera& camera)

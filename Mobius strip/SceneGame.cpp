@@ -35,7 +35,7 @@ SceneGame::SceneGame()
 
     std::string fill_name[] =
     {
-        "stage_data",
+        "room1",
     };
 
     StageManager::getIns()->LoadStages(fill_name);
