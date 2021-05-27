@@ -60,7 +60,17 @@ public:
     void begin();
     void end();
 
+    //level = 0~4
+    void ChangeBrightness(int level)
+    {
+        this->level = Clamp<int>(level, 0, 4);
+        (*cbuff2.GetData()) = luminance_level[this->level];
+    }
     
+    const int& getLevel()const
+    {
+        return level;
+    }
 
     void _edit();
 
