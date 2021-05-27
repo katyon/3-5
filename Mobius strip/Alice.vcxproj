@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>./OpenAL/include;./AliceLib/Lib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
@@ -113,7 +113,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>./OpenAL/include;./Effekseer/include;./AliceLib/Lib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>./OpenAL/include;./AliceLib/Lib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
@@ -162,7 +162,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>./OpenAL/include;./Effekseer/include;./AliceLib/Lib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
@@ -238,6 +238,8 @@
     <ClCompile Include="orbital_camera.cpp" />
     <ClCompile Include="PipePuzzle.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="reticle.cpp" />
+    <ClCompile Include="safety_box.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneTite.cpp" />
     <ClCompile Include="ScreenRecord.cpp" />
@@ -322,6 +324,8 @@
     <ClInclude Include="orbital_camera.h" />
     <ClInclude Include="PipePuzzle.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="reticle.h" />
+    <ClInclude Include="safety_box.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneTite.h" />
     <ClInclude Include="ScreenRecord.h" />

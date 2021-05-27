@@ -203,62 +203,6 @@ void FPSCamera::autoFin(XMMATRIX player_world_matrix, FLOAT3 center)
 	DirectX::XMStoreFloat3(&targetVec3, targetVec);
 	targetPos = FLOAT3(center.x, center.y, center.z) + FLOAT3(targetVec3.x, targetVec3.y, targetVec3.z) * 10.0f;
 	SetTarget(targetPos);
-	//SetTarget({ 0, 12.5f, 0 });
-	//////////////////////////////////
-
-	//VECTOR3D camera_Z = VECTOR3D::normalize(center - pos);
-	//VECTOR3D camera_X = VECTOR3D::normalize(VECTOR3D::cross(VECTOR3D(0, 1, 0), camera_Z));
-	//VECTOR3D camera_Y = VECTOR3D::normalize(VECTOR3D::cross(camera_X, camera_Z));
-
-	//forward = camera_Z;
-
-	//// 回転軸
-	//VECTOR3D rotate_rot = VECTOR3D(0, 1, 0);
-	//XMVECTOR rot_vector = XMLoadFloat3(&XMFLOAT3(rotate_rot));
-	//rot_vector = XMVector3Normalize(rot_vector);
-
-	//// 回転角
-	//float angle = toRadian(-90.0f);
-
-	//// 回転クォータニオンを作製
-	//XMVECTOR quaternion;
-	//quaternion = DirectX::XMQuaternionRotationAxis(rot_vector, angle);
-
-	//// 回転クォータニオンから回転行列を作成
-	//XMMATRIX rotate_matrix;
-	//rotate_matrix = XMMatrixRotationQuaternion(quaternion);
-
-	//// 原点基点のカメラ座標を回転
-	//camera_pos = XMLoadFloat3(&XMFLOAT3(relative_pos.x, relative_pos.y, relative_pos.z));
-	//camera_pos = XMVector3Transform(camera_pos, rotate_matrix);
-
-	//// 原点基点のカメラ座標を保存
-	//store_relative;
-	//DirectX::XMStoreFloat3(&store_relative, camera_pos);
-	//relative_pos = { store_relative.x, store_relative.y, store_relative.z };
-
-	//// カメラ座標をプレイヤー空間に変換
-	//camera_pos = XMVector3Transform(camera_pos, player_world_matrix);
-
-	//// カメラ座標を更新
-	//p_camera_pos;
-	//DirectX::XMStoreFloat3(&p_camera_pos, camera_pos);
-	//P_camera_pos = FLOAT3(p_camera_pos.x, p_camera_pos.y, p_camera_pos.z);
-
-	//R_camera_pos = P_camera_pos;
-
-	//SetPos(P_camera_pos);
-
-	//FLOAT3 targetPos;
-	//XMFLOAT3 targetVec3;
-	//XMVECTOR targetVec;
-
-	//targetVec3 = { R_camera_pos.x - center.x, R_camera_pos.y - center.y, R_camera_pos.z - center.z };
-	//targetVec = XMLoadFloat3(&targetVec3);
-
-	//DirectX::XMStoreFloat3(&targetVec3, targetVec);
-	//targetPos = FLOAT3(center.x, center.y, center.z) + FLOAT3(targetVec3.x, targetVec3.y, targetVec3.z) * 10.0f;
-	//SetTarget(targetPos);
 
 	auto_focus = false;
 }
@@ -270,21 +214,17 @@ void FPSCamera::focusCompulsion(XMMATRIX player_world_matrix, FLOAT3 center)
 	current_vector = current_vector.normalize();
 	target_vector = target_vector.normalize();
 
-	// 誤差1で終了
-	//if (acosf(VECTOR3D::dot(current_vector, target_vector)) < 0.01f) 
-	//{
-	//	FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
-	//	center.x = floorf(center.x);
-	//	center.y = floorf(center.y);
-	//	SetCursorPos(center.x, center.y);
-
-	//	auto_focus = false;
-	//}
-
 	// 平衡状態時の修正処理
 	if (current_vector.isParallel(target_vector)) 
 	{
-		XMVECTOR camera_pos = XMLoadFloat3(&XMFLOAT3(relative_pos.x, relative_pos.y, relative_pos.z));
+		// 原点基点のカメラ座標を回転
+		XMVECTOR camera_pos = XMLoadFloat3(&FLOAT3(-1, 0, 0));
+
+		// 原点基点のカメラ座標を保存
+		XMFLOAT3 store_relative;
+		DirectX::XMStoreFloat3(&store_relative, camera_pos);
+		relative_pos = { store_relative.x, store_relative.y, store_relative.z };
+
 		// カメラ座標をプレイヤー空間に変換
 		camera_pos = XMVector3Transform(camera_pos, player_world_matrix);
 
@@ -308,58 +248,6 @@ void FPSCamera::focusCompulsion(XMMATRIX player_world_matrix, FLOAT3 center)
 		targetPos = FLOAT3(center.x, center.y, center.z) + FLOAT3(targetVec3.x, targetVec3.y, targetVec3.z) * 10.0f;
 		SetTarget(targetPos);
 		return;
-		//VECTOR3D camera_Z = VECTOR3D::normalize(center - pos);
-		//VECTOR3D camera_X = VECTOR3D::normalize(VECTOR3D::cross(VECTOR3D(0, 1, 0), camera_Z));
-		//VECTOR3D camera_Y = VECTOR3D::normalize(VECTOR3D::cross(camera_X, camera_Z));
-
-		//forward = camera_Z;
-
-		//// 回転軸
-		//VECTOR3D rotate_rot = VECTOR3D(0,1,0);
-		//XMVECTOR rot_vector = XMLoadFloat3(&XMFLOAT3(rotate_rot));
-		//rot_vector = XMVector3Normalize(rot_vector);
-
-		//// 回転角
-		//float angle = toRadian(5.0f);
-		//// 回転クォータニオンを作製
-		//XMVECTOR quaternion;
-		//quaternion = DirectX::XMQuaternionRotationAxis(rot_vector, toRadian(angle));
-
-		//// 回転クォータニオンから回転行列を作成
-		//XMMATRIX rotate_matrix;
-		//rotate_matrix = XMMatrixRotationQuaternion(quaternion);
-
-		//// 原点基点のカメラ座標を回転
-		//XMVECTOR camera_pos = XMLoadFloat3(&XMFLOAT3(relative_pos.x, relative_pos.y, relative_pos.z));
-		//camera_pos = XMVector3Transform(camera_pos, rotate_matrix);
-
-		//// 原点基点のカメラ座標を保存
-		//XMFLOAT3 store_relative;
-		//DirectX::XMStoreFloat3(&store_relative, camera_pos);
-		//relative_pos = { store_relative.x, store_relative.y, store_relative.z };
-
-		//// カメラ座標をプレイヤー空間に変換
-		//camera_pos = XMVector3Transform(camera_pos, player_world_matrix);
-
-		//// カメラ座標を更新
-		//XMFLOAT3 p_camera_pos;
-		//DirectX::XMStoreFloat3(&p_camera_pos, camera_pos);
-		//FLOAT3 P_camera_pos = FLOAT3(p_camera_pos.x, p_camera_pos.y, p_camera_pos.z);
-
-		//FLOAT3 R_camera_pos = P_camera_pos;
-
-		//SetPos(P_camera_pos);
-
-		//FLOAT3 targetPos;
-		//XMFLOAT3 targetVec3;
-		//XMVECTOR targetVec;
-
-		//targetVec3 = { R_camera_pos.x - center.x, R_camera_pos.y - center.y, R_camera_pos.z - center.z };
-		//targetVec = XMLoadFloat3(&targetVec3);
-
-		//DirectX::XMStoreFloat3(&targetVec3, targetVec);
-		//targetPos = FLOAT3(center.x, center.y, center.z) + FLOAT3(targetVec3.x, targetVec3.y, targetVec3.z) * 10.0f;
-		//SetTarget(targetPos);
 	}
 
 	VECTOR3D camera_Z = VECTOR3D::normalize(center - pos);

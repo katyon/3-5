@@ -5,6 +5,9 @@
 #include "StageManager.h"
 #include "OBBs.h"
 #include "Balance.h"
+#include "reticle.h"
+#include "safety_box.h"
+
 //Menu menu;
 
 //ゲームの起動時に一度だけ行う処理
@@ -14,7 +17,7 @@ SceneGame::SceneGame()
     //Todo::ここにソースを記入する
     player.init();
     //stage.load("Data/Objects/stage.fbx");
-    SpriteLoad(1, L"Data/Sprite/reticle.png");
+    //SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
 
@@ -35,12 +38,14 @@ SceneGame::SceneGame()
 
     std::string fill_name[] =
     {
-        "stage_data",
+        "room1","room2"
     };
 
     StageManager::getIns()->LoadStages(fill_name);
     //コンストラクタの最後で念のための初期化を行う
     //SceneGame::Initialize();
+    Reticle::getInstance();
+    SafetyBox::getInstance();
 }
 
 //シーン変更された瞬間に実行される処理
@@ -67,6 +72,7 @@ void SceneGame::Initialize()
     ClearButoon = false;
     ClearGame = false;
     fix_cursor = false;
+
 }
 
 //シーン全体の更新処理
@@ -82,6 +88,7 @@ void SceneGame::Update(float elapsed_time)
         return;
     }
     //ClearGame = true;
+    Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::CROSS_HAIR);
 
     switch (game_mode)
     {
@@ -90,6 +97,7 @@ void SceneGame::Update(float elapsed_time)
         ButtonPush::getInstance()->update(camera);
         PipePuzzle::getInstance()->Update();
         Candle::getInstance()->Update();
+        SafetyBox::getInstance()->update(camera);
         itemObj->update(camera);
         G_Item->update();
         //Libra::getInstance()->Update();
@@ -179,8 +187,8 @@ void SceneGame::Render()
         //SkinnedMeshRender(stage, camera, GetWorldMatrix({ 0,0,0 }, { 0.1,0.1,0.1 }, { 0,0,0 }), camera.LightFloamCamera());
 
         camera.Active();
-        //ambient->direction = camera.LightFloamCamera();
-       // ambient->option.x = 0.5f;
+        //ambient->direction = FLOAT4(camera.GetTarget() - camera.GetPos(),0);
+        //ambient->option.x = 0.5f;
         ambient.Active();
         StageManager::getIns()->Render();
 
@@ -202,7 +210,8 @@ void SceneGame::Render()
         }
         else
         {
-            SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
+            Reticle::getInstance()->Render();
+            //SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
             SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
         }
         break;
