@@ -271,15 +271,6 @@ void Player::setAutoMode(FPSCamera& camera)
 
 void Player::autoControl(FPSCamera& camera)
 {
-	//if (auto_control_timer > 120)
-	//{
-	//	auto_control = false;
-	//	FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
-	//	center.x = floorf(center.x);
-	//	center.y = floorf(center.y);
-	//	SetCursorPos(center.x, center.y);
-	//	camera.autoFin();
-	//}
 	StageObject* objects = StageManager::getIns()->getStageObjects();
 	VECTOR3D vec;
 
