@@ -490,6 +490,9 @@
     <ClInclude Include="safety_box.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
     <ClInclude Include="key_pad.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>

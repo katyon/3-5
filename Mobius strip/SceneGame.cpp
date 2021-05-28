@@ -56,8 +56,9 @@ void SceneGame::Initialize()
     itemObj->init();
     M_Item->init();
     G_Item->init();
-    //Libra::getInstance()->Init();
-    //Balance::Init();
+    Libra::getInstance()->Init();
+    Balance::Init();
+    SafetyBox::getInstance()->init();
 
     menu->init();
     camera.SetPos(FLOAT3(0, 0, -1));
@@ -98,8 +99,8 @@ void SceneGame::Update(float elapsed_time)
         SafetyBox::getInstance()->update(camera);
         itemObj->update(camera);
         G_Item->update();
-        //Libra::getInstance()->Update();
-        //Balance::Update();
+        Libra::getInstance()->Update();
+        Balance::Update();
 
         if (input::TRG('P'))
         {
@@ -177,8 +178,8 @@ void SceneGame::Render()
 
         PipePuzzle::getInstance()->Render(camera);
         Candle::getInstance()->Render(camera);
-        //Libra::getInstance()->Render(camera);
-        //Balance::Render();
+        Libra::getInstance()->Render(camera);
+        Balance::Render();
         G_Item->draw();
         //cOBB(camera);
         screenR->end();
