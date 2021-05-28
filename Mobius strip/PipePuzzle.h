@@ -36,10 +36,9 @@ private:
     int pre_Water_pos_x = 0;
     int pre_Water_pos_y = 0;
 
+    int ClearFlg = -1;
 public:
 
-    bool clearFlg0;  
-    bool clearFlg1;  
     /* クリアフラグの条件　＝　指定の場所を通り、SからGまでつなぐこと。
        Ｓ　・　・　０　・ 
        ・　・　・　・　・

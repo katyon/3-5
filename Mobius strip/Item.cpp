@@ -4,6 +4,7 @@
 #include "PipePuzzle.h"
 #include "menu.h"
 #include "StageManager.h"
+#include "Sound.h"
 
 // 3Dでのアイテム
 
@@ -21,7 +22,7 @@ void ItemObj::init()
     /* 金庫のヒント */
     /* 錘 */
     OBBscale = { 5.0f,5.0f,5.0f };
-    Audio::load(6, L"./Data/BGM/get.wav");
+    Audio::load(sound_num::GET, L"./Data/BGM/get.wav");
 
     G_Item->count[0] = false;
     G_Item->count[1] = false;
@@ -65,7 +66,7 @@ void ItemObj::update(const Camera& camera)
     // アイテム出現条件
     // 
     // もし「水道管A」をクリアしたら、石盤ヒント②と天秤のヒント②が出現
-    if (PipePuzzle::getInstance()->clearFlg0)
+    if (PipePuzzle::getInstance()->GetClearFlg() == 0)
     {
         item3D.itemSpec[3].exist = true;
         item3D.itemSpec[6].exist = true;
@@ -81,7 +82,7 @@ void ItemObj::update(const Camera& camera)
     }
 
     // もし「水道管B」をクリアしたら、水道管ヒントを削除・金庫のヒントが出現
-    if (PipePuzzle::getInstance()->clearFlg1)
+    if (PipePuzzle::getInstance()->GetClearFlg() == 1)
     {
         item3D.itemSpec[1].exist = true;
     }

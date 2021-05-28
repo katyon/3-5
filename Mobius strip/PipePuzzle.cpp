@@ -2,6 +2,7 @@
 #include "Shelter.h"
 #include "reticle.h"
 #include "StageManager.h"
+#include "Sound.h"
 
 void getMouseRay(const Camera& eye, FLOAT3& start, FLOAT3& end);
 
@@ -69,7 +70,7 @@ PipePuzzle::PipePuzzle()
     start_pipe.load("Data\\Pipes\\StartPipe.fbx");
     goal_pipe.load("Data\\Pipes\\GoalPipe.fbx");
 
-    Audio::load(2, L"Data/BGM/pipe.wav");
+    Audio::load(sound_num::PIPE, L"Data/BGM/pipe.wav");
 }
 
 void PipePuzzle::Init()
@@ -78,8 +79,7 @@ void PipePuzzle::Init()
     scale = ScalarToFloat3(0.3f);
     OBBscale = ScalarToFloat3(4.8f);
 
-    clearFlg0 = false;
-    clearFlg1 = false;
+    ClearFlg = -1;
 
     for (int y = 0; y < 5; y++)
     {
@@ -123,32 +123,32 @@ void PipePuzzle::Update()
             {
             case CURVE0:
                 Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE1;
-                Audio::play(2);
+                Audio::play(sound_num::PIPE);
                 break;
 
             case CURVE1:
                 Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE2;
-                Audio::play(2);
+                Audio::play(sound_num::PIPE);
                 break;
 
             case CURVE2:
                 Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE3;
-                Audio::play(2);
+                Audio::play(sound_num::PIPE);
                 break;
 
             case CURVE3:
                 Pipes[Cursor_pos_y][Cursor_pos_x] = CURVE0;
-                Audio::play(2);
+                Audio::play(sound_num::PIPE);
                 break;
 
             case STRAIGHT0:
                 Pipes[Cursor_pos_y][Cursor_pos_x] = STRAIGHT1;
-                Audio::play(2);
+                Audio::play(sound_num::PIPE);
                 break;
 
             case STRAIGHT1:
                 Pipes[Cursor_pos_y][Cursor_pos_x] = STRAIGHT0;
-                Audio::play(2);
+                Audio::play(sound_num::PIPE);
                 break;
             }
 
@@ -177,7 +177,7 @@ void PipePuzzle::Update()
 
         if (timer % 2 == 0)
         {
-            if (wateres[4][2] > 1 && !clearFlg0)
+            if (wateres[4][2] > 1 && ClearFlg == -1)
             {
                 Reset();
             }
@@ -386,11 +386,11 @@ void PipePuzzle::Update()
             case GOAL:
                 if (wateres[0][4] > 0)         // クリアフラグ 0
                 {
-                    clearFlg0 = true;
+                    ClearFlg = 0;
                 }
-                if (wateres[4][2] > 0 && clearFlg0)    // クリアフラグ 1
+                if (wateres[4][2] > 0 && ClearFlg == 0)    // クリアフラグ 1
                 {
-                    clearFlg1 = true;
+                    ClearFlg = 1;
                 }
                 Reset();
                 break;
@@ -572,7 +572,7 @@ void PipePuzzle::Render(const Camera& camera)
         //    font::OutPut(L"Clear No.01", 1200.0f, 0.0f);
         //}
 
-        if (wateres[4][2] > 0 && !clearFlg0)
+        if (wateres[4][2] > 0 && ClearFlg == -1)
         {
             font::OutPut(L"水がうまく流れないようだ…", 960.0f, 1000.0f);
         }
@@ -586,16 +586,5 @@ void PipePuzzle::Release()
 
 int PipePuzzle::GetClearFlg()
 {
-    if (clearFlg1)
-    {
-        return 1;
-    }
-    else if (clearFlg0)
-    {
-        return 0;
-    }
-    else
-    {
-        return -1;
-    }
+    return ClearFlg;
 }

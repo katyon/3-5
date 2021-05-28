@@ -8,13 +8,6 @@
 class Candle
 {
 private:
-    SkinnedMesh Candle_full;
-    SkinnedMesh Candle_half;
-    SkinnedMesh Candle_lost;
-
-    FLOAT3 position;
-    FLOAT3 scale;
-    Quaternion posture;
 
 public:
     bool full_Flg = false;
@@ -25,8 +18,8 @@ public:
 
     void Init();
     void Update();
-    void Render(const Camera& camera);
-    void Release();
+
+    int RenderFlg();
 
     static Candle* getInstance()
     {

@@ -37,7 +37,7 @@ private:
 	int auto_control_timer;
 
 	bool moves;
-	float volume = 0.0f;
+	float footstep_volume = 0.0f;
 
 	enum AUTO_PHASE
 	{

@@ -11,7 +11,7 @@
 Player::Player() : pos(0, 0, 30), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
-	Audio::load(sound_num::FOOTSTEP, L"./Data/BGM/footsteps2.wav");
+	Audio::load(sound_num::FOOTSTEP, L"./Data/BGM/footsteps.wav");
 	Audio::load(sound_num::DOOR_OPEN, L"./Data/BGM/door_open.wav");
 	Audio::load(sound_num::DOOR_CLOSE, L"./Data/BGM/door_close.wav");
 	Audio::load(sound_num::DOOR_LOCKED, L"./Data/BGM/locked.wav");
@@ -43,6 +43,7 @@ void Player::update(FPSCamera& camera)
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
+	Debug->SetString("moves:%d footstep_volume:%f", moves, footstep_volume);
 	//restrictArea();
 	//colWall();
 	colFloor();
@@ -66,6 +67,30 @@ void Player::render(const Camera& camera)
 
 void Player::move(const Camera& camera)
 {
+	/* ************* SE **************** */
+	if (moves)
+	{
+		footstep_volume += 0.2f;
+		if (!Audio::isPlay(sound_num::FOOTSTEP))
+		{
+			Audio::play(sound_num::FOOTSTEP, false);
+		}
+	}
+	else
+	{
+		footstep_volume -= 0.3f;
+		if (!Audio::isPlay(sound_num::FOOTSTEP))
+		{
+			Audio::stop(sound_num::FOOTSTEP);
+		}
+	}
+
+	if (footstep_volume > 0.8f) { footstep_volume = 0.8f; }
+	if (footstep_volume < 0.0f) { footstep_volume = 0.0f; }
+
+	Audio::SetVolume(sound_num::FOOTSTEP, footstep_volume);
+	/******************************************************/
+
 	if (input::STATE('D'))
 	{
 		if (posture.TurnToTheFront(pos, pos + FLOAT3(camera.GetTarget().x - camera.GetPos().x,0, camera.GetTarget().z - camera.GetPos().z), 0.2f) == -1) { posture.RotationYaw(toAngle(1)); }
@@ -101,18 +126,6 @@ void Player::move(const Camera& camera)
 		moves = true;
 	}
 
-	if (moves)
-	{
-		if (!Audio::isPlay(3))
-		{
-			Audio::play(3, false);
-		}
-	}
-	else
-	{
-		Audio::stop(3);
-		Audio::pause(3);
-	}
 }
 
 void Player::updateDestVec(VECTOR3D forward)
