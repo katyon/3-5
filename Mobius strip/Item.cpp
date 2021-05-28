@@ -72,7 +72,7 @@ void ItemObj::update(const Camera& camera)
     }
 
     // もし「石盤」をクリアしたら、石盤ヒントを削除・脱出のヒント②と水道管ヒントが出現
-    if (ButtonPush::getInstance()->judge_answer())
+    if (ButtonPush::getInstance()->final_judge)
     {
         item3D.itemSpec[1].exist = true;
         item3D.itemSpec[4].exist = true;
