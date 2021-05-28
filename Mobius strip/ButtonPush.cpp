@@ -141,7 +141,7 @@ bool ButtonPush::judge_answer()
 		if (i == 4 && provisional_judge == true)
 		{
 			// ÅI”»’è‚ğtrue‚É
-			//final_judge = true;
+			final_judge = true;
 			return true;
 		}
 	}
