@@ -22,7 +22,7 @@ void ItemMenu::init()
     SpriteLoad(menuItem.itemSpec[7].ptr, L"Data/Sprite/BalanceHint/balance3.png"); // ID_Balance3 
     SpriteLoad(menuItem.itemSpec[8].ptr, L"Data/Sprite/safety.png");               // ID_SafetyBox
     SpriteLoad(menuItem.itemSpec[9].ptr, L"Data/Sprite/omori.png");                // ID_Weight
-    SpriteLoad(menuItem.itemSpec[10].ptr, L"Data/Sprite/omori.png");               // ID_Key   
+    SpriteLoad(menuItem.itemSpec[10].ptr, L"Data/Sprite/key.png");               // ID_Key   
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
@@ -123,9 +123,9 @@ void ItemMenu::isChoice()
                 isObserve(9);
                 break;
 
-            //case SPEC::ITEM_ID::ID_Key:
-            //    isObserve(10);
-            //    break;
+            case SPEC::ITEM_ID::ID_Key:
+                isObserve(10);
+                break;
 
             default:
                 menuItem.itemSpec[i].isobserve = false;
@@ -371,7 +371,7 @@ void Menu::update()
 void ItemMenu::origin_Draw(int num)
 {
     if (menuItem.itemSpec[num].isobserve) {
-        SpriteRender(menuItem.itemSpec[num].ptr, 1189, 310, 0.18f, 0.27f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+        SpriteRender(menuItem.itemSpec[num].ptr, 1189, 310, 0.2f, 0.27f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
     }
 }
 
@@ -437,6 +437,17 @@ void ItemMenu::draw()
                 1, 1, 1, 1);
             break;
 
+        case ItemArr::ITEM_ID::ID_Esc2:
+            SpriteRender(menuItem.itemSpec[1].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
+
         case ItemArr::ITEM_ID::ID_Stone1:
             SpriteRender(menuItem.itemSpec[2].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
@@ -446,7 +457,72 @@ void ItemMenu::draw()
                 0, 0,
                 0,
                 1, 1, 1, 1);
+            break;
 
+        case ItemArr::ITEM_ID::ID_Stone2:
+            SpriteRender(menuItem.itemSpec[3].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
+
+        case ItemArr::ITEM_ID::ID_Pipe3:
+            SpriteRender(menuItem.itemSpec[4].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
+
+        case ItemArr::ITEM_ID::ID_Balance1:
+            SpriteRender(menuItem.itemSpec[5].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
+
+        case ItemArr::ITEM_ID::ID_Balance2:
+            SpriteRender(menuItem.itemSpec[6].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
+
+        case ItemArr::ITEM_ID::ID_Balance3:
+            SpriteRender(menuItem.itemSpec[7].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
+
+        case ItemArr::ITEM_ID::ID_SafetyBox:
+            SpriteRender(menuItem.itemSpec[8].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
             break;
 
         case ItemArr::ITEM_ID::ID_Weight:
@@ -459,9 +535,19 @@ void ItemMenu::draw()
                 0,
                 1, 1, 1, 1);
             break;
+
+        case ItemArr::ITEM_ID::ID_Key:
+            SpriteRender(menuItem.itemSpec[10].ptr,
+                menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
+                0.05f, 0.06f,
+                0, 0,
+                2048, 2048,
+                0, 0,
+                0,
+                1, 1, 1, 1);
+            break;
         }
         origin_Draw(i);
-  
     }
 }
 void Menu::draw()
@@ -586,16 +672,16 @@ void Menu::draw()
         case HelpContent::Exit:
             SpriteRender(menu_ptr, 0, 0, 1, 1, 3840, 1080, 1920, 1080, 0, 0, 0, 1, 1, 1, 1);
             // YES
-            SpriteRender(menu_ptr, 1248, 366, 0.8, 0.8, 0, 2160, 250, 104, 0, 0, 0, 1, 1, 1, 1);
+            SpriteRender(menu_ptr, 1248, 366, 0.8, 0.8, 0, 2160, 250, 110, 0, 0, 0, 1, 1, 1, 1);
             if (ColRects(366, 470, 1248, 1498, input::GetMousePos()))
             {
-                SpriteRender(menu_ptr, 1248, 366, 0.8, 0.8, 256, 2160, 250, 104, 0, 0, 0, 1, 1, 1, 1);
+                SpriteRender(menu_ptr, 1248, 366, 0.8, 0.8, 256, 2160, 250, 110, 0, 0, 0, 1, 1, 1, 1);
             }
             // NO
-            SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 40, 2272, 247, 106, 0, 0, 0, 1, 1, 1, 1);
+            SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 40, 2272, 247, 98, 0, 0, 0, 1, 1, 1, 1);
             if (ColRects(669, 775, 1248, 1418, input::GetMousePos()))
             {
-                SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 296, 2272, 247, 106, 0, 0, 0, 1, 1, 1, 1);
+                SpriteRender(menu_ptr, 1280, 669, 0.8, 0.8, 296, 2272, 247, 98, 0, 0, 0, 1, 1, 1, 1);
             }
             break;
         }

@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "AliceLib/AliceLib.h"
 #include "common.h"
-
+#include "fps_camera.h"
 class SPEC
 {
 public:
@@ -18,11 +18,11 @@ public:
         ID_Balance3, // ７
         ID_SafetyBox,// ８
         ID_Weight,   // ９
+        ID_Key,
         ID_EMPTY,    // 消しゴムさん
     };
 
     Sprite ptr;
-    SkinnedMesh model;
     FLOAT3 pos;   // 表示位置
     FLOAT3 scale; // 表示サイズ
     FLOAT2 src;
@@ -147,22 +147,26 @@ private:
     {
         arr->reset();
     }
-    FLOAT3 OBBscale;
-
-    FLOAT3 rayStart;
-    FLOAT3 rayEnd;
     float timer = 0;
     int RoomNum;    // 配置する部屋番号識別用
 
-    FLOAT3 hitPos;
+    //StageObject* objects;
+    //StageObject* objects2;
+    float distance = 100.0f;
+
+    FLOAT3 horizontal_lay_start;
+    FLOAT3 horizontal_lay_end;
+    FLOAT3 vertical_lay_start;
+    FLOAT3 vertical_lay_end;
     Quaternion posture[15];
+    enum HitPoint { SAVE, MINIMUM };
 
 public:
     ItemArr item3D;
 
     void init();
     void get();
-    void update(const Camera& camera);
+    void Diffupdate(FPSCamera& camera);
     void render(const Camera& camera);
     void uninit();
 

@@ -13,7 +13,6 @@ private:
 	std::queue<COMMAND> answer;
 	std::queue<COMMAND> input;
 
-	bool locked;
 
 private:
 	SafetyBox();
@@ -21,6 +20,8 @@ private:
 	void inputCommand(COMMAND com);
 
 public:
+	bool locked;
+
 	void init();
 	void update(const Camera& camera);
 	void render();
