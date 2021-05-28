@@ -385,6 +385,19 @@ void Player::autoControl(FPSCamera& camera)
 	case AUTO_PHASE::PHASE_END:
 
 		(StageManager::getIns()->getStageNum() == 0) ? StageManager::getIns()->Switching(1) : StageManager::getIns()->Switching(0);
+
+		StageObject* objects = StageManager::getIns()->getStageObjects();
+		if (objects)
+		{
+			for (int i = 0; i < StageData::MaxObjects; i++)
+			{
+				if (objects[i].ID == "spic2door.fbx")
+				{
+					objects[i].body.PlayAnimation(0, 0);
+					objects[i].body.UpdateAnimation(0);
+				}
+			}
+		}
 		auto_control = false;
 		FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
 		center.x = floorf(center.x);
