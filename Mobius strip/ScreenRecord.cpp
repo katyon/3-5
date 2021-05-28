@@ -75,10 +75,10 @@ void ScreenRecord::_edit()
 	ImGui::InputFloat(u8"コントラスト", &cbuff2->ContrastWeight, 0.25, -0.25);
 	ImGui::InputFloat(u8"明度", &cbuff2->Bright, 0.25, -0.25);
 	ImGui::InputFloat(u8"閾値", &cbuff2->threshold, 0.025, -0.025);
-	ImGui::SliderInt(u8"レベル", &level, 0, 4);
+	//ImGui::SliderInt(u8"レベル", &level, 0, 4);
 	ImGui::End();
 
-	(*cbuff2.GetData()) = luminance_level[level];
+	//(*cbuff2.GetData()) = luminance_level[level];
 
 }
 

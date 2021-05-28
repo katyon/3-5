@@ -96,7 +96,8 @@ void SceneGame::Update(float elapsed_time)
         PipePuzzle::getInstance()->Update();
         Candle::getInstance()->Update();
         SafetyBox::getInstance()->update(camera);
-        itemObj->update(camera);
+       // itemObj->Sameupdate(camera);
+        itemObj->Diffupdate(camera);
         G_Item->update();
         //Libra::getInstance()->Update();
         //Balance::Update();
@@ -191,7 +192,7 @@ void SceneGame::Render()
         StageManager::getIns()->Render();
 
         // ボタンプッシュ
-        ButtonPush::getInstance()->Render(camera);
+        //ButtonPush::getInstance()->Render(camera);
         itemObj->render(camera);
 
         PipePuzzle::getInstance()->Render(camera);
@@ -218,9 +219,11 @@ void SceneGame::Render()
         Debug->SetString("ｘ座標：%f", input::GetMousePos().x);
         Debug->SetString("y座標：%f", input::GetMousePos().y);
         menu->draw();
+        Reticle::getInstance()->setReticleType(Reticle::LOUPE);
+        Reticle::getInstance()->Render();
         break;
-    case balance:
 
+    case balance:
         break;
     }
 }
