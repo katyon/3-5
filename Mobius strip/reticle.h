@@ -23,6 +23,7 @@ public:
 	RETICLE_TYPE getReticleType() { return current_type; }
 
 	void Render();
+	void RenderCursor();
 
 	static Reticle* getInstance()
 	{

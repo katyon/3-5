@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "SceneGame.h"
+#include "reticle.h"
 /*************************************************/
 /*                      ‰Šú‰»                   */
 /*************************************************/
@@ -590,13 +591,7 @@ void Menu::draw()
         break;
     }
 
-    SpriteRender(1, input::GetMousePos().x, input::GetMousePos().y,
-        0.15f, 0.15f,
-        256, 0,
-        256, 256,
-        256, 0,
-        0,
-        1, 1, 1, 1);
+    Reticle::getInstance()->RenderCursor();
 }
 
 

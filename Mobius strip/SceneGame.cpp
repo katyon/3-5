@@ -115,25 +115,6 @@ void SceneGame::Update(float elapsed_time)
         if (input::TRG(input::MOUSE_R))
         {
             fix_cursor = !fix_cursor;
-            SetShowCursor(fix_cursor);
-            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
-            center.x = floorf(center.x);
-            center.y = floorf(center.y);
-            SetCursorPos(center.x, center.y);
-        }
-        if (input::TRG(input::MOUSE_R))
-        {
-            fix_cursor = !fix_cursor;
-            SetShowCursor(fix_cursor);
-            FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
-            center.x = floorf(center.x);
-            center.y = floorf(center.y);
-            SetCursorPos(center.x, center.y);
-        }
-        if (input::TRG(input::MOUSE_R))
-        {
-            fix_cursor = !fix_cursor;
-            SetShowCursor(fix_cursor);
             FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
             center.x = floorf(center.x);
             center.y = floorf(center.y);
@@ -143,6 +124,7 @@ void SceneGame::Update(float elapsed_time)
         if (!fix_cursor)
         {
             camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
+            player.update(camera);
         }
         if (input::TRG(VK_TAB))
         {
@@ -168,7 +150,6 @@ void SceneGame::Update(float elapsed_time)
         break;
     }
 
-    player.update(camera);
     Debug->SetString("カメラ回転中心座標 %f %f %f", player.getPos().x, player.getPos().y + 12.5f, player.getPos().z);
     Debug->SetString("カメラ座標 %f %f %f", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
     Debug->SetString("カメラの距離 %f", FLOAT3::distanceFrom({ player.getPos().x, player.getPos().y + 12.5f, player.getPos().z }, camera.GetPos()));
@@ -208,7 +189,7 @@ void SceneGame::Render()
         }
         else
         {
-            Reticle::getInstance()->Render();
+            (fix_cursor) ? Reticle::getInstance()->RenderCursor() : Reticle::getInstance()->Render();
             //SpriteRender(1, (GetWindowSize() / 2.0f), { 0.3f, 0.3f }, { 0, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f });
             SpriteRender(2, { 0,0 }, { 1, 1 }, { 0, 0 }, { 1920.0f, 1080.0f });
         }

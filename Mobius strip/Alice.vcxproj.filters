@@ -191,9 +191,6 @@
     <ClCompile Include="StageEditor.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="AL_Sound.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="transition_y.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -252,6 +249,9 @@
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="safety_box.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="key_pad.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -427,9 +427,6 @@
     <ClInclude Include="StageEditor.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="AL_Sound.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="transition_y.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
@@ -491,6 +488,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="safety_box.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="key_pad.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

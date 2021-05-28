@@ -21,3 +21,14 @@ void Reticle::Render()
 		break;
 	}
 }
+
+void Reticle::RenderCursor()
+{
+	POINT now_point;
+	GetCursorPos(&now_point);
+	FLOAT2 point = { (float)now_point.x, (float)now_point.y };
+
+	(current_type == RETICLE_TYPE::LOUPE) ?
+		SpriteRender(spr, point, { 0.3f, 0.3f }, { 256, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f }) :
+		SpriteRender(spr, point, { 0.3f, 0.3f }, { 256*3, 0 }, { 256.0f, 256.0f }, { 0, 0 });
+}

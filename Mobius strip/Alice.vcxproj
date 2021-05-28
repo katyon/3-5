@@ -221,13 +221,13 @@
     <ClCompile Include="AliceLib\StaticMesh.cpp" />
     <ClCompile Include="AliceLib\TempMain.cpp" />
     <ClCompile Include="AliceLib\Texture.cpp" />
-    <ClCompile Include="AL_Sound.cpp" />
     <ClCompile Include="Balance.cpp" />
     <ClCompile Include="ButtonPush.cpp" />
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="CollisionEditer.cpp" />
     <ClCompile Include="fps_camera.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="key_pad.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -311,7 +311,6 @@
     <ClInclude Include="AliceLib\StaticMesh.h" />
     <ClInclude Include="AliceLib\Texture.h" />
     <ClInclude Include="AliceLib\Util.h" />
-    <ClInclude Include="AL_Sound.h" />
     <ClInclude Include="Balance.h" />
     <ClInclude Include="ButtonPush.h" />
     <ClInclude Include="Candle.h" />
@@ -319,6 +318,7 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="fps_camera.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="key_pad.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="OBBs.h" />
     <ClInclude Include="orbital_camera.h" />
