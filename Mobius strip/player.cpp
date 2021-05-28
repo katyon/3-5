@@ -8,19 +8,50 @@
 #include <cmath>
 #include <limits>
 
-Player::Player() : pos(0, 0, 30), scale(0.1f, 0.1f, 0.1f)
+Player::Player() : pos(0, 0, 80), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
-	Audio::load(sound_num::FOOTSTEP, L"./Data/BGM/footsteps2.wav");
+	Audio::load(sound_num::FOOTSTEP, L"./Data/BGM/footsteps.wav");
 	Audio::load(sound_num::DOOR_OPEN, L"./Data/BGM/door_open.wav");
 	Audio::load(sound_num::DOOR_CLOSE, L"./Data/BGM/door_close.wav");
 	Audio::load(sound_num::DOOR_LOCKED, L"./Data/BGM/locked.wav");
 }
 
-void Player::init()
+void Player::ACinit()
+{
+	ac_data[DOOR_TYPE::LEAVE].wait_position = { -30.0f, 0, 0 };
+	ac_data[DOOR_TYPE::LEAVE].wait_focus = { -54.0f, 12.5f, 0 };
+	ac_data[DOOR_TYPE::LEAVE].dist_position = { -70.0f, 0, 0 };
+	ac_data[DOOR_TYPE::LEAVE].dist_focus = { -80, 12.5f, 0 };
+	ac_data[DOOR_TYPE::LEAVE].compl_Z = true;
+	
+
+	ac_data[DOOR_TYPE::ENTER].wait_position = { 0.45f, 0, 80.0f };
+	ac_data[DOOR_TYPE::ENTER].wait_focus = { 0.45f, 12.5f, 0 };
+	ac_data[DOOR_TYPE::ENTER].dist_position = { 0.45f, 0, 30.0f };
+	ac_data[DOOR_TYPE::ENTER].dist_focus = { 0.45f, 12.5f, 0 };
+	ac_data[DOOR_TYPE::ENTER].compl_Z = false;
+
+	//ac_data[DOOR_TYPE::LEAVE].wait_position = { -30.0f, 0, 0 };
+	//ac_data[DOOR_TYPE::LEAVE].wait_focus = { -54.0f, 12.5f, 0 };
+	//ac_data[DOOR_TYPE::LEAVE].dist_position = { -70.0f, 0, 0 };
+	//ac_data[DOOR_TYPE::LEAVE].dist_focus = { -80, 12.5f, 0 };
+}
+
+void Player::init(FPSCamera& camera)
 {
 	world_matrix = GetWorldMatrix(pos, scale, posture);
-	current_area = AREA_TYPE::ROOM;
+	ACinit();
+
+	camera.SetPos({ pos.x,pos.y + 12.5f, pos.z + 1 });
+
+	update(camera);
+	active_door = DOOR_TYPE::ENTER;
+	attract_point = ac_data[active_door].wait_position;
+	camera.setAutoFocus(ac_data[active_door].wait_focus, 0.1f, ac_data[active_door].compl_Z);
+	auto_control_timer = 0;
+	auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
+	auto_control = true;
 }
 
 void Player::update(FPSCamera& camera)
@@ -44,7 +75,7 @@ void Player::update(FPSCamera& camera)
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
 	//restrictArea();
-	//colWall();
+	colWall();
 	colFloor();
 
 	changeAnimation();
@@ -96,9 +127,6 @@ void Player::move(const Camera& camera)
 	else
 	{
 		Dest.target = Dest.target.normalize();
-
-		pos += static_cast<FLOAT3>(Dest.target) * 0.7f;
-		moves = true;
 	}
 
 	if (moves)
@@ -152,21 +180,25 @@ void Player::colWall()
 		}
 	}
 
-	if (distance < 5.0f)
+	if (distance > 5.0)
 	{
-		// 押し戻し用ベクトル
-		VECTOR3D vec = horizontal_lay_start - horizontal_lay_end;
-		
-		if(distance != 0)vec = vec.normalize();
-
-		// 押し戻し処理
-		pos = hitPos[MINIMUM] + vec * 5.0f;
-		pos.y = 0;
-		if (isnan(pos.x))
-		{
-			int hoge = 0;
-		}
+		pos += static_cast<FLOAT3>(Dest.target) * 0.7f;
+		moves = true;
 	}
+	//if (distance < 5.0f)
+	//{
+	//	// 押し戻し用ベクトル
+	//	VECTOR3D vec = horizontal_lay_start - hitPos[MINIMUM];
+	//	
+	//	if (distance != 0)
+	//	{
+	//		vec = vec.normalize();
+
+	//		// 押し戻し処理
+	//		vec.y = 0;
+	//		pos = hitPos[MINIMUM] + vec * 5.0f;
+	//	}
+	//}
 }
 
 void Player::colFloor()
@@ -221,43 +253,48 @@ void Player::colDoor(FPSCamera& camera)
 	static FLOAT3 rayStart, rayEnd;
 	getMouseRay(camera, rayStart, rayEnd);
 
-	switch (current_area)
+	for (const auto& col : StageManager::getIns()->getColBoxs())
 	{
-	case AREA_TYPE::ROOM:
-		for (const auto& col : StageManager::getIns()->getColBoxs())
-		{
-			if (col.option != -3) continue;
+		if ((col.option != -3) && (col.option != -4) && (col.option != -5)) continue;
 
-			if (ColLineOBB(rayStart, rayEnd,
-				col.obb, hit_pos[SAVE]))
+		if (ColLineOBB(rayStart, rayEnd,
+			col.obb, hit_pos[SAVE]))
+		{
+			float dist_temp = rayStart.distanceFrom(hit_pos[SAVE]);
+			if (dist_temp < distance) 
 			{
-				float dist_temp = rayStart.distanceFrom(hit_pos[SAVE]);
-				if (dist_temp < distance) 
+				hit_pos[MINIMUM] = hit_pos[SAVE];
+				distance = horizontal_lay_start.distanceFrom(hit_pos[MINIMUM]);
+
+				switch (col.option)
 				{
-					hit_pos[MINIMUM] = hit_pos[SAVE];
-					distance = horizontal_lay_start.distanceFrom(hit_pos[MINIMUM]);
+				case -3:
+					active_door = DOOR_TYPE::LEAVE;
+					break;
+				case -4:
+					active_door = DOOR_TYPE::ENTER;
+					break;
+				case -5:
+					active_door = DOOR_TYPE::EXIT;
+					break;
 				}
 			}
 		}
-		if (distance < 30.0f)
+	}
+	if (distance < 30.0f)
+	{
+		Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::EXIT);
+		if (input::TRG(input::MOUSE_L))
 		{
-			Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::EXIT);
-			if (input::TRG(input::MOUSE_L))
-			{
-				attract_point = { -30.0f, 0, 0 };
-				camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f);
-				auto_control_timer = 0;
-				auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
-				auto_control = true;
-			}
+			//attract_point = { -30.0f, 0, 0 };
+			//camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f);
+
+			attract_point = ac_data[active_door].wait_position;
+			camera.setAutoFocus(ac_data[active_door].wait_focus, 0.1f, ac_data[active_door].compl_Z);
+			auto_control_timer = 0;
+			auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
+			auto_control = true;
 		}
-		break;
-
-	case AREA_TYPE::CORRIDOR:
-		break;
-
-	case AREA_TYPE::FAKE_CORRIDOR:
-		break;
 	}
 }
 
@@ -266,7 +303,7 @@ void Player::setAutoMode(FPSCamera& camera)
 	if (input::STATE('G'))
 	{
 		attract_point = { -30.0f, 0, 0 };
-		camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f);
+		//camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f, ac_data[active_door].compl_Z);
 		auto_control_timer = 0;
 		auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
 		auto_control = true;
@@ -278,10 +315,14 @@ void Player::autoControl(FPSCamera& camera)
 	StageObject* objects = StageManager::getIns()->getStageObjects();
 	VECTOR3D vec;
 
+	// アニメーションさせるドアのオプション番号
+	int door_num = (-3 - active_door);
+
 	switch (auto_control_phase)
 	{
 	case AUTO_PHASE::MOVE_TO_DOOR:
 
+		auto_control_timer++;
 		vec = attract_point - pos;
 		if (vec.length() > 0.5f)
 		{
@@ -298,7 +339,7 @@ void Player::autoControl(FPSCamera& camera)
 			{
 				for (int i = 0; i < StageData::MaxObjects; i++)
 				{
-					if (objects[i].ID == "spic2door.fbx")
+					if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
 					{
 						objects[i].body.PlayAnimation(0, false);
 					}
@@ -309,7 +350,6 @@ void Player::autoControl(FPSCamera& camera)
 			auto_control_phase = AUTO_PHASE::OPEN_THE_DOOR;
 		}
 
-		auto_control_timer++;
 		break;
 
 	case AUTO_PHASE::OPEN_THE_DOOR:
@@ -317,15 +357,17 @@ void Player::autoControl(FPSCamera& camera)
 		{
 			for (int i = 0; i < StageData::MaxObjects; i++)
 			{
-				if (objects[i].ID == "spic2door.fbx")
+				if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
 				{
 					objects[i].body.UpdateAnimation();
 					if (!objects[i].body.IsPlayAnimation()) 
 					{
 						objects[i].body.PlayAnimation(1, false);
 						objects[i].body.UpdateAnimation(0.0f);
-						camera.setAutoFocus({ -80, 12.5f, 0 }, 0.1f);
-						attract_point = { -70.0f, 0, 0 };
+						//attract_point = { -70.0f, 0, 0 };
+						//camera.setAutoFocus({ -80, 12.5f, 0 }, 0.1f);
+						attract_point = ac_data[active_door].dist_position;
+						camera.setAutoFocus(ac_data[active_door].dist_focus, 0.1f, ac_data[active_door].compl_Z);
 						auto_control_phase = AUTO_PHASE::LEAVE_THE_ROOM;
 					}
 					break;
@@ -336,6 +378,7 @@ void Player::autoControl(FPSCamera& camera)
 
 	case AUTO_PHASE::LEAVE_THE_ROOM:
 
+		auto_control_timer++;
 		vec = attract_point - pos;
 		if (vec.length() > 0.5f)
 		{
@@ -352,7 +395,7 @@ void Player::autoControl(FPSCamera& camera)
 			{
 				for (int i = 0; i < StageData::MaxObjects; i++)
 				{
-					if (objects[i].ID == "spic2door.fbx")
+					if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
 					{
 						objects[i].body.PlayAnimation(1, false);
 					}
@@ -360,35 +403,36 @@ void Player::autoControl(FPSCamera& camera)
 			}
 			pos = attract_point;
 			auto_control_timer = 0;
-			auto_control_phase = AUTO_PHASE::CLOSE_THE_DOOR;
+			auto_control_phase = AUTO_PHASE::PHASE_END;
 		}
 
-		auto_control_timer++;
 		break;
 
 	case AUTO_PHASE::CLOSE_THE_DOOR:
-		if (objects)
-		{
-			for (int i = 0; i < StageData::MaxObjects; i++)
-			{
-				if (objects[i].ID == "spic2door.fbx")
-				{
-					objects[i].body.UpdateAnimation();
-					if (!objects[i].body.IsPlayAnimation())
-					{
-						objects[i].body.PlayAnimation(0, false);
-						objects[i].body.UpdateAnimation(0.0f);
-						auto_control_phase = AUTO_PHASE::PHASE_END;
-					}
-					break;
-				}
-			}
-		}
+		//if (objects)
+		//{
+		//	for (int i = 0; i < StageData::MaxObjects; i++)
+		//	{
+		//		if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
+		//		{
+		//			objects[i].body.UpdateAnimation();
+		//			if (!objects[i].body.IsPlayAnimation())
+		//			{
+		//				objects[i].body.PlayAnimation(0, false);
+		//				objects[i].body.UpdateAnimation(0.0f);
+		//				auto_control_phase = AUTO_PHASE::PHASE_END;
+		//			}
+		//			break;
+		//		}
+		//	}
+		//}
 		break;
 		
 	case AUTO_PHASE::PHASE_END:
-
-		(StageManager::getIns()->getStageNum() == 0) ? StageManager::getIns()->Switching(1) : StageManager::getIns()->Switching(0);
+		if (active_door == DOOR_TYPE::LEAVE)
+		{
+			(StageManager::getIns()->getStageNum() == 0) ? StageManager::getIns()->Switching(1) : StageManager::getIns()->Switching(0);
+		}
 
 		StageObject* objects = StageManager::getIns()->getStageObjects();
 		if (objects)
@@ -406,16 +450,17 @@ void Player::autoControl(FPSCamera& camera)
 		FLOAT2 center = ToClient(GetWindowSize() / 2.0f);
 		center.x = floorf(center.x);
 		center.y = floorf(center.y);
-		pos = { 0.45f, 0, 141.8f };
-		camera.autoFin(GetWorldMatrix((pos + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), {pos.x, pos.y + 12.5f, pos.z});
+		if (active_door == DOOR_TYPE::LEAVE)
+		{
+			pos = { 0.45f, 0, 141.8f };
+			camera.autoFin(GetWorldMatrix((pos + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { pos.x, pos.y + 12.5f, pos.z });
+		}
+		else
+		{
+			camera.autoFin();
+		}
 		SetCursorPos(center.x, center.y);
 	}
-
-
-	//VECTOR3D vec = attract_point - pos;
-	//if (vec.length() < 0.5f)return;
-	//vec = vec.normalize();
-	//vec.y = 0;
 }
 
 

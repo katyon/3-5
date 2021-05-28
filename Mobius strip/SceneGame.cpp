@@ -7,6 +7,7 @@
 #include "Balance.h"
 #include "reticle.h"
 #include "safety_box.h"
+#include "key_pad.h"
 
 //Menu menu;
 
@@ -15,7 +16,7 @@
 SceneGame::SceneGame()
 {
     //Todo::ここにソースを記入する
-    player.init();
+   // player.init(camera);
     //stage.load("Data/Objects/stage.fbx");
     //SpriteLoad(1, L"Data/Sprite/reticle.png");
     SpriteLoad(2, L"Data/Sprite/TAB.png");
@@ -44,6 +45,7 @@ SceneGame::SceneGame()
     //SceneGame::Initialize();
     Reticle::getInstance();
     SafetyBox::getInstance();
+    KeyPad::getInstance();
 }
 
 //シーン変更された瞬間に実行される処理
@@ -59,12 +61,13 @@ void SceneGame::Initialize()
     Libra::getInstance()->Init();
     Balance::Init();
     SafetyBox::getInstance()->init();
+    KeyPad::getInstance()->init();
 
     menu->init();
     camera.SetPos(FLOAT3(0, 0, -1));
     camera.initPos();
     camera.SetTarget({ 0, 0, 5 });
-    player.init();
+    player.init(camera);
 
     Audio::stop(0);
     Audio::play(1, true);
@@ -110,6 +113,7 @@ void SceneGame::Update(float elapsed_time)
         PipePuzzle::getInstance()->Update();
         Candle::getInstance()->Update();
         SafetyBox::getInstance()->update(camera);
+        KeyPad::getInstance()->update(camera);
         itemObj->update(camera);
         G_Item->update();
         Libra::getInstance()->Update();

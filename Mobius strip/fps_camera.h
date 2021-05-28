@@ -52,12 +52,12 @@ private:
 	FLOAT3 focus_pos;
 
 	XMMATRIX rotate_to_target;
-	int magnification = 15;
+	int magnification = 60;
 
 	bool auto_focus;
 	FLOAT3 focus_target;
 	float complement;
-
+	bool camera_compl_Z;
 
 	const float CAMERA_DISTANCE = 1.0f;
 	const float FOCUS_RANGE = 5.0f;
@@ -74,8 +74,9 @@ public:
 	void zoom();
 	void setSensitivity(int s) { correct_sensitivity = s; }
 	void setFocusPos(FLOAT3 pos) { focus_pos = pos; }
+	void autoFin() { auto_focus = false; }
 	void autoFin(XMMATRIX player_world_matrix, FLOAT3 center);
 
-	void setAutoFocus(FLOAT3 focus_point, float complement);
+	void setAutoFocus(FLOAT3 focus_point, float complement, bool camera_compl_Z);
 	void focusCompulsion(XMMATRIX player_world_matrix, FLOAT3 center);
 };

@@ -13,7 +13,7 @@ private:
 	bool locked;
 
 private:
-	KeyPad() { init(); }
+	KeyPad() {}
 	void setAnswer();
 	void inputNumber(int num);
 

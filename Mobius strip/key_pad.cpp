@@ -27,7 +27,7 @@ void KeyPad::update(const Camera& camera)
 		// ボタン入力処理
 		for (const auto& col : StageManager::getIns()->getColBoxs())
 		{
-			//if ((col.option != -7) && (col.option != -8)) continue;	0~9までの入力キーごとのオプションを参照
+			if (!((col.option <= -11) && (col.option >= -20))) continue;	//0~9までの入力キーごとのオプションを参照
 			distance = 100.0f;
 
 			if (ColLineOBB(ray_start, ray_end, col.obb, hit_pos)) { distance = ray_start.distanceFrom(hit_pos); }
@@ -41,7 +41,7 @@ void KeyPad::update(const Camera& camera)
 		// アニメーション再生
 		for (int i = 0; i < StageData::MaxObjects; i++)
 		{
-			if (objects[i].ID == "Password_and_key_yoko.fbx")
+			if (objects[i].ID == "Password_yoko.fbx")
 			{
 				if (objects[i].body.IsPlayAnimation())
 				{
@@ -54,7 +54,7 @@ void KeyPad::update(const Camera& camera)
 	{
 		for (int i = 0; i < StageData::MaxObjects; i++)
 		{
-			if (objects[i].ID == "Password_and_key_yoko.fbx")
+			if (objects[i].ID == "Password_yoko.fbx")
 			{
 				if (objects[i].body.IsPlayAnimation())
 				{
@@ -73,7 +73,7 @@ void KeyPad::pushButton(StageObject* objects, const ColBox col)
 		{
 			for (int i = 0; i < StageData::MaxObjects; i++)
 			{
-				if (objects[i].ID == "Password_and_key_yoko.fbx")
+				if (objects[i].ID == "Password_yoko.fbx")
 				{
 					int key = (col.option + 10)*-1;
 

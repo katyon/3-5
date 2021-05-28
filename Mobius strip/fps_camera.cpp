@@ -20,14 +20,15 @@ VECTOR2D FPSCamera::getCursorMoveAmount()
 int FPSCamera::correct_sensitivity = 5;
 FPSCamera::FPSCamera()
 {
-	relative_pos = { 0, 0, CAMERA_DISTANCE };
-	SetTarget({0, 0, FOCUS_RANGE});
+	relative_pos = { 0, 0, -CAMERA_DISTANCE };
+	SetFov(toRadian(60));
+	SetTarget({0, 12.5f, 0});
 	SetPerspectiveMatrix(0.5f, 1000.0f);
 }
 
 void FPSCamera::initPos()
 {
-	relative_pos = { 0, 0, CAMERA_DISTANCE };
+	relative_pos = { 0, 0, -CAMERA_DISTANCE };
 }
 
 void FPSCamera::update(XMMATRIX player_world_matrix, FLOAT3 center)
@@ -43,10 +44,10 @@ void FPSCamera::update(XMMATRIX player_world_matrix, FLOAT3 center)
 	//if (angle < 0) { angle += 1.0f; }
 	Debug->SetString("回転角 %f", angle);
 
-	if (input::TRG('G'))
-	{
-		setAutoFocus({ -53, 12.5f, 0 }, 0.1f);
-	}
+	//if (input::TRG('G'))
+	//{
+	//	setAutoFocus({ -53, 12.5f, 0 }, 0.1f);
+	//}
 }
 
 void FPSCamera::control(XMMATRIX player_world_matrix, FLOAT3 center)
@@ -162,19 +163,21 @@ void FPSCamera::zoom()
 	SetFov(toRadian(magnification));
 }
 
-void FPSCamera::setAutoFocus(FLOAT3 focus_point, float complement)
+void FPSCamera::setAutoFocus(FLOAT3 focus_point, float complement, bool camera_compl_Z)
 {
 	if (complement < 0) return;
 
 	auto_focus = true;
 	focus_target = focus_point;
 	this->complement = complement;
+	this->camera_compl_Z = camera_compl_Z;
 }
 
 void FPSCamera::autoFin(XMMATRIX player_world_matrix, FLOAT3 center)
 {
 	// 原点基点のカメラ座標を回転
-	XMVECTOR camera_pos = XMLoadFloat3(&FLOAT3(0, 0, -1));
+	XMVECTOR camera_pos;
+	camera_pos = (camera_compl_Z) ? XMLoadFloat3(&FLOAT3(0, 0, -1)) : XMLoadFloat3(&FLOAT3(1, 0, 0));
 
 	// 原点基点のカメラ座標を保存
 	XMFLOAT3 store_relative;
@@ -218,7 +221,8 @@ void FPSCamera::focusCompulsion(XMMATRIX player_world_matrix, FLOAT3 center)
 	if (current_vector.isParallel(target_vector)) 
 	{
 		// 原点基点のカメラ座標を回転
-		XMVECTOR camera_pos = XMLoadFloat3(&FLOAT3(-1, 0, 0));
+		XMVECTOR camera_pos;
+		camera_pos = (camera_compl_Z) ? XMLoadFloat3(&FLOAT3(-1, 0, 0)) : XMLoadFloat3(&FLOAT3(0, 0, -1));
 
 		// 原点基点のカメラ座標を保存
 		XMFLOAT3 store_relative;

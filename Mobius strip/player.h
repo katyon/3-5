@@ -3,6 +3,17 @@
 #include "OBBs.h"
 #include "fps_camera.h"
 
+struct AutoControlData
+{
+	FLOAT3 wait_position;
+	FLOAT3 dist_position;
+
+	FLOAT3 wait_focus;
+	FLOAT3 dist_focus;
+
+	bool compl_Z;
+};
+
 class Player
 {
 private:
@@ -11,7 +22,7 @@ private:
 	const FLOAT3	scale;
 	XMMATRIX		world_matrix;
 
-	FLOAT3	pos;
+	FLOAT3 pos;
 	Quaternion posture;
 	PostureVector posture_vec;
 
@@ -47,20 +58,20 @@ private:
 		CLOSE_THE_DOOR,
 		PHASE_END
 	}auto_control_phase;
-
-	enum AREA_TYPE
+	
+	enum DOOR_TYPE
 	{
-		ROOM,
-		CORRIDOR,
-		FAKE_CORRIDOR
-	}area_type;
+		LEAVE,
+		ENTER,
+		EXIT
+	}active_door;
 
-	AREA_TYPE current_area;
+	AutoControlData ac_data[3];
 
 public:
 	Player();
 
-	void init();
+	void init(FPSCamera& camera);
 	void update(FPSCamera& camera);
 	void render(const Camera& camera);
 
@@ -69,13 +80,15 @@ public:
 	void restrictArea();
 	void changeAnimation();
 
-	void colDoor(FPSCamera& camera);
 
 	void setAutoMode(FPSCamera& camera);
 	void autoControl(FPSCamera& camera);
 
 	void colWall();
 	void colFloor();
+	void colDoor(FPSCamera& camera);
+
+	void ACinit();
 
 	bool getControlable() { return auto_control; }
 
