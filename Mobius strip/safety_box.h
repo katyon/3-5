@@ -16,7 +16,7 @@ private:
 	bool locked;
 
 private:
-	SafetyBox() { init(); }
+	SafetyBox();
 	void setAnswer();
 	void inputCommand(COMMAND com);
 

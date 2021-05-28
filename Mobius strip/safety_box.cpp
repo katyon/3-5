@@ -1,6 +1,13 @@
 #include "safety_box.h"
 #include "StageManager.h"
 #include "reticle.h"
+#include "Sound.h"
+
+SafetyBox::SafetyBox()
+{
+	Audio::load(sound_num::SAFE_PUSH, L"Data/BGM/densipush.wav");
+	Audio::load(sound_num::SAFE_OPEN, L"Data/BGM/densilock.wav");  // ‰¹‚ª¬‚³‚¢‚Ì‚Å‘¼‚æ‚è‘å‚«‚­(volume->0.8f)
+}
 
 void SafetyBox::setAnswer()
 {
@@ -88,11 +95,13 @@ void SafetyBox::pushButton(StageObject* objects, const ColBox col)
 					{
 						objects[i].body.PlayAnimation(1, false);
 						SafetyBox::getInstance()->inputCommand(COMMAND::UP);
+						Audio::play(sound_num::SAFE_PUSH);
 					}
 					if (col.option == -8)
 					{
 						objects[i].body.PlayAnimation(2, false);
 						SafetyBox::getInstance()->inputCommand(COMMAND::DOWN);
+						Audio::play(sound_num::SAFE_PUSH);
 					}
 				}
 			}
@@ -109,7 +118,7 @@ void SafetyBox::inputCommand(COMMAND com)
 	if (input == answer)
 	{
 		locked = false;
-
+		Audio::play(sound_num::SAFE_OPEN);
 		StageObject* objects = StageManager::getIns()->getStageObjects();
 		if (objects)
 		{

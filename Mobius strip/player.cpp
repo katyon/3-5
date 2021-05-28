@@ -2,15 +2,19 @@
 #include "StageManager.h"
 #include "menu.h"
 #include "reticle.h"
+#include "Sound.h"
 
 #include <cassert>
 #include <cmath>
 #include <limits>
 
-Player::Player() : pos(0, 0, 0), scale(0.1f, 0.1f, 0.1f)
+Player::Player() : pos(0, 0, 30), scale(0.1f, 0.1f, 0.1f)
 {
 	model.load("Data/actor/chara_anime.fbx");
-	Audio::load(3, L"./Data/BGM/footsteps2.wav");
+	Audio::load(sound_num::FOOTSTEP, L"./Data/BGM/footsteps2.wav");
+	Audio::load(sound_num::DOOR_OPEN, L"./Data/BGM/door_open.wav");
+	Audio::load(sound_num::DOOR_CLOSE, L"./Data/BGM/door_close.wav");
+	Audio::load(sound_num::DOOR_LOCKED, L"./Data/BGM/locked.wav");
 }
 
 void Player::init()
@@ -289,6 +293,7 @@ void Player::autoControl(FPSCamera& camera)
 
 		if (auto_control_timer > 120)
 		{
+			Audio::play(sound_num::DOOR_OPEN);
 			if (objects)
 			{
 				for (int i = 0; i < StageData::MaxObjects; i++)
@@ -308,7 +313,6 @@ void Player::autoControl(FPSCamera& camera)
 		break;
 
 	case AUTO_PHASE::OPEN_THE_DOOR:
-
 		if (objects)
 		{
 			for (int i = 0; i < StageData::MaxObjects; i++)
@@ -343,6 +347,7 @@ void Player::autoControl(FPSCamera& camera)
 
 		if (auto_control_timer > 120)
 		{
+			Audio::play(sound_num::DOOR_CLOSE);
 			if (objects)
 			{
 				for (int i = 0; i < StageData::MaxObjects; i++)
@@ -362,7 +367,6 @@ void Player::autoControl(FPSCamera& camera)
 		break;
 
 	case AUTO_PHASE::CLOSE_THE_DOOR:
-
 		if (objects)
 		{
 			for (int i = 0; i < StageData::MaxObjects; i++)

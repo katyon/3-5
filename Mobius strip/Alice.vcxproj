@@ -330,6 +330,7 @@
     <ClInclude Include="SceneTite.h" />
     <ClInclude Include="ScreenRecord.h" />
     <ClInclude Include="Shelter.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="StageData.h" />
     <ClInclude Include="StageEditor.h" />
     <ClInclude Include="StageManager.h" />
