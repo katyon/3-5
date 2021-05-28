@@ -5,52 +5,92 @@
 
 Candle::Candle()
 {
-    Candle_full.load("Data\\Candle\\candle_full.fbx");
-    Candle_half.load("Data\\Candle\\candle_half.fbx");
-    Candle_lost.load("Data\\Candle\\candle_lost.fbx");
-    posture.reset();
 }
 
 void Candle::Init()
 {
-    position = { -15, 0, 50 };
-    scale = { 0.7, 0.7, 0.7 };
-    posture.RotationYaw(-PI / 2);
+
 }
 
 void Candle::Update()
 {
+    StageObject* objects = StageManager::getIns()->getStageObjects();
 
-}
-
-void Candle::Render(const Camera& camera)
-{
-    FLOAT4 light_dir = { 0, 0, 0, 1 };
-    if (StageManager::getIns()->getStageNum() == 0)
+    for (int i = 0; i < StageData::MaxObjects; i++)
     {
-        switch (PipePuzzle::getInstance()->GetClearFlg())
+        switch (RenderFlg())
         {
-        case 0:
-            SkinnedMeshRender(Candle_half, camera, position, scale, posture, light_dir);
-            break;
-
-        case 1:
-            if (G_Item->count[0] == true)
+        case -1: // PipePuzzle::ClearFlg == -1
+            if (objects[i].ID == "candle_full.fbx")
             {
-                SkinnedMeshRender(Candle_lost, camera, position, scale, posture, light_dir);
-                break;
+                objects[i].isShow = true;
             }
-            SkinnedMeshRender(Candle_half, camera, position, scale, posture, light_dir);
+            if (objects[i].ID == "candle_half.fbx")
+            {
+                objects[i].isShow = false;
+            }
+            if (objects[i].ID == "candle_lost.fbx")
+            {
+                objects[i].isShow = false;
+            }
             break;
 
-        case -1:
-            SkinnedMeshRender(Candle_full, camera, position, scale, posture, light_dir);
+        case 0:  // PipePuzzle::ClearFlg == 0
+            if (objects[i].ID == "candle_full.fbx")
+            {
+                objects[i].isShow = false;
+            }
+            if (objects[i].ID == "candle_half.fbx")
+            {
+                objects[i].isShow = true;
+            }
+            if (objects[i].ID == "candle_lost.fbx")
+            {
+                objects[i].isShow = false;
+            }
+            break;
+
+        case 1:  // PipePuzzle::ClearFlg == 1
+            if (G_Item->count[0] == true) {  }
+
+            if (objects[i].ID == "candle_full.fbx")
+            {
+                objects[i].isShow = false;
+            }
+            if (objects[i].ID == "candle_half.fbx")
+            {
+                objects[i].isShow = false;
+            }
+            if (objects[i].ID == "candle_lost.fbx")
+            {
+                objects[i].isShow = true;
+            }
             break;
         }
     }
 }
 
-void Candle::Release()
+int Candle::RenderFlg()
 {
+    switch (PipePuzzle::getInstance()->GetClearFlg())
+    {
+    case -1:
+        return -1;
+        break;
 
+    case 0:
+        return 0;
+        break;
+
+    case 1:
+        if (G_Item->count[0] == true)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+        break;
+    }
 }

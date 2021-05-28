@@ -8,6 +8,7 @@
 #include "reticle.h"
 #include "safety_box.h"
 #include "key_pad.h"
+#include "Sound.h"
 
 //Menu menu;
 
@@ -22,8 +23,8 @@ SceneGame::SceneGame()
     SpriteLoad(2, L"Data/Sprite/TAB.png");
     SpriteLoad(sprClear, L"Data/Sprite/CLEAR.png");
 
-    Audio::load(1, L"Data/BGM/Waltz.wav");
-    Audio::load(5, L"Data/BGM/menu.wav");
+    Audio::load(sound_num::GAME_BGM, L"Data/BGM/Waltz.wav");
+    Audio::load(sound_num::MENU, L"Data/BGM/menu.wav");
     itemObj->init();
     // ボタンプッシュ ここから
     camera.SetPos({ 0,200,-10 });
@@ -161,7 +162,8 @@ void SceneGame::Update(float elapsed_time)
             center.y = floorf(center.y);
             SetCursorPos(center.x, center.y);
             game_mode = normal;
-            Audio::play(5);
+            Audio::play(sound_num::MENU);
+            Audio::SetVolume(sound_num::FOOTSTEP, 0.0f);
         }
         menu->update();
         break;
@@ -196,8 +198,7 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         PipePuzzle::getInstance()->Render(camera);
-        Candle::getInstance()->Render(camera);
-        Libra::getInstance()->Render(camera);
+        //Libra::getInstance()->Render(camera);
         Balance::Render();
         G_Item->draw();
         //cOBB(camera);

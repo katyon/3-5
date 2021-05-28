@@ -7,12 +7,24 @@
 #include "reticle.h"
 #include "safety_box.h"
 #include "Balance.h"
+#include "Sound.h"
+
 // 3Dでのアイテム
 
 void ItemObj::init()
 {
     arr->init();
-    Audio::load(6, L"./Data/BGM/get.wav");
+    /* ID_ESC1 */
+    /* ID_ESC2 */
+    /* 石盤のヒント1 */
+    /* 石盤のヒント2 */
+    /* 水道管のヒント */
+    /* 天秤のヒント1 */
+    /* 天秤のヒント2 */
+    /* 天秤のヒント3 */
+    /* 金庫のヒント */
+    /* 錘 */
+    Audio::load(sound_num::GET, L"./Data/BGM/get.wav");
 
     G_Item->count[0] = false;
     G_Item->count[1] = false;
@@ -77,6 +89,15 @@ void ItemObj::Diffupdate(FPSCamera& camera)
     static FLOAT3 rayStart, rayEnd;
     getMouseRay(camera, rayStart, rayEnd);
 
+    // アイテム出現条件
+    // 
+    // もし「水道管A」をクリアしたら、石盤ヒント②と天秤のヒント②が出現
+    if (PipePuzzle::getInstance()->GetClearFlg() == 0)
+    {
+        item3D.itemSpec[3].exist = true;
+        item3D.itemSpec[6].exist = true;
+    }
+
     // もし「石盤」をクリアしたら、石盤ヒントを削除・脱出のヒント②と水道管ヒントが出現
     if (ButtonPush::getInstance()->judge_answer())
     {
@@ -87,7 +108,7 @@ void ItemObj::Diffupdate(FPSCamera& camera)
     }
 
     // もし「水道管B」をクリアしたら、水道管ヒントを削除・金庫のヒントが出現
-    if (PipePuzzle::getInstance()->clearFlg1)
+    if (PipePuzzle::getInstance()->GetClearFlg() == 1)
     {
         item3D.itemSpec[1].exist = true;
     }

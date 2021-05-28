@@ -149,7 +149,7 @@ void Menu::update()
 {
     Audio::SetVolume(1, volumeBGM);
     
-    for (int i = 2; i < 7; i++)
+    for (int i = 3; i < 7; i++)
     {
         Audio::SetVolume(i, volumeSE);
     }

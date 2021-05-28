@@ -4,8 +4,8 @@ enum sound_num
 {
     TITLE_BGM,
     GAME_BGM,
-    PIPE,
     FOOTSTEP,
+    PIPE,
     PUTTING_BUTTON,
     MENU,
     GET,

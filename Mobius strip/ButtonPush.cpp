@@ -3,6 +3,7 @@
 #include "ButtonPush.h"
 #include "Shelter.h"
 #include "SceneGame.h"
+#include "Sound.h"
 //#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
@@ -41,7 +42,7 @@ ButtonPush::ButtonPush()
 	button[4][4].model.load("Data/Buttons/botan25.fbx");
 	base.model.load("Data/Buttons/hako.fbx");
 
-	Audio::load(4, L"./Data/BGM/putting_button.wav");
+	Audio::load(sound_num::PUTTING_BUTTON, L"./Data/BGM/putting_button.wav");
 
 }
 

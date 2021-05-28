@@ -1,5 +1,6 @@
 #include "SceneTite.h"
 #include "common.h"
+#include "Sound.h"
 
 //ゲームの起動時に一度だけ行う処理
 //モデル・音などのロードなど
@@ -7,7 +8,7 @@ SceneTitle::SceneTitle()
 {
 	//Todo::ここにソースを記入する
 	title.load("Data/Objects/title.fbx");
-	Audio::load(0, L"./Data/BGM/BGM.wav");
+	Audio::load(sound_num::TITLE_BGM, L"./Data/BGM/BGM.wav");
 	SpriteLoad(sprTitle, L"Data/Sprite/title.png");
 	//コンストラクタの最後で念のための初期化を行う
 	//SceneTitle::Initialize();
