@@ -275,12 +275,24 @@ void Menu::update()
                 // âÊñ ñæÇÈÇ≥(Å©)
                 if (ColRects(475, 523, 1100, 1165, input::GetMousePos()))
                 {
-
+                    ScreenRecord* screen = screenR;
+                    int index = screen->getLevel();
+                    if (index >= 1)
+                    {
+                        screen->ChangeBrightness(index - 1);
+                        value_pos[1].x -= 95.0f;
+                    }
                 }
                 // âÊñ ñæÇÈÇ≥(Å®)
                 if (ColRects(475, 523, 1572, 1637, input::GetMousePos()))
                 {
-
+                    ScreenRecord* screen = screenR;
+                    int index = screen->getLevel();
+                    if (index < 4)
+                    {
+                        screen->ChangeBrightness(index + 1);
+                        value_pos[1].x += 95.0f;
+                    }
                 }
 
                 // å¯â âπ(Å©)

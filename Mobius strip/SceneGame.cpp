@@ -72,6 +72,19 @@ void SceneGame::Initialize()
     ClearGame = false;
     fix_cursor = false;
 
+
+    StageObject* objects = StageManager::getIns()->getStageObjects();
+    if (objects)
+    {
+        for (int i = 0; i < StageData::MaxObjects; i++)
+        {
+           if (objects[i].body.IsModel())
+           {
+               objects[i].body.PlayAnimation(0, 0);
+               objects[i].body.UpdateAnimation(0);
+           }
+        }
+    }
 }
 
 //シーン全体の更新処理
