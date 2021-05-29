@@ -31,15 +31,6 @@ void ItemObj::init()
 
 void ItemObj::update(FPSCamera& camera)
 {
-    // ルーペ表示の条件
-    for (int i = 0; i < arr->ITEM_MAX; i++)
-    {
-        if (distance < 30.0f && item3D.itemSpec[i].exist)
-        {
-            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
-        }
-    }
-
     StageObject* objects = StageManager::getIns()->getStageObjects();
     StageObject* esc1 = nullptr;
     StageObject* balance1 = nullptr;
@@ -96,12 +87,6 @@ void ItemObj::update(FPSCamera& camera)
         }
     }
 
-    // 対象アイテムまでの距離
-    FLOAT3 hit_pos[2];
-    distance = 100.0f;
-    static FLOAT3 rayStart, rayEnd;
-    getMouseRay(camera, rayStart, rayEnd);
-
     if (esc1 != nullptr) { esc1->isShow = item3D.itemSpec[0].exist ? true : false; }
     if (esc2 != nullptr) { esc2->isShow = item3D.itemSpec[1].exist ? true : false; }
     if (stone1 != nullptr) { stone1->isShow = item3D.itemSpec[2].exist ? true : false; }
@@ -114,7 +99,7 @@ void ItemObj::update(FPSCamera& camera)
     if (omori != nullptr) { omori->isShow = item3D.itemSpec[9].exist ? true : false; }
     if (key != nullptr) { key->isShow = item3D.itemSpec[10].exist ? true : false; }
 
-    // アイテム出現条件
+
     // もし「水道管A」をクリアしたら、石盤ヒント②と天秤のヒント②が出現
     if (PipePuzzle::getInstance()->GetClearFlg() == 0)
     {
@@ -157,6 +142,11 @@ void ItemObj::update(FPSCamera& camera)
         }
     }
 
+    // 対象アイテムまでの距離
+    FLOAT3 hit_pos[2];
+    distance = 100.0f;
+    static FLOAT3 rayStart, rayEnd;
+    getMouseRay(camera, rayStart, rayEnd);
     // 当たり判定検索ループ
     for (const auto& col : StageManager::getIns()->getColBoxs())
     {
@@ -170,110 +160,158 @@ void ItemObj::update(FPSCamera& camera)
             {
                 hit_pos[MINIMUM] = hit_pos[SAVE];
                 distance = rayStart.distanceFrom(hit_pos[MINIMUM]);
-            }
-            // 距離が近いときにクリックしたら
-            if (distance < 30.0f && input::TRG(VK_LBUTTON))
-            {
-                switch (col.option)
+
+                // 距離が近いとき
+                if (distance < 30.0f)
                 {
-                case 3: // esc1,balance1(R2)
-                    if (item3D.itemSpec[0].exist)
+                    switch (col.option)
                     {
-                        item3D.itemSpec[0].exist = false;
-                        item3D.itemSpec[5].exist = false;
-                        item3D.itemSpec[2].exist = true;
+                    case 3: // esc1,balance1(R2)
+                        if (item3D.itemSpec[0].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
 
-                        arr->get_item(SPEC::ITEM_ID::ID_Esc1);
-                        arr->get_item(SPEC::ITEM_ID::ID_Balance1);
-                        item3D.itemSpec[0].got = true;
-                        item3D.itemSpec[5].got = true;
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[0].exist = false;
+                                item3D.itemSpec[5].exist = false;
+                                item3D.itemSpec[2].exist = true;
+
+                                arr->get_item(SPEC::ITEM_ID::ID_Esc1);
+                                arr->get_item(SPEC::ITEM_ID::ID_Balance1);
+                                item3D.itemSpec[0].got = true;
+                                item3D.itemSpec[5].got = true;
+                            }
+                        }
+                        break;
+
+                    case 9: // safety(R2)
+                        if (item3D.itemSpec[8].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[8].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_SafetyBox);
+                                item3D.itemSpec[8].got = true;
+                            }
+                        }
+                        break;
+
+                    case 10: // omori(R2)
+                        if (item3D.itemSpec[9].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                G_Item->count[0] = true;
+                                item3D.itemSpec[9].exist = false;
+                                item3D.itemSpec[7].exist = true;
+                                item3D.itemSpec[10].exist = true;
+
+                                arr->get_item(SPEC::ITEM_ID::ID_Weight);
+                                item3D.itemSpec[9].got = true;
+                            }
+                        }
+                        break;
+
+
+
+                    case 4: // esc2(R1)
+                        if (item3D.itemSpec[1].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[1].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_Esc2);
+                                item3D.itemSpec[1].got = true;
+                            }
+                        }
+                        break;
+
+                    case 5: // stone1,pipe(R1)
+                        if (item3D.itemSpec[2].exist && !item3D.itemSpec[4].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[2].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_Stone1);
+                                item3D.itemSpec[2].got = true;
+                            }
+                        }
+                        if (!item3D.itemSpec[0].exist && item3D.itemSpec[4].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[4].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_Pipe3);
+                                item3D.itemSpec[4].got = true;
+                            }
+                        }
+                        break;
+
+                    case 6: // stone2(R1)
+                        if (item3D.itemSpec[3].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[3].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_Stone2);
+                                item3D.itemSpec[3].got = true;
+                            }
+                        }
+                        break;
+
+                    case 7: // balance2(R1)
+                        if (item3D.itemSpec[6].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[6].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_Balance2);
+                                item3D.itemSpec[6].got = true;
+                            }
+                        }
+                        break;
+
+                    case 8: // balance3(R1)
+                        if (item3D.itemSpec[7].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                item3D.itemSpec[7].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_Balance3);
+                                item3D.itemSpec[7].got = true;
+                            }
+                        }
+                        break;
+
+                    case 11: // key(R1)
+                        if (item3D.itemSpec[10].exist)
+                        {
+                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            if (input::TRG(VK_LBUTTON))
+                            {
+                                G_Item->count[1] = true;
+                                item3D.itemSpec[10].exist = false;
+                                arr->get_item(SPEC::ITEM_ID::ID_Key);
+                                item3D.itemSpec[10].got = true;
+                            }
+                        }
+                        break;
                     }
-                    break;
-
-                case 9: // safety(R2)
-                    if (item3D.itemSpec[8].exist)
-                    {
-                        item3D.itemSpec[8].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_SafetyBox);
-                        item3D.itemSpec[8].got = true;
-                    }
-                    break;
-
-                case 10: // omori(R2)
-                    if (item3D.itemSpec[9].exist)
-                    {
-                        G_Item->count[0] = true;
-                        item3D.itemSpec[9].exist = false;
-                        item3D.itemSpec[7].exist = true;
-                        item3D.itemSpec[10].exist = true;
-
-                        arr->get_item(SPEC::ITEM_ID::ID_Weight);
-                        item3D.itemSpec[9].got = true;
-                    }
-                    break;
-
-
-
-                case 4: // esc2(R1)
-                    if (item3D.itemSpec[1].exist)
-                    {
-                        item3D.itemSpec[1].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_Esc2);
-                        item3D.itemSpec[1].got = true;
-                    }
-                    break;
-
-                case 5: // stone1,pipe(R1)
-                    if (item3D.itemSpec[2].exist && !item3D.itemSpec[4].exist)
-                    {
-                        item3D.itemSpec[2].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_Stone1);
-                        item3D.itemSpec[2].got = true;
-                    }
-                    if (!item3D.itemSpec[0].exist && item3D.itemSpec[4].exist)
-                    {
-                        item3D.itemSpec[4].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_Pipe3);
-                        item3D.itemSpec[4].got = true;
-                    }
-                    break;
-
-                case 6: // stone2(R1)
-                    if (item3D.itemSpec[3].exist)
-                    {
-                        item3D.itemSpec[3].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_Stone2);
-                        item3D.itemSpec[3].got = true;
-                    }
-                    break;
-
-                case 7: // balance2(R1)
-                    if (item3D.itemSpec[6].exist)
-                    {
-                        item3D.itemSpec[6].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_Balance2);
-                        item3D.itemSpec[6].got = true;
-                    }
-                    break;
-
-                case 8: // balance3(R1)
-                    if (item3D.itemSpec[7].exist)
-                    {
-                        item3D.itemSpec[7].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_Balance3);
-                        item3D.itemSpec[7].got = true;
-                    }
-                    break;
-
-                case 11: // key(R1)
-                    if (item3D.itemSpec[10].exist)
-                    {
-                        G_Item->count[1] = true;
-                        item3D.itemSpec[10].exist = false;
-                        arr->get_item(SPEC::ITEM_ID::ID_Key);
-                        item3D.itemSpec[10].got = true;
-                    }
-                    break;
                 }
             }
         }
@@ -295,7 +333,6 @@ void GameItem::init()
 {
     arr->init();
     M_Item->init();
-    SpriteLoad(12, L"Data/Sprite/cursor.png");
     pos = { 0.0f,290.0f };
     for (int i = 0; i < 2; i++)
     {
@@ -324,19 +361,18 @@ void GameItem::useWeight(FPSCamera& camera)
                 {
                     hit_pos[MINIMUM] = hit_pos[SAVE];
                     distance = rayStart.distanceFrom(hit_pos[MINIMUM]);
-                    if (distance < 30.0f && !itemObj->item3D.itemSpec[9].used)
+                    if (distance < 15.0f && !itemObj->item3D.itemSpec[9].used)
                     {
                         Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
                         isdraw[0] = true;
 
                         if (input::TRG(VK_LBUTTON))
                         {
-                            itemObj->item3D.itemSpec[9].exist = false;
                             itemObj->item3D.itemSpec[9].used = true;
-                            isdraw[1] = false;
                             arr->use_item(SPEC::ITEM_ID::ID_Weight);
                         }
                     }
+                    else isdraw[0] = false;
                 }
             }
         }
@@ -363,19 +399,18 @@ void GameItem::useKey(FPSCamera& camera)
                 {
                     hit_pos[MINIMUM] = hit_pos[SAVE];
                     distance = rayStart.distanceFrom(hit_pos[MINIMUM]);
-                    if (distance < 30.0f && !itemObj->item3D.itemSpec[10].used)
+                    if (distance < 15.0f && !itemObj->item3D.itemSpec[10].used)
                     {
                         Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
                         isdraw[1] = true;
 
                         if (input::TRG(VK_LBUTTON))
                         {
-                            itemObj->item3D.itemSpec[10].exist = false;
                             itemObj->item3D.itemSpec[10].used = true;
-                            isdraw[1] = false;
                             arr->use_item(SPEC::ITEM_ID::ID_Key);
                         }
                     }
+                    else isdraw[1] = false;
                 }
             }
         }
@@ -387,11 +422,11 @@ void GameItem::draw()
 {
     if (isdraw[0])
     {
-            SpriteRender(M_Item->menuItem.itemSpec[9].ptr, pos.x, pos.y, 0.05f, 0.05f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+        SpriteRender(M_Item->menuItem.itemSpec[9].ptr, pos.x, pos.y, 0.0454f, 0.0561f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
     }
 
-    if (!isdraw[0] && isdraw[1])
+    if (isdraw[1])
     {
-        SpriteRender(M_Item->menuItem.itemSpec[10].ptr, pos.x, pos.y, 0.05f, 0.05f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+        SpriteRender(M_Item->menuItem.itemSpec[10].ptr, pos.x, pos.y, 0.0454f, 0.0561f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
     }
 }

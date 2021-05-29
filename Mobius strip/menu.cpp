@@ -26,13 +26,15 @@ void ItemMenu::init()
 
     for (int i = 0; i < arr->ITEM_MAX; i++)
     {
-        if (i % 3 == 0) { menuItem.itemSpec[i].pos.x = 318.0f; }
-        if (i % 3 == 1) { menuItem.itemSpec[i].pos.x = 483.0f; }
+        if (i % 3 == 0) { menuItem.itemSpec[i].pos.x = 323.0f; }
+        if (i % 3 == 1) { menuItem.itemSpec[i].pos.x = 484.0f; }
         if (i % 3 == 2) { menuItem.itemSpec[i].pos.x = 645.0f; }
 
-        if (i / 3 == 0) { menuItem.itemSpec[i].pos.y = 290.0f; }
-        if (i / 3 == 1) { menuItem.itemSpec[i].pos.y = 520.0f; }
-        if (i / 3 == 2) { menuItem.itemSpec[i].pos.y = 730.0f; }
+        if (i / 3 == 0) { menuItem.itemSpec[i].pos.y = 295.0f; }
+        if (i / 3 == 1) { menuItem.itemSpec[i].pos.y = 518.0f; }
+        if (i / 3 == 2) { menuItem.itemSpec[i].pos.y = 741.0f; }
+
+        menuItem.itemSpec[i].scale = { 0.0454f,0.0561f,1.0f };
     }
 }
 
@@ -46,8 +48,8 @@ void Menu::init()
     value_pos[2] = { 1364,660 };
     value_pos[3] = { 1364,836 };
     arrow_pos = { 0,0 };
-    volumeSE = 0.4f;
-    volumeBGM = 0.4f;
+    volumeSE = 0.3f;
+    volumeBGM = 0.3f;
 }
 
 /*************************************************/
@@ -301,7 +303,7 @@ void Menu::update()
                     if (volumeSE > 0.0f && input::TRG(VK_LBUTTON))
                     { 
                         value_pos[2].x -= 95.0f;
-                        volumeSE -= 0.2f;
+                        volumeSE -= 0.15f;
 
                         if (volumeSE <= 0.0f)
                         {
@@ -313,10 +315,10 @@ void Menu::update()
                 // Œø‰Ê‰¹(¨)
                 if (ColRects(654, 702, 1572, 1637, input::GetMousePos()))
                 {
-                    if (volumeSE < 0.8f && input::TRG(VK_LBUTTON))
+                    if (volumeSE < 0.6f && input::TRG(VK_LBUTTON))
                     {
                         value_pos[2].x += 95.0f;
-                        volumeSE += 0.2f;
+                        volumeSE += 0.15f;
                     }
                 }
                 
@@ -326,7 +328,7 @@ void Menu::update()
                     if (volumeBGM > 0.0f && input::TRG(VK_LBUTTON))
                     {
                         value_pos[3].x -= 95.0f;
-                        volumeBGM -= 0.2f;
+                        volumeBGM -= 0.15f;
 
                         if (volumeBGM <= 0.0f)
                         {
@@ -338,10 +340,10 @@ void Menu::update()
                 // BGM(¨)
                 if (ColRects(830, 878, 1572, 1637, input::GetMousePos()))
                 {
-                    if (volumeBGM < 0.8f && input::TRG(VK_LBUTTON))
+                    if (volumeBGM < 0.6f && input::TRG(VK_LBUTTON))
                     {
                         value_pos[3].x += 95.0f;
-                        volumeBGM += 0.2f;
+                        volumeBGM += 0.15f;
                     }
                 }
 
@@ -371,7 +373,7 @@ void Menu::update()
 void ItemMenu::origin_Draw(int num)
 {
     if (menuItem.itemSpec[num].isobserve) {
-        SpriteRender(menuItem.itemSpec[num].ptr, 1189, 310, 0.2f, 0.27f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+        SpriteRender(menuItem.itemSpec[num].ptr, 1121, 296, 0.253f, 0.274f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
     }
 }
 
@@ -429,7 +431,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Esc1:
             SpriteRender(menuItem.itemSpec[0].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -440,7 +442,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Esc2:
             SpriteRender(menuItem.itemSpec[1].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -451,7 +453,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Stone1:
             SpriteRender(menuItem.itemSpec[2].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -462,7 +464,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Stone2:
             SpriteRender(menuItem.itemSpec[3].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -473,7 +475,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Pipe3:
             SpriteRender(menuItem.itemSpec[4].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -484,7 +486,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Balance1:
             SpriteRender(menuItem.itemSpec[5].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -495,7 +497,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Balance2:
             SpriteRender(menuItem.itemSpec[6].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -506,7 +508,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Balance3:
             SpriteRender(menuItem.itemSpec[7].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -517,7 +519,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_SafetyBox:
             SpriteRender(menuItem.itemSpec[8].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -528,7 +530,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Weight:
             SpriteRender(menuItem.itemSpec[9].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
@@ -539,7 +541,7 @@ void ItemMenu::draw()
         case ItemArr::ITEM_ID::ID_Key:
             SpriteRender(menuItem.itemSpec[10].ptr,
                 menuItem.itemSpec[i].pos.x, menuItem.itemSpec[i].pos.y,
-                0.05f, 0.06f,
+                menuItem.itemSpec[i].scale.x, menuItem.itemSpec[i].scale.y,
                 0, 0,
                 2048, 2048,
                 0, 0,
