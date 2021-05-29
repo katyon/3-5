@@ -40,11 +40,18 @@ private:
     Shaders		mask_ps;
     Shaders     brightness_ps;
     framebuffer buffer;
+    
     //ID3D11ShaderResourceView* test = nullptr;
 public:
     ScreenRecord()
     {
-        init();
+        mask.Load(L"Data/Sprite/mask.dds");
+        brightness_ps.LoadPixelShader("Data/shader/Increase_brightness_ps.cso");
+        mask_ps.LoadPixelShader("Data/shader/mask_ps.cso");
+        ScreenSize = AliceLib::GetWindowSize();
+        buffer.init(static_cast<int>(ScreenSize.x), static_cast<int>(ScreenSize.y));
+        cbuff.CreateConstantBuffer();
+        cbuff2.CreateConstantBuffer();
     }
     ~ScreenRecord()
     {
@@ -71,6 +78,8 @@ public:
     {
         return level;
     }
+
+    bool Whiteout(float);
 
     void _edit();
 

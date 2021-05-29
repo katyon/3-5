@@ -146,7 +146,7 @@ void ItemObj::render(const Camera& camera)
                 case 6: // “V”‰ƒqƒ“ƒg‡A
                 case 7: // “V”‰ƒqƒ“ƒg‡B
                 case 10: // Œ®
-                    SkinnedMeshRender(item3D.itemSpec[i].model, camera, item3D.itemSpec[i].pos, item3D.itemSpec[i].scale, posture[i], camera.LightFloamCamera(), color);
+                    //SkinnedMeshRender(item3D.itemSpec[i].model, camera, item3D.itemSpec[i].pos, item3D.itemSpec[i].scale, posture[i], camera.LightFloamCamera(), color);
                     break;
                 }
             }
@@ -159,7 +159,7 @@ void ItemObj::render(const Camera& camera)
                 case 5:  // “V”‰ƒqƒ“ƒg‡@
                 case 8:  // ‹àŒÉ‚Ìƒqƒ“ƒg
                 case 9:  // 
-                    SkinnedMeshRender(item3D.itemSpec[i].model, camera, item3D.itemSpec[i].pos, item3D.itemSpec[i].scale, posture[i], camera.LightFloamCamera(), color);
+                    //SkinnedMeshRender(item3D.itemSpec[i].model, camera, item3D.itemSpec[i].pos, item3D.itemSpec[i].scale, posture[i], camera.LightFloamCamera(), color);
                     break;
                 }
             }

@@ -22,7 +22,6 @@ public:
     };
 
     Sprite ptr;
-    SkinnedMesh model;
     FLOAT3 pos;   // 表示位置
     FLOAT3 scale; // 表示サイズ
     FLOAT2 src;
