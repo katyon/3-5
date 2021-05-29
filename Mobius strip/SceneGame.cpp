@@ -115,10 +115,9 @@ void SceneGame::Update(float elapsed_time)
         Candle::getInstance()->Update();
         SafetyBox::getInstance()->update(camera);
         KeyPad::getInstance()->update(camera);
-        //itemObj->update(camera);
-       // itemObj->Sameupdate(camera);
-        itemObj->Diffupdate(camera);
-        G_Item->update();
+        itemObj->update(camera);
+        G_Item->useWeight(camera);
+        G_Item->useKey(camera);
         Libra::getInstance()->Update();
         Balance::Update();
 
@@ -194,7 +193,7 @@ void SceneGame::Render()
         StageManager::getIns()->Render();
 
         // ボタンプッシュ
-        //ButtonPush::getInstance()->Render(camera);
+        ButtonPush::getInstance()->Render(camera);
         itemObj->render(camera);
 
         PipePuzzle::getInstance()->Render(camera);

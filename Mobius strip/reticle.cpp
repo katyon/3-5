@@ -30,5 +30,5 @@ void Reticle::RenderCursor()
 
 	(current_type == RETICLE_TYPE::LOUPE) ?
 		SpriteRender(spr, point, { 0.3f, 0.3f }, { 256, 0 }, { 256.0f, 256.0f }, { 128.0f, 128.0f }) :
-		SpriteRender(spr, point, { 0.3f, 0.3f }, { 256*3, 0 }, { 256.0f, 256.0f }, { 0, 0 });
+		SpriteRender(spr, point, { 0.3f, 0.3f }, { 256*3, 0 }, { 256.0f, 256.0f }, { 12, 15 });
 }
