@@ -2,13 +2,7 @@
 
 void ScreenRecord::init()
 {
-	mask.Load(L"Data/Sprite/mask.dds");
-	brightness_ps.LoadPixelShader("Data/shader/Increase_brightness_ps.cso");
-	mask_ps.LoadPixelShader("Data/shader/mask_ps.cso");
-	ScreenSize = AliceLib::GetWindowSize();
-	buffer.init(static_cast<int>(ScreenSize.x), static_cast<int>(ScreenSize.y));
-	cbuff.CreateConstantBuffer();
-	cbuff2.CreateConstantBuffer();
+	ChangeBrightness(level);
 }
 
 bool ScreenRecord::save(int num)
@@ -69,16 +63,25 @@ void ScreenRecord::end()
 	//FrameBufferRender(buffer, {});
 }
 
+bool ScreenRecord::Whiteout(float elapsed_time)
+{
+	if (cbuff2->Bright > 3.0f)return true;
+	cbuff2->Bright += 0.75f * elapsed_time;
+	return cbuff2->Bright > 3.0f;
+}
+
 void ScreenRecord::_edit()
 {
 	ImGui::Begin(u8"オプション");
 	ImGui::InputFloat(u8"コントラスト", &cbuff2->ContrastWeight, 0.25, -0.25);
 	ImGui::InputFloat(u8"明度", &cbuff2->Bright, 0.25, -0.25);
 	ImGui::InputFloat(u8"閾値", &cbuff2->threshold, 0.025, -0.025);
-	//ImGui::SliderInt(u8"レベル", &level, 0, 4);
+	if (ImGui::SliderInt(u8"レベル", &level, 0, 4))
+	{
+		(*cbuff2.GetData()) = luminance_level[level];
+	}
 	ImGui::End();
 
-	//(*cbuff2.GetData()) = luminance_level[level];
 
 }
 

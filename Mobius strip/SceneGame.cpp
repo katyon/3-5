@@ -46,12 +46,17 @@ SceneGame::SceneGame()
     //SceneGame::Initialize();
     Reticle::getInstance();
     SafetyBox::getInstance();
+    Candle::getInstance()->Init();
+    PipePuzzle::getInstance()->Init();
+    Libra::getInstance()->Init();
+    ScreenRecord::getInstance();
     KeyPad::getInstance();
 }
 
 //シーン変更された瞬間に実行される処理
 void SceneGame::Initialize()
 {
+    ScreenRecord::getInstance()->init();
     // ボタンプッシュ これはいらないかも
     ButtonPush::getInstance()->init();
     PipePuzzle::getInstance()->Init();
@@ -172,9 +177,24 @@ void SceneGame::Update(float elapsed_time)
         break;
     }
 
-    Debug->SetString("カメラ回転中心座標 %f %f %f", player.getPos().x, player.getPos().y + 12.5f, player.getPos().z);
-    Debug->SetString("カメラ座標 %f %f %f", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
-    Debug->SetString("カメラの距離 %f", FLOAT3::distanceFrom({ player.getPos().x, player.getPos().y + 12.5f, player.getPos().z }, camera.GetPos()));
+#if _DEBUG
+    {
+        static bool isF = false;
+        if(input::TRG('P'))isF = true;
+        if (isF)
+        {
+            ScreenRecord::getInstance()->Whiteout(elapsed_time) ?
+                Debug->SetString("ホワイトアウト済み") :
+                Debug->SetString("ホワイトアウト中");
+        }
+        if (input::TRG('O'))
+        {
+            isF = false;
+            ScreenRecord::getInstance()->init();
+        }
+    }
+#endif
+    
 }
 
 //シーンの描画処理
