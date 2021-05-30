@@ -143,6 +143,13 @@ void ItemMenu::isChoice()
 void ItemMenu::update()
 {
     isChoice();
+    if (input::TRG(VK_TAB))
+    {
+        for (auto i : arr->items)
+        {
+            M_Item->menuItem.itemSpec[i].isobserve = false;
+        }
+    }
 }
 
 
