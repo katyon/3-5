@@ -214,7 +214,7 @@ void SceneGame::Render()
         StageManager::getIns()->Render();
 
         // ボタンプッシュ
-        //ButtonPush::getInstance()->Render(camera);
+        ButtonPush::getInstance()->Render(camera);
         itemObj->render(camera);
 
         PipePuzzle::getInstance()->Render(camera);
