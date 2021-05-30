@@ -3,6 +3,8 @@
 #include "ButtonPush.h"
 #include "Shelter.h"
 #include "SceneGame.h"
+#include "reticle.h"
+#include "StageManager.h"
 //#define BPGet ButtonPush::getInstance()
 
 #define BPGet ButtonPush::getInstance()
@@ -150,6 +152,11 @@ bool ButtonPush::judge_answer()
 
 void ButtonPush::update(const Camera& camera)
 {
+	if (StageManager::getIns()->getStageNum() == 0)
+	{
+		return;
+	}
+
 	// デバッグ用
 	//if (input::TRG('R'))
 	//{
@@ -176,7 +183,7 @@ void ButtonPush::update(const Camera& camera)
 				if (start.distanceFrom(HitPos[0]) <= 20)
 				{
 					// アイコンを切り替える処理
-
+					Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
 				}
 			}
 		}
@@ -573,6 +580,10 @@ void ButtonPush::push_botton(int height, int width)
 
 void ButtonPush::Render(const Camera& camera)
 {
+	if (StageManager::getIns()->getStageNum() == 0)
+	{
+		return;
+	}
 	//Debug->SetString("Base  X:%f  Y:%f  Z:%f", base.pos.x, base.pos.y, base.pos.z);
 	SkinnedMeshRender(base.model, camera, base.pos, FLOAT3(0.1f, 0.1f, 0.1f), base.posture, camera.LightFloamCamera());
 
