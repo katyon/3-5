@@ -74,6 +74,7 @@ void Player::update(FPSCamera& camera)
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
+	playSound();
 	Debug->SetString("moves:%d footstep_volume:%f", moves, footstep_volume);
 	//restrictArea();
 	colWall();
@@ -98,29 +99,6 @@ void Player::render(const Camera& camera)
 
 void Player::move(const Camera& camera)
 {
-	/* ************* SE **************** */
-	if (moves)
-	{
-		footstep_volume += 0.2f;
-		if (!Audio::isPlay(sound_num::FOOTSTEP))
-		{
-			Audio::play(sound_num::FOOTSTEP, false);
-		}
-	}
-	else
-	{
-		footstep_volume -= 0.3f;
-		if (!Audio::isPlay(sound_num::FOOTSTEP))
-		{
-			Audio::stop(sound_num::FOOTSTEP);
-		}
-	}
-
-	if (footstep_volume > 0.8f) { footstep_volume = 0.8f; }
-	if (footstep_volume < 0.0f) { footstep_volume = 0.0f; }
-
-	Audio::SetVolume(sound_num::FOOTSTEP, footstep_volume);
-	/******************************************************/
 
 	if (input::STATE('D'))
 	{
@@ -416,29 +394,29 @@ void Player::autoControl(FPSCamera& camera)
 			}
 			pos = attract_point;
 			auto_control_timer = 0;
-			auto_control_phase = AUTO_PHASE::PHASE_END;
+			auto_control_phase = AUTO_PHASE::CLOSE_THE_DOOR;
 		}
 
 		break;
 
 	case AUTO_PHASE::CLOSE_THE_DOOR:
-		//if (objects)
-		//{
-		//	for (int i = 0; i < StageData::MaxObjects; i++)
-		//	{
-		//		if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
-		//		{
-		//			objects[i].body.UpdateAnimation();
-		//			if (!objects[i].body.IsPlayAnimation())
-		//			{
-		//				objects[i].body.PlayAnimation(0, false);
-		//				objects[i].body.UpdateAnimation(0.0f);
-		//				auto_control_phase = AUTO_PHASE::PHASE_END;
-		//			}
-		//			break;
-		//		}
-		//	}
-		//}
+		if (objects)
+		{
+			for (int i = 0; i < StageData::MaxObjects; i++)
+			{
+				if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
+				{
+					objects[i].body.UpdateAnimation();
+					if (!objects[i].body.IsPlayAnimation())
+					{
+						objects[i].body.PlayAnimation(0, false);
+						objects[i].body.UpdateAnimation(0.0f);
+						auto_control_phase = AUTO_PHASE::PHASE_END;
+					}
+					break;
+				}
+			}
+		}
 		break;
 		
 	case AUTO_PHASE::PHASE_END:
@@ -474,6 +452,33 @@ void Player::autoControl(FPSCamera& camera)
 		}
 		SetCursorPos(center.x, center.y);
 	}
+}
+
+void Player::playSound()
+{
+	/* ************* SE **************** */
+	if (input::STATE('W') || input::STATE('A') || input::STATE('S') || input::STATE('D'))
+	{
+		footstep_volume += 0.2f;
+		if (!Audio::isPlay(sound_num::FOOTSTEP))
+		{
+			Audio::play(sound_num::FOOTSTEP, false);
+		}
+	}
+	else
+	{
+		footstep_volume -= 0.3f;
+		if (!Audio::isPlay(sound_num::FOOTSTEP))
+		{
+			Audio::stop(sound_num::FOOTSTEP);
+		}
+	}
+
+	if (footstep_volume > 0.6f) { footstep_volume = 0.6f; }
+	if (footstep_volume < 0.0f) { footstep_volume = 0.0f; }
+
+	Audio::SetVolume(sound_num::FOOTSTEP, footstep_volume);
+	/******************************************************/
 }
 
 
