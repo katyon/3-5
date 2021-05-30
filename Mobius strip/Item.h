@@ -30,6 +30,8 @@ public:
     bool isobserve;
     bool exist;
     bool used;
+    bool got;
+
 };
 
 class ItemArr:public SPEC
@@ -147,26 +149,14 @@ private:
     {
         arr->reset();
     }
-    float timer = 0;
-    int RoomNum;    // ”z’u‚·‚é•”‰®”Ô†Ž¯•Ê—p
-
-    //StageObject* objects;
-    //StageObject* objects2;
-    float distance = 100.0f;
-
-    FLOAT3 horizontal_lay_start;
-    FLOAT3 horizontal_lay_end;
-    FLOAT3 vertical_lay_start;
-    FLOAT3 vertical_lay_end;
-    Quaternion posture[15];
     enum HitPoint { SAVE, MINIMUM };
 
 public:
     ItemArr item3D;
+    float distance;
 
     void init();
-    void get();
-    void Diffupdate(FPSCamera& camera);
+    void update(FPSCamera& camera);
     void render(const Camera& camera);
     void uninit();
 
@@ -210,18 +200,19 @@ class GameItem
 {
 private:
     ItemArr gameItem;
-
+    FLOAT2 pos;
+    bool isdraw[2];
+    enum HitPoint { SAVE, MINIMUM };
     GameItem()
     {
         arr->reset();
     }
-    void isChoice();
 
 public:
-    int selectNum = 0;
     bool count[2];
     void init();
-    void update();
+    void useWeight(FPSCamera& camera);
+    void useKey(FPSCamera& camera);
     void draw();
 
     static GameItem* getInstance()
