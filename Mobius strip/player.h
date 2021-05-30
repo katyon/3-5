@@ -88,6 +88,8 @@ public:
 	void colFloor();
 	void colDoor(FPSCamera& camera);
 
+	void playSound();
+
 	void ACinit();
 
 	bool getControlable() { return auto_control; }
