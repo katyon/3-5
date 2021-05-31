@@ -24,7 +24,9 @@ void ItemObj::init()
     {
         item3D.itemSpec[i].got = false;
         item3D.itemSpec[i].used = false; // まだ使っていない
+        item3D.itemSpec[i].exist = false;
     }
+
     item3D.itemSpec[0].exist = true;
     item3D.itemSpec[5].exist = true;
 }
@@ -98,7 +100,6 @@ void ItemObj::update(FPSCamera& camera)
     if (safety != nullptr) { safety->isShow = item3D.itemSpec[8].exist ? true : false; }
     if (omori != nullptr) { omori->isShow = item3D.itemSpec[9].exist ? true : false; }
     if (key != nullptr) { key->isShow = item3D.itemSpec[10].exist ? true : false; }
-
 
     // もし「水道管A」をクリアしたら、石盤ヒント②と天秤のヒント②が出現
     if (PipePuzzle::getInstance()->GetClearFlg() == 0)
