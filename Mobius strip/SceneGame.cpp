@@ -82,7 +82,7 @@ void SceneGame::Initialize()
     fix_cursor = false;
 
 
-    StageObject* objects = StageManager::getIns()->getStageObjects();
+    StageObject* objects = StageManager::getIns()->getStageData(0)->getObdects();
     if (objects)
     {
         for (int i = 0; i < StageData::MaxObjects; i++)
@@ -91,7 +91,21 @@ void SceneGame::Initialize()
            {
                objects[i].body.PlayAnimation(0, 0);
                objects[i].body.UpdateAnimation(0);
+               objects[i].body.PlayAnimation(-1, 0);
            }
+        }
+    }
+    objects = StageManager::getIns()->getStageData(1)->getObdects();
+    if (objects)
+    {
+        for (int i = 0; i < StageData::MaxObjects; i++)
+        {
+            if (objects[i].body.IsModel())
+            {
+                objects[i].body.PlayAnimation(0, 0);
+                objects[i].body.UpdateAnimation(0);
+                objects[i].body.PlayAnimation(-1, 0);
+            }
         }
     }
 }

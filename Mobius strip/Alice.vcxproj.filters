@@ -496,6 +496,9 @@
     <ClInclude Include="key_pad.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="AliceLib\hlsls\model_vs.hlsl">
