@@ -322,7 +322,7 @@ void ItemObj::update(FPSCamera& camera)
 
 void ItemObj::render(const Camera& camera)
 {
-
+    SpriteLoad(5, L"Data/Sprite/cursor.png");
 }
 
 void ItemObj::uninit()
@@ -429,10 +429,12 @@ void GameItem::draw()
     if (isdraw[0])
     {
         SpriteRender(M_Item->menuItem.itemSpec[9].ptr, pos.x, pos.y, 0.0454f, 0.0561f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+        SpriteRender(5, pos.x, pos.y, 0.0454f, 0.0561f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
     }
 
     if (isdraw[1])
     {
         SpriteRender(M_Item->menuItem.itemSpec[10].ptr, pos.x, pos.y, 0.0454f, 0.0561f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
+        SpriteRender(5, pos.x, pos.y, 0.0454f, 0.0561f, 0, 0, 2048, 2048, 0, 0, 0, 1, 1, 1, 1);
     }
 }
