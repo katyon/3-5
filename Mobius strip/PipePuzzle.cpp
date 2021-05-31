@@ -41,6 +41,15 @@ int Pipes[5][5] =
     0, 0, 0, 0, 0
 };
 
+int first_wateres[5][5] =
+{
+    1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0
+};
+
 int wateres[5][5] =
 {
     1, 0, 0, 0, 0,
@@ -87,6 +96,7 @@ void PipePuzzle::Init()
         for (int x = 0; x < 5; x++)
         {
             Pipes[y][x] = first_pipes[y][x];
+            wateres[y][x] = first_wateres[y][x];
         }
     }
 
