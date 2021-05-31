@@ -29,6 +29,9 @@ FPSCamera::FPSCamera()
 void FPSCamera::initPos()
 {
 	relative_pos = { 0, 0, -CAMERA_DISTANCE };
+	SetFov(toRadian(60));
+	SetTarget({ 0, 12.5f, 0 });
+	SetPerspectiveMatrix(0.5f, 1000.0f);
 }
 
 void FPSCamera::update(XMMATRIX player_world_matrix, FLOAT3 center)

@@ -10,6 +10,7 @@ private:
 	std::queue<int> answer;
 	std::queue<int> input;
 
+	bool actived;
 	bool locked;
 
 private:
@@ -22,6 +23,8 @@ public:
 	void update(const Camera& camera);
 
 	void pushButton(StageObject* objects, const ColBox col);
+	void activate() { actived = true; }
+	bool islocked() { return locked; }
 
 	static KeyPad* getInstance()
 	{

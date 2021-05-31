@@ -11,6 +11,10 @@ SafetyBox::SafetyBox()
 
 void SafetyBox::setAnswer()
 {
+	while (!answer.empty())
+	{
+		answer.pop();
+	}
 	answer.push(COMMAND::UP);
 	answer.push(COMMAND::DOWN);
 	answer.push(COMMAND::DOWN);
@@ -25,6 +29,18 @@ void SafetyBox::setAnswer()
 
 void SafetyBox::init()
 {
+	StageObject* objects = StageManager::getIns()->getStageData(1)->getObdects();
+	if (objects)
+	{
+		for (int i = 0; i < StageData::MaxObjects; i++)
+		{
+			if (objects[i].ID == "kinko.fbx")
+			{
+				objects[i].body.PlayAnimation(1, false);
+				objects[i].body.UpdateAnimation(0.1f);
+			}
+		}
+	}
 	setAnswer();
 	locked = true;
 }

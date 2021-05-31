@@ -66,7 +66,6 @@ void SceneGame::Initialize()
     G_Item->init();
     Libra::getInstance()->Init();
     Balance::Init();
-    SafetyBox::getInstance()->init();
     KeyPad::getInstance()->init();
 
     menu->init();
@@ -94,12 +93,18 @@ void SceneGame::Initialize()
            }
         }
     }
+    SafetyBox::getInstance()->init();
 }
 
 //シーン全体の更新処理
 //経過時間が渡されます
 void SceneGame::Update(float elapsed_time)
 {
+    if ((!ClearGame) && player.getCleard())
+    {
+        ClearGame = true;
+    }
+
     if (ClearGame)
     {
         if (input::TRG(input::MOUSE_L))
@@ -146,6 +151,12 @@ void SceneGame::Update(float elapsed_time)
             SetCursorPos(center.x, center.y);
         }
 
+        //一時
+        if (input::TRG('I')) { KeyPad::getInstance()->activate(); }
+        //
+
+        if (fix_cursor && (player.getAutoMode() == true)) { fix_cursor = false; }
+        if (fix_cursor && !KeyPad::getInstance()->islocked()) { fix_cursor = false; }
         if (!fix_cursor)
         {
             camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
@@ -157,7 +168,6 @@ void SceneGame::Update(float elapsed_time)
             game_mode = menue;
         }
         break;
-
     case menue:
         if (input::TRG(VK_TAB))
         {

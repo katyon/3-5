@@ -3,6 +3,10 @@
 
 void KeyPad::setAnswer()
 {
+	while (!answer.empty())
+	{
+		answer.pop();
+	}
 	answer.push(1);
 	answer.push(10);
 }
@@ -11,10 +15,13 @@ void KeyPad::init()
 {
 	setAnswer();
 	locked = true;
+	actived = false;
 }
 
 void KeyPad::update(const Camera& camera)
 {
+	if (!actived) return;
+
 	StageObject* objects = StageManager::getIns()->getStageObjects();
 	if (locked)
 	{
@@ -45,7 +52,7 @@ void KeyPad::update(const Camera& camera)
 			{
 				if (objects[i].body.IsPlayAnimation())
 				{
-					objects[i].body.UpdateAnimation(0.1f);
+					objects[i].body.UpdateAnimation();
 				}
 			}
 		}
