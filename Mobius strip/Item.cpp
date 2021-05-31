@@ -132,6 +132,7 @@ void ItemObj::update(FPSCamera& camera)
         if (omori != nullptr && !item3D.itemSpec[9].got)
         {
             item3D.itemSpec[9].exist = true;
+            arr->use_item(SPEC::ITEM_ID::ID_SafetyBox);
         }
     }
 

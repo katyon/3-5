@@ -36,6 +36,15 @@ void ItemMenu::init()
 
         menuItem.itemSpec[i].scale = { 0.0454f,0.0561f,1.0f };
     }
+
+    if (input::TRG(VK_TAB))
+    {
+        for (auto i : arr->items)
+        {
+            M_Item->menuItem.itemSpec[i].isobserve = false;
+        }
+    }
+
 }
 
 void Menu::init()
