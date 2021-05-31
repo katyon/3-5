@@ -111,6 +111,7 @@ void ButtonPush::init()
 
 	final_judge = false;
 	provisional_judge = false;
+	isJudge = false;
 	isPlay = true;
 }
 
