@@ -3,6 +3,7 @@
 #include "reticle.h"
 #include "StageManager.h"
 #include "Sound.h"
+#include "Item.h"
 
 void getMouseRay(const Camera& eye, FLOAT3& start, FLOAT3& end);
 
@@ -34,6 +35,15 @@ int first_pipes[5][5] =
 int Pipes[5][5] =
 {
     0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0
+};
+
+int first_wateres[5][5] =
+{
+    1, 0, 0, 0, 0,
     0, 0, 0, 0, 0,
     0, 0, 0, 0, 0,
     0, 0, 0, 0, 0,
@@ -86,13 +96,21 @@ void PipePuzzle::Init()
         for (int x = 0; x < 5; x++)
         {
             Pipes[y][x] = first_pipes[y][x];
+            wateres[y][x] = first_wateres[y][x];
         }
     }
+
+    canTouch = true;
 }
 
 void PipePuzzle::Update()
 {
-    if (StageManager::getIns()->getStageNum() == 1)
+    if (!canTouch && itemObj->item3D.itemSpec[4].got)
+    {
+        canTouch = true;
+    }
+
+    if (StageManager::getIns()->getStageNum() == 1 && canTouch)
     {
         timer++;
 
@@ -387,10 +405,12 @@ void PipePuzzle::Update()
                 if (wateres[0][4] > 0)         // クリアフラグ 0
                 {
                     ClearFlg = 0;
+                    canTouch = false;
                 }
                 if (wateres[4][2] > 0 && ClearFlg == 0)    // クリアフラグ 1
                 {
                     ClearFlg = 1;
+                    canTouch = false;
                 }
                 Reset();
                 break;
@@ -418,147 +438,151 @@ void PipePuzzle::Render(const Camera& camera)
                 pos = { x * 5.5f + 22, 0 - y * 5.5f + 27, 50 };
                 posture.reset();
 
-                COLOR color;
-                if (Cursor_pos_x == x && Cursor_pos_y == y)
+                if (camera.GetPos().z < 50)
                 {
-                    color = { 1.0f, 0.2f, 0.3f, 1.0f };
-                }
-                else
-                {
-                    if (wateres[y][x] > 0)
+
+
+                    COLOR color;
+                    if (Cursor_pos_x == x && Cursor_pos_y == y)
                     {
-                        color = { 0.3f, 0.3f, 0.7f, 1.0f };
+                        color = { 1.0f, 0.2f, 0.3f, 1.0f };
                     }
                     else
                     {
-                        color = { 1.0f, 1.0f, 1.0f, 1.0f };
-                    }
-                }
-
-                if (Cursor_pos_y == y && Cursor_pos_x == x)
-                {
-                    if (!ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
-                    {
-                        Cursor_pos_x = 0;
-                        Cursor_pos_y = 0;
-                    }
-
-                    float dist_temp = rayStart.distanceFrom(hitPos);
-                    if (dist_temp > 40)
-                    {
-                        Cursor_pos_x = 0;
-                        Cursor_pos_y = 0;
-                    }
-                }
-
-                if (Pipes[y][x] == CURVE0)
-                {
-                    posture.RotationPitch(PI / 2);
-                    if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
-                    {
-                        float dist_temp = rayStart.distanceFrom(hitPos);
-                        if (dist_temp < 40)
+                        if (wateres[y][x] > 0)
                         {
-                            Cursor_pos_x = x;
-                            Cursor_pos_y = y;
-                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            color = { 0.3f, 0.3f, 0.7f, 1.0f };
+                        }
+                        else
+                        {
+                            color = { 1.0f, 1.0f, 1.0f, 1.0f };
                         }
                     }
-                    SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
-                }
-                if (Pipes[y][x] == CURVE1)
-                {
-                    posture.RotationPitch(PI / 2);
-                    posture.RotationYaw(-PI / 2);
-                    if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
-                    {
-                        float dist_temp = rayStart.distanceFrom(hitPos);
-                        if (dist_temp < 40)
-                        {
-                            Cursor_pos_x = x;
-                            Cursor_pos_y = y;
-                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
-                        }
-                    }
-                    SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
-                }
-                if (Pipes[y][x] == CURVE2)
-                {
-                    posture.RotationPitch(PI / 2);
-                    posture.RotationYaw(PI);
-                    if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
-                    {
-                        float dist_temp = rayStart.distanceFrom(hitPos);
-                        if (dist_temp < 40)
-                        {
-                            Cursor_pos_x = x;
-                            Cursor_pos_y = y;
-                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
-                        }
-                    }
-                    SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
 
-                }
-                if (Pipes[y][x] == CURVE3)
-                {
-                    posture.RotationPitch(PI / 2);
-                    posture.RotationYaw(PI / 2);
-                    if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+                    if (Cursor_pos_y == y && Cursor_pos_x == x)
                     {
-                        float dist_temp = rayStart.distanceFrom(hitPos);
-                        if (dist_temp < 40)
+                        if (!ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                         {
-                            Cursor_pos_x = x;
-                            Cursor_pos_y = y;
-                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            Cursor_pos_x = 0;
+                            Cursor_pos_y = 0;
+                        }
+
+                        float dist_temp = rayStart.distanceFrom(hitPos);
+                        if (dist_temp > 40)
+                        {
+                            Cursor_pos_x = 0;
+                            Cursor_pos_y = 0;
                         }
                     }
-                    SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
-                }
-                if (Pipes[y][x] == STRAIGHT0)
-                {
-                    posture.RotationPitch(PI / 2);
-                    posture.RotationYaw(PI / 2);
-                    if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+
+                    if (Pipes[y][x] == CURVE0)
                     {
-                        float dist_temp = rayStart.distanceFrom(hitPos);
-                        if (dist_temp < 40)
+                        posture.RotationPitch(PI / 2);
+                        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                         {
-                            Cursor_pos_x = x;
-                            Cursor_pos_y = y;
-                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            float dist_temp = rayStart.distanceFrom(hitPos);
+                            if (dist_temp < 40 && canTouch)
+                            {
+                                Cursor_pos_x = x;
+                                Cursor_pos_y = y;
+                                Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            }
                         }
+                        SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
                     }
-                    SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
-                }
-                if (Pipes[y][x] == STRAIGHT1)
-                {
-                    posture.RotationPitch(PI / 2);
-                    if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+                    if (Pipes[y][x] == CURVE1)
                     {
-                        float dist_temp = rayStart.distanceFrom(hitPos);
-                        if (dist_temp < 40)
+                        posture.RotationPitch(PI / 2);
+                        posture.RotationYaw(-PI / 2);
+                        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
                         {
-                            Cursor_pos_x = x;
-                            Cursor_pos_y = y;
-                            Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            float dist_temp = rayStart.distanceFrom(hitPos);
+                            if (dist_temp < 40 && canTouch)
+                            {
+                                Cursor_pos_x = x;
+                                Cursor_pos_y = y;
+                                Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            }
                         }
+                        SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
                     }
-                    SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
-                }
-                if (Pipes[y][x] == START)
-                {
-                    posture.RotationPitch(-PI / 2);
+                    if (Pipes[y][x] == CURVE2)
+                    {
+                        posture.RotationPitch(PI / 2);
+                        posture.RotationYaw(PI);
+                        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+                        {
+                            float dist_temp = rayStart.distanceFrom(hitPos);
+                            if (dist_temp < 40 && canTouch)
+                            {
+                                Cursor_pos_x = x;
+                                Cursor_pos_y = y;
+                                Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            }
+                        }
+                        SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
 
-                    SkinnedMeshRender(start_pipe, camera, pos, scale, posture, light_dir, { 1.0f, 1.0f, 1.0f, 1.0f });
-                }
-                if (Pipes[y][x] == GOAL)
-                {
-                    posture.RotationPitch(-PI / 2);
+                    }
+                    if (Pipes[y][x] == CURVE3)
+                    {
+                        posture.RotationPitch(PI / 2);
+                        posture.RotationYaw(PI / 2);
+                        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+                        {
+                            float dist_temp = rayStart.distanceFrom(hitPos);
+                            if (dist_temp < 40 && canTouch)
+                            {
+                                Cursor_pos_x = x;
+                                Cursor_pos_y = y;
+                                Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            }
+                        }
+                        SkinnedMeshRender(curve_pipe, camera, pos, scale, posture, light_dir, color);
+                    }
+                    if (Pipes[y][x] == STRAIGHT0)
+                    {
+                        posture.RotationPitch(PI / 2);
+                        posture.RotationYaw(PI / 2);
+                        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+                        {
+                            float dist_temp = rayStart.distanceFrom(hitPos);
+                            if (dist_temp < 40 && canTouch)
+                            {
+                                Cursor_pos_x = x;
+                                Cursor_pos_y = y;
+                                Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            }
+                        }
+                        SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
+                    }
+                    if (Pipes[y][x] == STRAIGHT1)
+                    {
+                        posture.RotationPitch(PI / 2);
+                        if (ColLineOBB(rayStart, rayEnd, CreateOBB(pos, OBBscale, posture), hitPos))
+                        {
+                            float dist_temp = rayStart.distanceFrom(hitPos);
+                            if (dist_temp < 40 && canTouch)
+                            {
+                                Cursor_pos_x = x;
+                                Cursor_pos_y = y;
+                                Reticle::getInstance()->setReticleType(Reticle::RETICLE_TYPE::LOUPE);
+                            }
+                        }
+                        SkinnedMeshRender(straight_pipe, camera, pos, scale, posture, light_dir, color);
+                    }
+                    if (Pipes[y][x] == START)
+                    {
+                        posture.RotationPitch(-PI / 2);
 
-                    SkinnedMeshRender(goal_pipe, camera, pos, scale, posture, light_dir, { 1.0f, 1.0f, 1.0f, 1.0f });
-                }
+                        SkinnedMeshRender(start_pipe, camera, pos, scale, posture, light_dir, { 1.0f, 1.0f, 1.0f, 1.0f });
+                    }
+                    if (Pipes[y][x] == GOAL)
+                    {
+                        posture.RotationPitch(-PI / 2);
 
+                        SkinnedMeshRender(goal_pipe, camera, pos, scale, posture, light_dir, { 1.0f, 1.0f, 1.0f, 1.0f });
+                    }
+                }
             }
         }
 

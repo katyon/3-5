@@ -61,6 +61,7 @@ void Player::init(FPSCamera& camera)
 
 void Player::update(FPSCamera& camera)
 {
+	playSound();
 	if (auto_control)
 	{
 		autoControl(camera);
@@ -85,8 +86,6 @@ void Player::update(FPSCamera& camera)
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
-	playSound();
-	Debug->SetString("moves:%d footstep_volume:%f", moves, footstep_volume);
 	//restrictArea();
 	colWall();
 	colFloor();

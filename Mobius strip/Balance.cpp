@@ -288,8 +288,6 @@ Libra::Libra()
 
 	//tenbin_1.load("Data\\Objects\\tenbin_1.fbx");
 	//tenbin_2.load("Data\\Objects\\tenbin_2.fbx");
-
-	posture.reset();
 }
 
 void Libra::Init()
@@ -298,7 +296,9 @@ void Libra::Init()
 	cross_scale = { 0.15f, 0.15f, 0.15f };
 	iron_scale = { 0.03f,0.03f,0.03f };
 	gold_scale = { 0.085f, 0.085f, 0.085f };
-	posture.RotationYaw(-PI / 2);
+
+	posture.reset();
+	posture.RotationYaw(PI);
 
 	Equilibrium = false;
 }
@@ -315,41 +315,42 @@ void Libra::Update()
 	//}
 	if (input::TRG(KEY::VK_P))
 	{
+		Equilibrium = true;
+	}
+	if (Equilibrium)
+	{
 		Balance::l_weight = 13;
 		Balance::r_weight = 13;
-		Equilibrium = true;
 	}
 }
 
 void Libra::Render(const Camera& camera)
 {
 	FLOAT4 light_dir = { 0, 0, 0, 1 };
-
-	if(!Equilibrium)
-	{   // ƒAƒCƒeƒ€‚Ì‚ğ’u‚­‘OB‚P‚R„‚P‚O 
-		// LEFT_SIDE
-		SkinnedMeshRender(cross_weight, camera, { -42.0f, 13.8f, -23.5f }, cross_scale, posture, light_dir);
-		SkinnedMeshRender(iron_weight, camera, { -42.0f, 13.8f, -25.0f }, iron_scale, posture, light_dir);
-		// RIGHT_SIDE
-		SkinnedMeshRender(gold_weight, camera, { -42.0f, 15.55f, -15.0f }, gold_scale, posture, light_dir);
-		SkinnedMeshRender(iron_weight, camera, { -42.0f, 15.55f, -13.5f }, iron_scale, posture, light_dir);
-		SkinnedMeshRender(wood_weight, camera, { -42.0f, 15.55f, -12.0f }, gold_scale, posture, light_dir);
+	if (StageManager::getIns()->getStageNum() == 0)
+	{
+		if (!Equilibrium)
+		{   // ƒAƒCƒeƒ€‚Ì‚ğ’u‚­‘OB‚P‚R„‚P‚O 
+			// LEFT_SIDE
+			SkinnedMeshRender(cross_weight, camera, { 12.5f, 8.7f, 0.0f }, cross_scale, posture, light_dir);
+			SkinnedMeshRender(iron_weight, camera, { 10.5f, 8.7f, 0.0f }, iron_scale, posture, light_dir);
+			// RIGHT_SIDE
+			SkinnedMeshRender(gold_weight, camera, { -0.8f, 10.2f, 0.0f }, gold_scale, posture, light_dir);
+			SkinnedMeshRender(iron_weight, camera, { 0.7f, 10.2f, 0.0f }, iron_scale, posture, light_dir);
+			SkinnedMeshRender(wood_weight, camera, { 2.2f, 10.2f, 0.0f }, gold_scale, posture, light_dir);
+		}
+		else
+		{   // ƒAƒCƒeƒ€‚Ì‚ğ’u‚¢‚½ŒãB ‚P‚R‚P‚R
+			// LEFT_SIDE
+			SkinnedMeshRender(cross_weight, camera, { 12.7f, 9.35f, 0.0f }, cross_scale, posture, light_dir);
+			SkinnedMeshRender(iron_weight, camera, { 10.7f, 9.35f, 0.0f }, iron_scale, posture, light_dir);
+			// RIGHT_SIDE
+			SkinnedMeshRender(gold_weight, camera, { -0.8f, 9.55f, 0.0f }, gold_scale, posture, light_dir);
+			SkinnedMeshRender(iron_weight, camera, { 0.2f, 9.55f, 0.0f }, iron_scale, posture, light_dir);
+			SkinnedMeshRender(iron_weight, camera, { 1.2f, 9.55f, 0.0f }, iron_scale, posture, light_dir);
+			SkinnedMeshRender(wood_weight, camera, { 2.2f, 9.55f, 0.0f }, gold_scale, posture, light_dir);
+		}
 	}
-	else
-	{   // ƒAƒCƒeƒ€‚Ì‚ğ’u‚¢‚½ŒãB ‚P‚R‚P‚R
-		// LEFT_SIDE
-		SkinnedMeshRender(cross_weight, camera, { -42.0f, 14.65f, -23.5f }, cross_scale, posture, light_dir);
-		SkinnedMeshRender(iron_weight, camera, { -42.0f, 14.65f, -25.0f }, iron_scale, posture, light_dir);
-		// RIGHT_SIDE
-		SkinnedMeshRender(gold_weight, camera, { -42.0f, 14.65f, -15.0f }, gold_scale, posture, light_dir);
-		SkinnedMeshRender(iron_weight, camera, { -42.0f, 14.65f, -14.0f }, iron_scale, posture, light_dir);
-		SkinnedMeshRender(iron_weight, camera, { -42.0f, 14.65f, -13.0f }, iron_scale, posture, light_dir);
-		SkinnedMeshRender(wood_weight, camera, { -42.0f, 14.65f, -12.0f }, gold_scale, posture, light_dir);
-	}
-
-	//SkinnedMeshRender(tenbin_1, camera, { -10, .0f, .0f }, {1,1,1}, posture, light_dir);
-	//SkinnedMeshRender(tenbin_2, camera, { .0f, .0f, .0f }, {1,1,1}, posture, light_dir);
-
 }
 
 void Libra::Release()
