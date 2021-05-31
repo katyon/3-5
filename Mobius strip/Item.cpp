@@ -121,6 +121,7 @@ void ItemObj::update(FPSCamera& camera)
     if (PipePuzzle::getInstance()->GetClearFlg() == 1)
     {
         if (!item3D.itemSpec[8].got)item3D.itemSpec[8].exist = true;
+        if (!item3D.itemSpec[10].got)item3D.itemSpec[10].exist = true;
         arr->use_item(SPEC::ITEM_ID::ID_Pipe3);
     }
 
@@ -209,7 +210,6 @@ void ItemObj::update(FPSCamera& camera)
                                 G_Item->count[0] = true;
                                 item3D.itemSpec[9].exist = false;
                                 item3D.itemSpec[7].exist = true;
-                                item3D.itemSpec[10].exist = true;
 
                                 arr->get_item(SPEC::ITEM_ID::ID_Weight);
                                 item3D.itemSpec[9].got = true;
@@ -348,6 +348,7 @@ void GameItem::useWeight(FPSCamera& camera)
     float distance = 100.0f;
     static FLOAT3 rayStart, rayEnd;
     getMouseRay(camera, rayStart, rayEnd);
+
     for (const auto& col : StageManager::getIns()->getColBoxs())
     {
         if (count[0])
@@ -375,6 +376,7 @@ void GameItem::useWeight(FPSCamera& camera)
                     else isdraw[0] = false;
                 }
             }
+            else  isdraw[0] = false;
         }
     }
 }
@@ -386,6 +388,8 @@ void GameItem::useKey(FPSCamera& camera)
     float distance = 100.0f;
     static FLOAT3 rayStart, rayEnd;
     getMouseRay(camera, rayStart, rayEnd);
+
+
     for (const auto& col : StageManager::getIns()->getColBoxs())
     {
         if (count[1])
@@ -413,6 +417,7 @@ void GameItem::useKey(FPSCamera& camera)
                     else isdraw[1] = false;
                 }
             }
+            else  isdraw[1] = false;
         }
     }
 }
