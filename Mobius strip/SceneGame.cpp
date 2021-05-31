@@ -217,7 +217,7 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         PipePuzzle::getInstance()->Render(camera);
-        //Libra::getInstance()->Render(camera);
+        Libra::getInstance()->Render(camera);
         Balance::Render();
         G_Item->draw();
         //cOBB(camera);
