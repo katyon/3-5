@@ -242,9 +242,6 @@
     <ClCompile Include="Candle.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="reticle.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>

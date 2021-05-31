@@ -1,5 +1,6 @@
 #pragma once
 #include "AliceLib/AliceLib.h"
+#include "AliceLib/Animation.h"
 #include "OBBs.h"
 #include "fps_camera.h"
 
@@ -27,6 +28,8 @@ private:
 	PostureVector posture_vec;
 
 	static const float collision_distance;
+
+	bool cleared;
 
 	FLOAT3 horizontal_lay_start;
 	FLOAT3 horizontal_lay_end;
@@ -80,8 +83,10 @@ public:
 	void restrictArea();
 	void changeAnimation();
 
+	bool getCleard() { return cleared; }
 
 	void setAutoMode(FPSCamera& camera);
+	bool getAutoMode() { return auto_control; }
 	void autoControl(FPSCamera& camera);
 
 	void colWall();

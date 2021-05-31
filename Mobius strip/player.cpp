@@ -3,6 +3,8 @@
 #include "menu.h"
 #include "reticle.h"
 #include "Sound.h"
+#include "ScreenRecord.h"
+#include "key_pad.h"
 
 #include <cassert>
 #include <cmath>
@@ -32,10 +34,11 @@ void Player::ACinit()
 	ac_data[DOOR_TYPE::ENTER].dist_focus = { 0.45f, 12.5f, 0 };
 	ac_data[DOOR_TYPE::ENTER].compl_Z = false;
 
-	//ac_data[DOOR_TYPE::LEAVE].wait_position = { -30.0f, 0, 0 };
-	//ac_data[DOOR_TYPE::LEAVE].wait_focus = { -54.0f, 12.5f, 0 };
-	//ac_data[DOOR_TYPE::LEAVE].dist_position = { -70.0f, 0, 0 };
-	//ac_data[DOOR_TYPE::LEAVE].dist_focus = { -80, 12.5f, 0 };
+	ac_data[DOOR_TYPE::EXIT].wait_position = { 3.0f, 0, 107.0f };
+	ac_data[DOOR_TYPE::EXIT].wait_focus = { -54.0f, 12.5f, 107.0f };
+	ac_data[DOOR_TYPE::EXIT].dist_position = { -43.0f, 0, 107.0f };
+	ac_data[DOOR_TYPE::EXIT].dist_focus = { -80, 12.5f, 107.0f };
+	ac_data[DOOR_TYPE::EXIT].compl_Z = true;
 }
 
 void Player::init(FPSCamera& camera)
@@ -45,6 +48,7 @@ void Player::init(FPSCamera& camera)
 
 	camera.SetPos({ pos.x,pos.y + 12.5f, pos.z + 1 });
 
+	pos = { 0,0,80 };
 	update(camera);
 	active_door = DOOR_TYPE::ENTER;
 	attract_point = ac_data[active_door].wait_position;
@@ -52,13 +56,21 @@ void Player::init(FPSCamera& camera)
 	auto_control_timer = 0;
 	auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
 	auto_control = true;
+	cleared = false;
 }
 
 void Player::update(FPSCamera& camera)
 {
+	playSound();
 	if (auto_control)
 	{
 		autoControl(camera);
+		return;
+	}
+
+	if (cleared)
+	{
+		if (input::TRG(input::MOUSE_L)) { ChangeScene(S_TITLE); }
 		return;
 	}
 
@@ -74,8 +86,6 @@ void Player::update(FPSCamera& camera)
 	Debug->SetString("horizontal_lay_start %f %f %f", horizontal_lay_start.x, horizontal_lay_start.y, horizontal_lay_start.z);
 	Debug->SetString("horizontal_lay_end %f %f %f", horizontal_lay_end.x, horizontal_lay_end.y, horizontal_lay_end.z);
 
-	playSound();
-	Debug->SetString("moves:%d footstep_volume:%f", moves, footstep_volume);
 	//restrictArea();
 	colWall();
 	colFloor();
@@ -293,8 +303,19 @@ void Player::setAutoMode(FPSCamera& camera)
 {
 	if (input::STATE('G'))
 	{
-		attract_point = { -30.0f, 0, 0 };
-		//camera.setAutoFocus({ -54, 12.5f, 0 }, 0.1f, ac_data[active_door].compl_Z);
+		active_door = DOOR_TYPE::EXIT;
+		attract_point = ac_data[active_door].wait_position;
+		camera.setAutoFocus(ac_data[active_door].wait_focus, 0.1f, ac_data[active_door].compl_Z);
+		auto_control_timer = 0;
+		auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
+		auto_control = true;
+	}
+
+	if (!KeyPad::getInstance()->islocked() && (active_door != DOOR_TYPE::EXIT))
+	{
+		active_door = DOOR_TYPE::EXIT;
+		attract_point = ac_data[active_door].wait_position;
+		camera.setAutoFocus(ac_data[active_door].wait_focus, 0.1f, ac_data[active_door].compl_Z);
 		auto_control_timer = 0;
 		auto_control_phase = AUTO_PHASE::MOVE_TO_DOOR;
 		auto_control = true;
@@ -375,11 +396,14 @@ void Player::autoControl(FPSCamera& camera)
 		{
 			vec = vec.normalize();
 			vec.y = 0;
-			pos += static_cast<FLOAT3>(vec) * 0.5f;
+			float speed = (active_door == DOOR_TYPE::EXIT) ? 0.15f : 0.5f;
+			pos += static_cast<FLOAT3>(vec) * speed;
 		}
 		else { pos = attract_point; }
 
-		if (auto_control_timer > 120)
+		int timer;
+		timer = (active_door == DOOR_TYPE::EXIT) ? 360 : 120;
+		if (auto_control_timer > timer)
 		{
 			Audio::play(sound_num::DOOR_CLOSE);
 			if (objects)
@@ -394,29 +418,35 @@ void Player::autoControl(FPSCamera& camera)
 			}
 			pos = attract_point;
 			auto_control_timer = 0;
-			auto_control_phase = AUTO_PHASE::CLOSE_THE_DOOR;
+			auto_control_phase = AUTO_PHASE::PHASE_END;
 		}
-
+		if (active_door == DOOR_TYPE::EXIT && auto_control_timer > 60) 
+		{
+			if (ScreenRecord::getInstance()->Whiteout(DeltaTime() * 0.75))
+			{
+				cleared = true;
+			}
+		}
 		break;
 
 	case AUTO_PHASE::CLOSE_THE_DOOR:
-		if (objects)
-		{
-			for (int i = 0; i < StageData::MaxObjects; i++)
-			{
-				if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
-				{
-					objects[i].body.UpdateAnimation();
-					if (!objects[i].body.IsPlayAnimation())
-					{
-						objects[i].body.PlayAnimation(0, false);
-						objects[i].body.UpdateAnimation(0.0f);
-						auto_control_phase = AUTO_PHASE::PHASE_END;
-					}
-					break;
-				}
-			}
-		}
+		//if (objects)
+		//{
+		//	for (int i = 0; i < StageData::MaxObjects; i++)
+		//	{
+		//		if (objects[i].ID == "spic2door.fbx" && objects[i].option == door_num)
+		//		{
+		//			objects[i].body.UpdateAnimation();
+		//			if (!objects[i].body.IsPlayAnimation())
+		//			{
+		//				objects[i].body.PlayAnimation(0, false);
+		//				objects[i].body.UpdateAnimation(0.0f);
+		//				auto_control_phase = AUTO_PHASE::PHASE_END;
+		//			}
+		//			break;
+		//		}
+		//	}
+		//}
 		break;
 		
 	case AUTO_PHASE::PHASE_END:

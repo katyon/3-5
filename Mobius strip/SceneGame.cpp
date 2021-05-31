@@ -66,7 +66,6 @@ void SceneGame::Initialize()
     G_Item->init();
     Libra::getInstance()->Init();
     Balance::Init();
-    SafetyBox::getInstance()->init();
     KeyPad::getInstance()->init();
 
     menu->init();
@@ -82,7 +81,7 @@ void SceneGame::Initialize()
     fix_cursor = false;
 
 
-    StageObject* objects = StageManager::getIns()->getStageData(0)->getObdects();
+    StageObject* objects = StageManager::getIns()->getStageObjects();
     if (objects)
     {
         for (int i = 0; i < StageData::MaxObjects; i++)
@@ -91,29 +90,21 @@ void SceneGame::Initialize()
            {
                objects[i].body.PlayAnimation(0, 0);
                objects[i].body.UpdateAnimation(0);
-               objects[i].body.PlayAnimation(-1, 0);
            }
         }
     }
-    objects = StageManager::getIns()->getStageData(1)->getObdects();
-    if (objects)
-    {
-        for (int i = 0; i < StageData::MaxObjects; i++)
-        {
-            if (objects[i].body.IsModel())
-            {
-                objects[i].body.PlayAnimation(0, 0);
-                objects[i].body.UpdateAnimation(0);
-                objects[i].body.PlayAnimation(-1, 0);
-            }
-        }
-    }
+    SafetyBox::getInstance()->init();
 }
 
 //シーン全体の更新処理
 //経過時間が渡されます
 void SceneGame::Update(float elapsed_time)
 {
+    if ((!ClearGame) && player.getCleard())
+    {
+        ClearGame = true;
+    }
+
     if (ClearGame)
     {
         if (input::TRG(input::MOUSE_L))
@@ -160,6 +151,12 @@ void SceneGame::Update(float elapsed_time)
             SetCursorPos(center.x, center.y);
         }
 
+        //一時
+        if (input::TRG('I')) { KeyPad::getInstance()->activate(); }
+        //
+
+        if (fix_cursor && (player.getAutoMode() == true)) { fix_cursor = false; }
+        if (fix_cursor && !KeyPad::getInstance()->islocked()) { fix_cursor = false; }
         if (!fix_cursor)
         {
             camera.update(GetWorldMatrix((player.getPos() + FLOAT3(0, 12.5f, 0)), FLOAT3(1, 1, 1), { 0,0,0 }), { player.getPos().x, player.getPos().y + 12.5f, player.getPos().z });
@@ -171,7 +168,6 @@ void SceneGame::Update(float elapsed_time)
             game_mode = menue;
         }
         break;
-
     case menue:
         if (input::TRG(VK_TAB))
         {
@@ -231,7 +227,7 @@ void SceneGame::Render()
         itemObj->render(camera);
 
         PipePuzzle::getInstance()->Render(camera);
-        //Libra::getInstance()->Render(camera);
+        Libra::getInstance()->Render(camera);
         Balance::Render();
         G_Item->draw();
         //cOBB(camera);

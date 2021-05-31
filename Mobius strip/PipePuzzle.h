@@ -1,5 +1,6 @@
 #pragma once
 #include "./AliceLib/AliceLib.h"
+#include "player.h"
 
 class PipePuzzle
 {
@@ -37,6 +38,8 @@ private:
     int pre_Water_pos_y = 0;
 
     int ClearFlg = -1;
+
+    bool canTouch = true;
 public:
 
     /* クリアフラグの条件　＝　指定の場所を通り、SからGまでつなぐこと。
